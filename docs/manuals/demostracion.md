@@ -4,6 +4,10 @@ Revisión: 14/10/2026. Usá datos ficticios y las cuentas existentes del
 [README](../../README.md). Prepará el entorno siguiendo [operación local](operacion-local.md).
 Estos pasos son una guía basada en código, no un acta de ejecución en navegador.
 Registrá por separado fecha, número creado, resultados y cualquier limitación.
+El cierre técnico del 14/10/2026 conserva los recorridos realmente ejecutados
+en [E2E-CLOSURE.md](../quality/E2E-CLOSURE.md). Esta guía sigue siendo un
+procedimiento reproducible; la aceptación humana usa el
+[protocolo de cinco participantes](aceptacion-usuarios.md).
 
 ## Caso nuevo: solicitante → N1 → solicitante → auditor
 

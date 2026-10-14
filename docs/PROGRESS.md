@@ -482,3 +482,31 @@ subpaneles/SLA/Servicio y estados por pantalla. RF-19 parcial; borrador persiste
 y activo texto libre de CU-01 no acreditados; prueba positiva RN-08 pendiente.
 RNF con límites incluyen archivo/retención observada, escaneo OWASP, 256 Kbps y
 CPU/memoria. Correo simulado e invitaciones CSAT en memoria se mantienen.
+
+## 14/10/2026 — Último lote integrado
+
+Se esperaron las seis sesiones completas y código estable. UI/borrador
+integrados, doce casos de borrador y recuperación/descarte/aislamiento por UI.
+E2E TK-000016 completo con adjunto/CSAT y TK-000017 N2/pausa/reanudación/cierre;
+cinco perfiles y V-01–V-06 observados. A11y comprobó teclado, reflow, objetivos
+medidos ≥40 px y contraste renderizado muestreado ≥4,5:1, sin zoom real/lector.
+QA final corrigió fechas administrativas, landmarks, shell de roles, retorno
+Servicio, locale/mensajes Zod y CSP; CSAT TK-000018 revalidado con fixture REST
+normal. RN-08 (diez casos) y permisos de todos los módulos/rutas integrados.
+Sin tablas/migración/permisos nuevos; D-030–D-033 y manuales consolidados.
+
+Último pnpm check código 0: lint/typecheck, **369 pruebas/27 archivos, 55,69 s**,
+build **312,6 kB JS gzip / 499 kB**. Solo helpdesk_test recreada, PostgreSQL
+18.1 existente, sin k6 concurrente. Cuatro fallos iniciales fueron fixtures
+Braces demasiado largos; corregidos. SCA final 0 críticos/0 moderados/1 alto
+Braces con mitigación local probada; DAST pendiente. CSP HTTP/navegador real.
+Carga del lote: 63 VUs, p95 55,82 ms, cero errores; API pico 319,96 MiB/
+1,10 % CPU host. Red final: inicio 148.248 bytes/4,734 s; total 317.863 bytes
+gzip. Mediciones y límites en FINAL-QA/NETWORK-RESOURCES, sin repetición k6.
+
+**Avance orientativo 99 %**, sin aprobación humana/UAT total. Protocolo listo
+para cinco participantes. Reservas: zoom/lector, revisión exhaustiva/DAST,
+advisory, archivo/24 meses y límites normativos/simulaciones. Usuario pidió
+omitir nuevas pruebas y hacer commits; revisión adicional queda para mañana.
+Los controles anteriores ya verdes; no pruebas posteriores. Hashes en
+finish-final.md. Sin servicios reales, deploy, chats/subagentes ni otras BD.

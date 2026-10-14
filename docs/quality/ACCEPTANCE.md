@@ -3,8 +3,9 @@
 Fecha: 14/10/2026, America/Managua. Estado: cierre técnico completo con limitaciones.
 Este informe distingue implementación, pruebas técnicas y aceptación por usuarios.
 El porcentaje funcional orientativo no representa cobertura de requisitos ni UAT.
-Los cuatro controles finales pasaron; la aceptación visual/funcional completa
-sigue pendiente. Avance funcional orientativo: 97 %, sin cálculo por testcount.
+Los cuatro controles finales pasaron y los recorridos principales se ejecutaron.
+Avance funcional orientativo: 99 %, valoración de capacidades y fallos cerrados,
+sin fórmula de cobertura ni testcount. UAT y reservas específicas siguen pendientes.
 
 ## Línea base y método
 
@@ -25,7 +26,7 @@ La revisión visual y el teclado dinámico pertenecen a las sesiones correspondi
 | ID | Implementación y evidencia técnica | Alcance o límite de aceptación |
 |---|---|---|
 | RF-01 | auth; auth-checks.ts, auth-security-checks.ts, seed-checks.ts | LOCAL Argon2id, cinco fallos, sesión hash y CSRF; AD sustituido por D-008. |
-| RF-02 | tickets; tickets-checks.ts, ticket-operations-checks.ts; web features/tickets | Alta, cola propia y ficha por número; navegación humana pendiente de evidencia visual. |
+| RF-02 | tickets; tickets-checks.ts, ticket-operations-checks.ts; web features/tickets; E2E-CLOSURE.md | Alta/adjunto/atención/cierre por UI en TK-000016 y rama N2 TK-000017; no UAT firmado. |
 | RF-03 | mail-ingest; notifications-mail-checks.ts | Ingesta/hilos simulados, sin IMAP institucional. |
 | RF-04 | catalog y tickets; catalog-checks.ts, tickets-checks.ts | Tipo, jerarquía, activo obligatorio y cambios concurrentes. |
 | RF-05 | tickets/domain; sla-calendar/pauses/compliance/validation.test.ts; calendars-checks.ts, sla-settings-checks.ts | Matriz, continuo/laboral, feriados y ciclos protegidos; norma consultable. |
@@ -34,7 +35,7 @@ La revisión visual y el teclado dinámico pertenecen a las sesiones correspondi
 | RF-08 | assets; assets-checks.ts | Alta, custodia, ficha e incidentes por alcance; no acredita inventario patrimonial real. |
 | RF-09 | knowledge; knowledge-checks.ts, knowledge-feedback-checks.ts | Publicación/versiones, búsqueda, votos y vínculos; privados filtrados en servidor. |
 | RF-10 | audit y migraciones de cadena; audit-checks.ts, audit-api-checks.ts | Triggers, concurrencia, solo inserción, IP y verificación; no certificación C-TPAT/WRAP. |
-| RF-11 | surveys; surveys-checks.ts, surveys.test.ts, jobs-checks.ts | Escala 1–5, token único hash, caducidad, CSRF y concurrencia. Invitaciones visibles en memoria; un enlace ya copiado conserva su vigencia después del reinicio. Formulario válido no revisado visualmente. |
+| RF-11 | surveys; surveys-checks.ts, surveys.test.ts, jobs-checks.ts; E2E/A11Y/FINAL-QA | Formulario válido, flechas, 5/5/recibo y reuso rechazado por UI; tres encuestas reales. Invitaciones pendientes en memoria; enlace copiado conserva vigencia tras reinicio. |
 | RF-12 | reports/domain/metrics.ts; reports.test.ts, reports-checks.ts | MTTA/MTTR/SLA/CSAT y agregados; fórmulas y denominadores documentados en decisiones. |
 | RF-13 | reports; reports-checks.ts, audit-api-checks.ts | PDF/Excel autorizados y evidencia de consulta/exportación; impresión humana no certificada aquí. |
 | RF-14 | rbac, tickets y assets; auth-checks.ts, tickets-checks.ts, assets-checks.ts | Tres sedes, dueño/grupo/sede/global, auditor lectura; VPN fuera del alcance. |
@@ -49,18 +50,18 @@ La revisión visual y el teclado dinámico pertenecen a las sesiones correspondi
 
 | ID | Evidencia | Alcance o límite de aceptación |
 |---|---|---|
-| RNF-01 | [PERFORMANCE.md](PERFORMANCE.md), ops/perf | Lecturas: 63 VUs, 3.225 solicitudes, p95 47,69 ms, 100 % checks. Medición anterior al lote final; no carga de escrituras, exports, login ni jobs. |
-| RNF-02 | auth-security-checks.ts, app.test.ts, cors.test.ts, adjuntos y pruebas denegadas por capacidad | CSRF, sesión, RBAC, validación, consultas parametrizadas y Helmet. HTTP local autorizado; escaneo OWASP sin hallazgos altos/críticos no ejecutado. |
+| RNF-01 | [NETWORK-RESOURCES.md](NETWORK-RESOURCES.md), PERFORMANCE.md, ops/perf | Lecturas: 63 VUs, 3.216 solicitudes, p95 55,82 ms, 100 % checks y 0 % errores. Medición previa a cambios finales de cabeceras; sin carga de escrituras, exports, login ni jobs. |
+| RNF-02 | auth-security-checks.ts, runtime-route-access-checks.ts, SECURITY-CLOSURE.md y [FINAL-QA.md](FINAL-QA.md) | Permisos de todas las rutas, CSRF, sesión, alcance, CSP HTML con nonce y API restringida. SCA final 0 críticos/0 moderados/1 alto Braces con mitigación local. DAST OWASP no ejecutado; no certificación sin hallazgos. |
 | RNF-03 | database.integration.test.ts, migraciones y ER de 45 tablas | PostgreSQL local 18.1 autorizado; no ejecución contra versión 15. |
 | RNF-04 | D-008, guía local | Respaldo NAS, RTO/RPO y restauración operativa fuera del prototipo; no acreditados. |
-| RNF-05 | [VISUAL.md](VISUAL.md), [ACCESSIBILITY.md](ACCESSIBILITY.md) | Escritorio/360 px observados en navegador integrado; teclado parcial. Sin todos los perfiles, navegadores, flujos, zoom ni lector de pantalla. Hallazgos abiertos abajo. |
+| RNF-05 | E2E-CLOSURE.md, A11Y-DYNAMIC.md, FINAL-QA.md | Cinco perfiles; teclado, 360 px/reflow 320, foco, objetivos y contraste de muestras renderizadas comprobados. Sin zoom real 200/400, lector audible, todos los estados/recorridos ni lista de navegadores institucionales. |
 | RNF-06 | audit-checks.ts, audit-api-checks.ts; triggers encadenados | Usuario, fecha/IP, integridad y permisos comprobables; no valida certificaciones institucionales. |
-| RNF-07 | Build con size-limit, rutas lazy | 308,39 KB gzip sumados de todos los JS compilados, bajo 499 KB. Peso total de página y navegación a 256 Kbps no medidos. |
+| RNF-07 | Build/size-limit, rutas lazy y [FINAL-QA.md](FINAL-QA.md) | 312,6 kB JS gzip bajo 499 kB; inicio/login 148.248 bytes/4,734 s a 256 Kbps; total HTML/JS/CSS 317.863 bytes. Descarga real de cuerpos del build, sin interacción/pintura/JSON/VPN. |
 | RNF-08 | pnpm/lockfile, módulos y ESLint, rama feature/fundacion-tecnica | Host local y helpdesk_test separados; staging/producción fuera del alcance; historial GitFlow completo no auditado. |
-| RNF-09 | Rendimiento local, stack sin hardware nuevo | No hay medición final de CPU/memoria ni servidor institucional. |
-| RNF-10 | web/lib/format.ts, reports/domain/date-range.ts, pruebas y VISUAL.md | Formatos de datos en español/Managua; V-01/V-02 incumplen presentación de fecha/idioma en controles nativos del navegador observado. Requisito no aceptado completo. |
-| RNF-11 | DTO/mapper, redacción de logs y pruebas de alcance/notas privadas | Datos ficticios y minimización técnica; no dictamen legal ni inventario formal de tratamiento. |
-| RNF-12 | Auditoría solo inserción y ausencia de borrado operativo | No demuestra 24 meses transcurridos ni procedimiento de archivo histórico; aceptación pendiente. |
+| RNF-09 | [NETWORK-RESOURCES.md](NETWORK-RESOURCES.md) | API bajo carga: pico 319,96 MiB y 1,10 % CPU host; Postgre compartido, muestreo local, sin extrapolación a servidor institucional. |
+| RNF-10 | format.ts, contratos con locale español, DateInput, E2E/A11Y/FINAL-QA | Fechas de reportes/auditoría y vigencias/feriados corregidas; categoría/CSAT/nombres en español. No revisión exhaustiva de textos ni idioma del diálogo de archivos del sistema operativo. |
+| RNF-11 | DTO/mapper, logs redactados; inventario técnico en manual seguridad-limitaciones.md | Datos ficticios, notas privadas filtradas y borrador por usuario sin credenciales. Texto local sin cifrado, descarte/24 h; no dictamen legal ni datos personales reales revisados. |
+| RNF-12 | Cadenas solo inserción y [RETENTION.md](RETENTION.md) | Sin purga operativa; política local y copia adicional propuesta. No 24 meses observados, archivo ejecutado/verificado ni parámetro operativo de retención. |
 
 ## Reglas de negocio
 
@@ -73,7 +74,7 @@ La revisión visual y el teclado dinámico pertenecen a las sesiones correspondi
 | RN-05 | seed-checks.ts, ticket-lifecycle-checks.ts, automatic-assignment-checks.ts | Segregación en servidor y restricciones BD, aunque solicitante tenga perfil técnico. |
 | RN-06 | ticket-lifecycle-checks.ts, jobs-checks.ts, parameters-checks.ts | Confirmación o 48 h de inactividad; comentario manual reinicia ventana. |
 | RN-07 | jobs-checks.ts | Umbral 50 %, idempotencia y exclusión de pausados. |
-| RN-08 | tickets.service.ts, tickets.policies.ts; tickets-checks.ts | Código exige permiso de sede y canal alterno para tercero; prueba existente deniega al solicitante. No se identificó prueba positiva específica del alta por tercero. |
+| RN-08 | tickets.service.ts/policies.ts, requester-registration-checks.ts integrado | Diez casos aprobados: altas positivas TELEFONO/PRESENCIAL, identidades/sede/evidencia, denegaciones, CSRF, service y rollback real. |
 | RN-09 | sla-calendar/validation.test.ts, calendars-checks.ts | Continuo P1/P2, laboral P3/P4; fotografías protegen ciclos previos. |
 | RN-10 | sla-reopening.test.ts, ticket-lifecycle-checks.ts | Cinco días hábiles; nuevo ciclo y referencia de origen fuera de plazo. |
 | RN-11 | seed-checks.ts, ticket-lifecycle-checks.ts | Justificación requerida para prioridad manual y evidencia transaccional. |
@@ -93,67 +94,60 @@ escalamiento (lifecycle/jobs), pausa (lifecycle/SLA), cadena (audit), cierre
 (lifecycle/jobs) y multisede (tickets/RBAC). El criterio de VPN se adapta a acceso
 local según D-008. La evidencia visual de cada recorrido se detalla en su informe.
 
-Excepciones de CU-01 no acreditadas completamente: useTicketForm conserva el
-formulario montado al fallar un envío, pero no persiste borradores tras recargar
-o cerrar la página. La alternativa de introducir un activo como texto libre
-se restringe a seleccionar un activo existente por RN-04/ER. No se afirma haber
-implementado regularización patrimonial ni el protocolo de cinco participantes
-de la sección 5.5. Esas diferencias requieren constancia en la aceptación.
+CU-01 incorpora borrador por usuario en localStorage, recuperación, descarte,
+24 horas locales y limpieza al crear. Doce pruebas y recarga/aislamiento/descarte
+por UI acreditados; pérdida real de red durante POST y cierre/reapertura de pestaña
+no repetidos. Activo libre se restringe a catálogo por RN-04/ER, sin regularización
+patrimonial inventada. Protocolo de cinco participantes preparado y no ejecutado.
 
-## Controles finales ejecutados
+## Controles y cierre del lote final
 
-Las cuatro coordinaciones quedaron COMPLETO CON LIMITACIÓN antes de integrar
-el helper y ejecutar QA. Se registró slaSettingsChecks en el driver; sin migración.
-`pnpm check` terminó con código 0 el 14/10/2026. El script ejecuta en serie:
+Las seis sesiones entregaron COMPLETO CON LIMITACIÓN y liberaron sus archivos
+antes de QA. Se integraron requesterRegistrationChecks y runtimeRouteAccessChecks.
+Sin migración ni tablas nuevas; conservación del ER de 45 tablas y datos demo.
 
-| Control | Resultado de este lote |
+| Control | Resultado final 14/10/2026 |
 |---|---|
 | pnpm lint | Aprobado, sin excepciones nuevas. |
-| pnpm typecheck | Aprobado: contracts, API, web, configuración y herramientas incluidas. |
-| pnpm test | Aprobado: 316 pruebas en 22 archivos, 51,33 s; incluye ocho casos SLA nuevos. |
-| pnpm build | Aprobado: API y web; size-limit 308,39 KB gzip frente a 499 KB. |
+| pnpm typecheck | Aprobado para contratos, API, web y herramientas. |
+| pnpm test | 369 pruebas en 27 archivos, 55,69 s; PostgreSQL real. |
+| pnpm build | API/web aprobados; 312,6 kB JS gzip / límite 499 kB. |
 
-Integración recreó public y helpdesk_queue únicamente en helpdesk_test del
-contenedor Postgre existente 18.1; migraciones y seed reales, sin k6 simultáneo.
-No se recreó helpdesk, no se tocó otra base ni se desplegó infraestructura.
-Log bruto local: `.data/quality/acceptance/check.log`, ignorado. No se repitió k6;
-PERFORMANCE.md conserva fecha/alcance y resultados del lote anterior.
+pnpm check terminó código 0. Solo se recrearon public/helpdesk_queue en
+helpdesk_test del PostgreSQL existente 18.1, sin k6 simultáneo. Logs ignorados
+.data/quality/acceptance/finish-check*.log. Detalles de corridas, correcciones,
+CSP/SCA y transferencia final en [FINAL-QA.md](FINAL-QA.md).
+El usuario pidió omitir nuevas pruebas y hacer commits, dejando revisión adicional
+para mañana; los controles anteriores ya habían concluido en verde.
 
-Prueba HTTP en helpdesk, API 127.0.0.1:3000: consulta de cuatro prioridades/nueve
-combinaciones, cambio efectivo y restauración del nombre de P1, norma y matriz
-conservadas, ambos plazos de TK-000015 conservados y dos cadenas íntegras.
-Primera ejecución falló solo al cerrar sesión por Content-Type JSON sin cuerpo
-en el script; segunda ejecución corregida terminó con código 0. Se revocó la
-sesión propia restante de la primera ejecución, identificada por su evidencia
-SLA_NOMBRE_EDITADO; la segunda cerró por logout. Sin cookies/tokens en el informe.
-Las dos ediciones/restauraciones quedan como evidencia real, sin borrar historia.
+## Hallazgos visuales consolidados
 
-## Hallazgos y aceptación pendiente
-
-| ID | Situación tras integración |
+| ID | Estado y evidencia real |
 |---|---|
-| V-01 | Abierto: fechas nativas en reportes/auditoría dependen del locale del navegador; se observaron mes/día/año. |
-| V-02 | Abierto: selector de adjuntos nativo visible en inglés en el navegador observado. |
-| V-03 | Reparación de código: custodia usa ancho mínimo 640 px y fechas sin fragmentar dentro de región desplazable. QA pasó; falta repetir observación a 360 px. |
-| V-04 | Reparación de código: texto de página ocupa fila completa, controles en segunda fila de grilla. QA pasó; falta repetir observación a 360 px. |
-| V-05 | Abierto: vacíos genéricos de KB/avisos requieren contexto y siguiente paso. |
-| V-06 | Abierto: acceso al contenido móvil después de navegación/sesión; propuesta de salto al contenido pendiente. |
+| V-01 | Corregido: dd/mm/aaaa en reportes/auditoría, vigencias/feriados. Reportes/auditoría a 360 px en E2E; los tres formularios administrativos revalidados en escritorio por QA final. |
+| V-02 | Corregido y observado: selector visible español, foco y subida PNG reales; diálogo del sistema operativo no certificado en español. |
+| V-03 | Revalidado a 360 px: custodia con fechas completas y scroll local de región 287/contenido 640 px. |
+| V-04 | Revalidado a 360 px: paginación en dos filas, controles completos y Siguiente operable. |
+| V-05 | Corregido/observado: vacíos contextuales de KB y avisos con siguiente paso. No cuatro estados dinámicos por toda pantalla. |
+| V-06 | Corregido/observado: salto/foco al main y shell de roles; Servicio dispone de retorno operable. Main anidados retirados en tres páginas. |
 
-La sesión visual acreditó login/logout de jefe y solicitante, pantallas de datos,
-carga/error/vacío de KB, Reintentar, foco/scroll de cola, gráfico estabilizado y
-alternativa textual operable con Enter. No hubo alta, adjunto ni atención por UI.
-Sus capturas son anteriores a las dos reparaciones finales: no prueban su efecto.
-Capturas en `.data/quality/visual/`, locales e ignoradas; informe versionado VISUAL.md.
+E2E completó TK-000016 (nueve hitos) y TK-000017 (N2/pausa/reanudación),
+cinco perfiles, administración/SLA/Servicio, estados controlados y CSAT válido.
+A11y comprobó radios/flechas/Tab, errores/foco, reflow, tamaños y contraste de
+muestras. QA final corrigió mensajes ingleses, fechas, landmarks, navegación y
+CSP, y revalidó CSAT con TK-000018 preparado por HTTP normal; no se equipara
+esa preparación a otro flujo E2E completo por UI. Capturas locales ignoradas;
+los tres informes distinguen anchos, métodos, cambios y límites de herramienta.
 
-Pendientes dinámicos concretos: repetir V-03/V-04; corregir y validar V-01/V-02,
-V-05/V-06; CSAT con token válido, calificación/envío/agradecimiento; crear/atender
-completamente con teclado; zoom 200/400 %, lector de pantalla, contraste renderizado,
-todos los errores/estados por pantalla; perfiles N1/N2/AUDITOR; subpaneles de
-administración, nueva pantalla SLA y Servicio. No se sustituye esta lista por
-tests de API ni por medición de contraste de colores opacos.
+## Restante humano y reservas exactas
 
-También siguen los límites de RF-19, borrador/activo de CU-01, prueba positiva
-de RN-08 y RNF explicitados arriba. Invitaciones CSAT en memoria y correo
-simulado son límites del prototipo. No hay aprobación de Product Owner ni
-protocolo UAT de cinco participantes firmado. Entrega técnica aceptable con
-reservas documentadas; no aceptación formal del 100 % de la especificación.
+- UAT de cinco participantes y aprobación de Product Owner: [protocolo listo](../manuals/aceptacion-usuarios.md), sin firmas.
+- Zoom real 200/400 y lector audible; lista de navegadores institucionales y revisión exhaustiva de todos los estados/errores, contraste y objetivos.
+- Pruebas adicionales de pérdida de red, cierre/reapertura de pestaña y simultaneidad de borradores: pospuestas por instrucción del usuario.
+- DAST OWASP automatizado y seguimiento del aviso alto Braces sin parche publicado; mitigación local probada y registrada, sin ocultar SCA.
+- Retención de 24 meses observada y procedimiento de archivo ejecutado/verificado no acreditados; política/procedimiento propuesto en RETENTION.md.
+- RF-19 permanece parcial por valores SLA/matriz no negociables; activo de CU-01 exige catálogo, sin texto libre. No se pide flexibilizar AGENTS.
+- Correo simulado, invitaciones CSAT en memoria y rendimiento acotado de lecturas/transferencia/host local; infraestructura operativa fuera del alcance.
+
+Avance orientativo 99 %; entrega técnica completa con estas reservas.
+No hay aceptación formal del 100 % de la especificación ni aprobación humana atribuida al agente.

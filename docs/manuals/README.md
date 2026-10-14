@@ -6,6 +6,7 @@ Revisión: 14/10/2026. Fechas y horas de la interfaz: America/Managua.
 - [Operación y desarrollo local](operacion-local.md): arrancar, actualizar y verificar.
 - [Demostración de extremo a extremo](demostracion.md): recorrido reproducible con datos ficticios.
 - [Seguridad, configuración y limitaciones](seguridad-limitaciones.md): controles y alcance real.
+- [Aceptación por usuarios](aceptacion-usuarios.md): cinco participantes, tareas y acta sin firmas; pendiente de ejecución humana.
 
 Las cuentas ficticias y su contraseña ya autorizada están en el [README](../../README.md).
 La [guía de entorno](../deploy.md) resume el arranque. Los manuales describen rutas

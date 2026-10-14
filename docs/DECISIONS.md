@@ -577,3 +577,62 @@ sin persistencia después de recargar/cerrar. Se registran estos límites; no se
 añaden campos al ER ni persistencia local de datos sin una tarea específica.
 RN-08 tiene código de canal/alcance y caso denegado; no se identificó una prueba
 positiva específica de registro por tercero en el lote previo a aceptación.
+
+## D-030 — Borrador local de CU-01 por usuario
+
+La excepción 5a de CU-01 se completa con una copia local del formulario, derivada
+de ticketCreateSchema, aislada por idUsuario y versionada. No agrega tablas ni
+números antes de crear el ticket. Recupera campos incompletos tras recarga o
+volver a abrir; valida categoría, solicitante y activo con opciones actuales
+antes de enviar y mantiene la autoridad final del servidor. No hay POST automático.
+
+Se conserva también al logout para permitir volver al trabajo; otra cuenta no
+lo recupera desde la UI. Se elimina al crear o descartar, y caduca a las 24 horas
+desde la última edición, con eliminación al abrir el formulario. No hay borrado
+en segundo plano cuando el navegador está cerrado. Esta caducidad es una decisión
+local, no una política institucional de retención. No persiste credenciales,
+tokens ni archivos; el texto libre puede contener datos ingresados por el usuario.
+El aviso explica conservación y pide evitar secretos. localStorage no cifra ni
+protege del acceso al perfil del navegador; dos pestañas conservan la última edición.
+Las pruebas puras se complementan con evidencia dinámica separada en DRAFTS/E2E.
+
+## D-031 — Localización y contenido tras revisión dinámica
+
+DateInput/Controller sustituyen fechas nativas, muestran dd/mm/aaaa y conservan
+ISO, ref/onBlur y vacío/null. Contracts configura locale español de Zod y aclara
+categoría/CSAT/nombres; no cambia enums ni reglas. Formularios RHF/Zod afectados
+usan noValidate para mostrar sus errores españoles, sin relajar los esquemas.
+Errores asociados en fechas/categorías/SLA. AppShell tiene salto/foco y un main;
+wrappers internos son div, roles incorpora shell y Servicio tiene retorno/texto
+de disponibilidad. E2E/A11y/FINAL-QA distinguen revalidaciones y límites.
+Fuente: https://zod.dev/error-customization#internationalization.
+
+## D-032 — Dependencias y CSP del documento local
+
+Overrides Handlebars 4.7.10 y ExcelJS→UUID 11.1.1 conservan template/require/v4,
+probados. Braces 3.0.3 sin parche publicado recibe parche pnpm de parser y
+compile/expand/stringify, límite 64 niveles AST. Pruebas en lint/codegen cubren
+4.000 niveles dentro de longitud válida, AST directo y globos normales.
+SCA final sigue reportando 1 alto, 0 críticos/0 moderados; no se ignora advisory
+ni se equivale mitigación local a parche certificado o DAST.
+CSP HTML dev/preview: nonce aleatorio de 32 bytes por documento, scripts self/
+nonce sin unsafe-inline/eval, HMR websocket loopback. Excepción explícita
+style-src-attr unsafe-inline para React/Recharts. API sin defaults permisivos.
+Build con placeholder necesita servidor local que lo sustituye, no file://.
+Dev HTTP/navegador comprobados, preview dinámico pendiente; sin producción.
+Fuente: https://vite.dev/guide/features.html#content-security-policy.
+
+## D-033 — Cierre técnico y revisión adicional pospuesta
+
+Se esperaron seis entregas estables. pnpm check final código 0: 369 pruebas/
+27 archivos, 55,69 s, 312,6 kB JS gzip. Solo helpdesk_test recreada sin k6
+simultáneo. RN-08/inventario completo de rutas aprobados. Cuatro fallos iniciales
+de fixture Braces excedían longitud y no probaban profundidad; corregidos,
+sin fallo de negocio. E2E TK-000016/017 por UI; TK-000018 preparado por REST
+normal con CSRF, error/5/5 CSAT revalidados por UI. Historia conservada.
+Transferencia final repetida tras build; CPU/k6 previos mantienen alcance.
+El usuario pidió omitir nuevas pruebas y hacer commits, dejando revisión para
+mañana; controles/evidencia anteriores ya verdes. Sin pruebas posteriores ni
+programación inventada. Avance orientativo 99 %, no cobertura/testcount/UAT.
+Protocolo de cinco participantes listo sin firmas; zoom/lector, DAST, revisión
+exhaustiva y archivo/24 meses como reservas. RF-19/activo conservan AGENTS.

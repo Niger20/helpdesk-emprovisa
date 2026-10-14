@@ -43,6 +43,34 @@ es ficticio, no institucional. BD guarda UTC; UI usa dd/mm/aaaa y America/Managu
 
 ## Simulaciones y límites
 
+El borrador de Nuevo requerimiento guarda solo campos del formulario en
+localStorage por usuario; conserva texto incompleto y selecciones, sin archivos
+ni credenciales. Caduca a las 24 horas de la última edición, comprobadas al
+abrir; se elimina al crear o descartar. Permanece al logout. No está cifrado:
+en un equipo compartido, descartalo antes de salir. La separación entre
+cuentas en UI no protege frente al acceso al perfil del navegador.
+
+## Inventario técnico de datos y acceso
+
+| Datos del prototipo | Finalidad técnica | Acceso y límite |
+|---|---|---|
+| Username, nombre, correo ficticio, sede/departamento, cargo/extensión | Identidad, contacto y asignación | Sesión propia y catálogos autorizados; administración de identidad con permiso. No cargar empleados reales para esta demo. |
+| Hash Argon2 de contraseña, hashes de sesión/token, expiración/revocación | Autenticación y controles de un solo uso | Uso interno del servidor; no DTO de UI. Cookies/tokens no deben copiarse a informes. |
+| Intentos de login, IP y fecha; bitácora y auditoría con usuario/sesión | Control de acceso y trazabilidad | Consulta autorizada, alcance por sede o global; cadenas solo inserción. No eliminar historia para preparar una presentación. |
+| Título, descripción, comentarios y adjuntos ficticios | Resolver el requerimiento | Dueño/sede/grupo/global según permiso; notas internas filtradas en servidor. Auditor ve metadatos sin descargar adjuntos. |
+| Activos, acta y custodia ficticias | Relacionar soporte con inventario | Catálogo y ficha por alcance; no representa inventario patrimonial institucional aprobado. |
+| Calificación y comentario CSAT, votos de conocimientos | Evaluar atención y utilidad | Agregados autorizados; comentario de voto solo para su autor. Enlaces CSAT hash en BD y copia de invitación en memoria. |
+| Borrador local | Recuperar trabajo al fallar o recargar | Misma cuenta en UI, texto sin cifrado en perfil del navegador; descarte y 24 h locales. |
+
+Es un inventario técnico del esquema y los DTO, sin datos personales reales
+revisados ni dictamen jurídico. Las vistas de catálogos/autorización limitan
+acceso funcional; los administradores del host y el dueño del esquema poseen
+otras facultades. La política de tickets/evidencia y sus reservas de 24 meses
+está en [RETENTION.md](../quality/RETENTION.md); no confundir esa conservación
+con expiración de sesiones, encuestas o borradores.
+
+## Integraciones simuladas
+
 Avisos y correo se procesan de forma simulada. `/avisos` consulta entregas;
 jefatura inyecta entrada ficticia por API. No hay cliente IMAP ni pantalla de
 correo. Los jobs dependen de la API en ejecución y de tareas activas.
@@ -71,12 +99,13 @@ está disponible en reportes. Navegador, teclado y móvil requieren evidencia pr
 Este trabajo documental
 no ejecuta esas pruebas ni los cuatro controles globales de Aceptación final.
 
-El cotejo visual del 14/10/2026 registra límites de localización y móvil:
-campos de fecha nativos en reportes/auditoría pueden mostrarse mes/día/año,
-selector de archivo nativo en inglés, custodia con texto fragmentado y paginación
-de auditoría recortada a 360 px. Los vacíos de KB/avisos tienen mensaje genérico.
-La pantalla CSAT se observó sin token; el flujo con enlace válido de la guía
-de demo queda como procedimiento por ejecutar, no como prueba visual ya aprobada.
-Consultá el informe visual y la aceptación final para correcciones posteriores.
+El lote final corrigió fechas, adjuntos visibles, vacíos y navegación, y repitió
+V-01–V-06 con los límites de [FINAL-QA.md](../quality/FINAL-QA.md). CSAT válido
+y los flujos principal/N2 fueron ejecutados; zoom real, lector audible, revisión
+exhaustiva y UAT humana permanecen pendientes. SCA final conserva un aviso alto
+Braces con mitigación local probada; no se ejecutó DAST OWASP. CSP del HTML
+usará nonce por documento; estilo inline de atributos tiene una excepción
+acotada para React/Recharts. No abrir el build como archivo estático: su nonce
+se sustituye mediante Vite dev/preview local, sin despliegue de producción.
 Consultá [avance](../PROGRESS.md), [decisiones](../DECISIONS.md) e informes de
 [calidad](../quality/) para resultados consolidados. Producción requiere otro alcance.

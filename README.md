@@ -17,6 +17,7 @@ capacidad se describen abajo; su presencia no equivale a aceptación completa.
 - [Operación y desarrollo local](docs/manuals/operacion-local.md).
 - [Recorrido de demostración de extremo a extremo](docs/manuals/demostracion.md).
 - [Seguridad, configuración y limitaciones](docs/manuals/seguridad-limitaciones.md).
+- [Protocolo de aceptación por cinco usuarios](docs/manuals/aceptacion-usuarios.md), pendiente de ejecución humana.
 
 ## Ejecución local
 
@@ -42,6 +43,14 @@ canal teléfono/presencial. Solicitantes ven sus casos; N1, su sede; N2, sus
 asignaciones/grupos; jefe y auditor, todos. Las notas internas se filtran en API.
 En `/activos`, los perfiles autorizados consultan inventario y fichas; el alta
 exige acta F-ACT-01 y registra custodia y auditoría. Auditor solo consulta.
+
+Nuevo requerimiento conserva un borrador por usuario en este navegador durante
+24 horas desde la última edición. Se recupera al recargar o volver, también
+después de salir e iniciar sesión con la misma cuenta. Crear o **Descartar
+borrador y vaciar formulario** elimina la copia. No conserva adjuntos ni
+credenciales; evitá secretos en el texto. En equipos compartidos, descartalo
+antes de salir: localStorage no cifra los datos. Si el navegador bloquea el
+almacenamiento, el aviso explica que la copia no sobrevivirá al cerrar la página.
 
 En esta máquina se reutiliza el contenedor **Postgre**, autorizado por el
 usuario. Las conexiones de los tres roles están en `.env`, excluido de Git.
@@ -288,3 +297,15 @@ La prueba local de 63 usuarios usa una API aislada y helpdesk_test. Seguí
 tiempo. El informe indica rutas medidas, umbrales y límites; no certifica producción
 ni sustituye revisión visual, accesibilidad o pruebas de escrituras bajo carga.
 Resultado documentado: [informe de rendimiento local](docs/quality/PERFORMANCE.md).
+
+### Cierre local — 14/10/2026
+
+`pnpm check` final aprobado: **369 pruebas**, build **312,6 kB JS gzip / 499 kB**.
+Flujos principal/N2, adjunto, borrador y CSAT válidos comprobados; fechas,
+validación española, navegación y CSP corregidas. Avance orientativo **99 %**.
+[Informe final y reservas](docs/quality/FINAL-QA.md),
+[aceptación técnica](docs/quality/ACCEPTANCE.md) y
+[protocolo humano](docs/manuals/aceptacion-usuarios.md).
+SCA conserva un alto Braces con mitigación local probada; DAST/zoom real/lector
+y UAT/PO pendientes. RF-19, catálogo, retención y simulaciones mantienen sus límites.
+El usuario dejó revisión adicional para mañana; los controles ya estaban verdes.

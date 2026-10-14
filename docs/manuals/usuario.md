@@ -29,6 +29,18 @@ aparecen. Esta tabla describe los cinco perfiles de demostración originales.
    ventana, usá la opción de crear otro requerimiento vinculado al anterior.
 
 Tus notas públicas y la solución son visibles para quienes tienen acceso al caso.
+
+El aviso de Nuevo requerimiento informa el guardado automático del borrador.
+Recargar o volver a la página recupera los campos de la misma cuenta; revisá las
+selecciones antes de registrar porque el catálogo puede cambiar. La copia local
+caduca a las 24 horas desde la última edición y se elimina al crear o descartar.
+Se conserva al salir de sesión. Otra cuenta no la recupera desde la aplicación,
+pero el perfil del navegador puede acceder a localStorage sin cifrado. En un
+equipo compartido, usá **Descartar borrador y vaciar formulario** antes de salir.
+No escribás secretos. Los archivos se adjuntan después de crear y no forman
+parte del borrador. Si aparece un aviso de almacenamiento no disponible,
+mantené el formulario abierto hasta guardar o copiar de forma segura su texto.
+
 Las notas internas nunca llegan al solicitante, aunque también tenga un perfil técnico.
 En `/avisos` consultá las entregas simuladas y enlaces de encuesta pendientes.
 El enlace recibido abre `/encuesta` sin login; elegí 1–5 y un comentario opcional.
