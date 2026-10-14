@@ -4,6 +4,9 @@ packages:
 nodeVersion: 24.21.0
 engineStrict: true
 saveExact: true
+overrides:
+  handlebars: 4.7.10
+  'exceljs>uuid': 11.1.1
 minimumReleaseAgeExclude:
   - '@typescript-eslint/eslint-plugin@8.71.2'
   - '@typescript-eslint/parser@8.71.2'
@@ -26,3 +29,5 @@ allowBuilds:
   argon2: true
   esbuild: true
   unrs-resolver: true
+patchedDependencies:
+  braces@3.0.3: patches/braces@3.0.3.patch

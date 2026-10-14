@@ -73,7 +73,8 @@ export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, au
   await app.register(cookie);
   await app.register(routeAccessPlugin, auth ? { auth } : {});
   await registerCors(app, env);
-  await app.register(helmet, { contentSecurityPolicy: { directives: { defaultSrc: ["'none'"] } } });
+  await app.register(helmet, { contentSecurityPolicy: { useDefaults: false,
+    directives: { defaultSrc: ["'none'"], baseUri: ["'none'"], frameAncestors: ["'none'"], formAction: ["'none'"] } } });
   await app.register(rateLimit, { max: 120, timeWindow: '1 minute' });
   await app.register(sessionAuthPlugin, auth ? { auth } : {});
   await app.register(csrfPlugin, { secret: env.CSRF_SECRET });

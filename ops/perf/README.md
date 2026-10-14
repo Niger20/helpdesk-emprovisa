@@ -34,3 +34,34 @@ El resumen bruto queda en .data/perf/summary.json y el informe sanitizado en
 docs/quality/PERFORMANCE.md. Es una medición del equipo y conjunto ficticio local:
 no certifica producción, navegación visual, login bajo carga, exportaciones,
 subidas, escrituras de tickets ni funcionamiento concurrente de jobs.
+
+## Transferencia a 256 Kbps y recursos
+
+Esperar a los responsables de interfaz/borrador antes compilar con
+`pnpm --filter web build`. Ejecutar `node ops/perf/network-transfer.mjs`
+desde la raíz: inicia un servidor efímero en loopback y descarga los archivos
+reales gzip a 32.000 bytes/s mediante escrituras temporizadas. Comprueba SHA-256
+del contenido descomprimido y registra bytes/tiempo efectivo por archivo.
+El servidor se cierra en finally. Resultado en `.data/perf/network-transfer.json`.
+La fase inicial incluye HTML, scripts, CSS, chunk LoginPage y sus dependencias estáticas; la fase lazy
+descarga el resto del build, una vez por archivo. No equivale a navegar todas las
+rutas ni mide ejecución JS, pintura, latencia VPN o caché de navegador. Cabeceras
+HTTP no forman parte del límite; descargas secuenciales comparten el presupuesto.
+
+Con API de carga lista, identificar su proceso mediante
+`Get-NetTCPConnection -State Listen -LocalPort 3001`. Ejecutar en otra terminal
+`./ops/perf/sample-resources.ps1 -ApiProcessId <PID> -DurationSeconds 140` y luego
+k6 como arriba, con `-e PERF_SUMMARY=.data/perf/summary-2026-10-14-resources.json`
+para conservar el resumen anterior. El muestreo guarda CPU acumulada entre
+muestras, working set y bytes privados del proceso Node que escucha 3001;
+`docker stats Postgre --no-stream` recoge CPU/memoria del contenedor existente.
+No incluye el wrapper tsx, el frontend de desarrollo ni todo el consumo del host.
+Intervalos reales incluyen el tiempo de docker stats y se guardan en el JSON.
+CPU API se normaliza por procesadores lógicos; CPU Docker usa escala de un núcleo.
+PostgreSQL es compartido: otras sesiones locales pueden influir en su consumo.
+Los máximos son picos muestreados, no máximos absolutos ni presupuesto institucional.
+
+El informe fechado [NETWORK-RESOURCES.md](../../docs/quality/NETWORK-RESOURCES.md)
+conserva evidencia sanitizada y límites. Detener el runner con `stop` por stdin
+o Ctrl+C al terminar; esperar revocación de sesiones y eliminación de cookies.
+Final QA conserva la exclusividad de recreación de helpdesk_test y controles globales.
