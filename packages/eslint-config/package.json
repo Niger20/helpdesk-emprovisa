@@ -1,0 +1,19 @@
+{
+  "name": "@helpdesk/eslint-config",
+  "private": true,
+  "type": "module",
+  "exports": "./index.mjs",
+  "scripts": {
+    "typecheck": "node --check index.mjs",
+    "build": "node --check index.mjs"
+  },
+  "dependencies": {
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-boundaries": "7.2.0",
+    "globals": "17.13.0",
+    "typescript-eslint": "8.71.2"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0"
+  }
+}

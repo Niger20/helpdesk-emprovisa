@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:15.19
+    container_name: ${POSTGRES_CONTAINER_NAME:-helpdesk-postgres}
+    restart: unless-stopped
+    mem_limit: 1g
+    shm_size: 256mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Definir POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+      HELPDESK_MIGRATOR_PASSWORD: ${HELPDESK_MIGRATOR_PASSWORD:?Definir contraseña migrator}
+      HELPDESK_APP_PASSWORD: ${HELPDESK_APP_PASSWORD:?Definir contraseña app}
+      HELPDESK_READONLY_PASSWORD: ${HELPDESK_READONLY_PASSWORD:?Definir contraseña readonly}
+    ports:
+      - 127.0.0.1:${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - ${DB_DATA_DIR:?Definir DB_DATA_DIR}:/var/lib/postgresql/data
+      - ./ops/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./ops/postgres/init:/docker-entrypoint-initdb.d:ro
+    command: [postgres, -c, config_file=/etc/postgresql/postgresql.conf]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5

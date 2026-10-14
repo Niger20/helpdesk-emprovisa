@@ -1,0 +1,12 @@
+export { calcularFechasLimiteSla, sumarMinutosSla, contarMinutosSla } from './domain/sla-calculator.js';
+export { evaluarCumplimientoSla } from './domain/sla-compliance.js';
+export { calcularLimiteReapertura, puedeReabrirTicket, iniciarCicloReapertura } from './domain/sla-reopening.js';
+export type { CalendarioLaboral, HorarioLaboral, PausaSla, PrioridadSla, RelojSla, FechasLimiteSla } from './domain/sla-types.js';
+import type { Database } from '../../infra/db/client.js';
+import { createTicketsRepository, withTicketsTransaction } from './tickets.repository.js';
+import { createTicketsService } from './tickets.service.js';
+export const buildTicketsService = (database: Database) => createTicketsService(createTicketsRepository(database), (action) => withTicketsTransaction(database, action));
+export { registerTicketsRoutes } from './tickets.routes.js';
+export type { TicketsService } from './tickets.service.js';
+export { ticketScope, requireTicketPermission } from './tickets.policies.js';
+export type { TicketScope } from './tickets.policies.js';

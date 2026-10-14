@@ -1,0 +1,58 @@
+import Fastify from 'fastify';
+import helmet from '@fastify/helmet';
+import rateLimit from '@fastify/rate-limit';
+import cookie from '@fastify/cookie';
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import type { Env } from './config/env.js';
+import { registerHealthRoute } from './common/http/health.routes.js';
+import { errorHandlerPlugin } from './plugins/error-handler.js';
+import { routeAccessPlugin } from './plugins/route-access.js';
+import { registerCors } from './plugins/cors.js';
+import { sessionAuthPlugin } from './plugins/session-auth.js';
+import { csrfPlugin } from './plugins/csrf.js';
+import { loginAttemptsPlugin } from './plugins/login-attempts.js';
+import { registerAuthRoutes } from './modules/auth/index.js';
+import type { AuthService } from './modules/auth/index.js';
+import { registerTicketsRoutes } from './modules/tickets/index.js';
+import type { TicketsService } from './modules/tickets/index.js';
+import { registerAssetsRoutes } from './modules/assets/index.js';
+import type { AssetsService } from './modules/assets/index.js';
+import { registerKnowledgeRoutes } from './modules/knowledge/index.js';
+import type { KnowledgeService } from './modules/knowledge/index.js';
+import multipart from '@fastify/multipart';
+import { registerAttachmentsRoutes } from './modules/tickets/attachments/index.js';
+import type { AttachmentsService } from './modules/tickets/attachments/index.js';
+
+export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, auth?: AuthService, tickets?: TicketsService, assets?: AssetsService, knowledge?: KnowledgeService, attachments?: AttachmentsService) {
+  const app = Fastify({
+    exposeHeadRoutes: false,
+    requestTimeout: 10_000,
+    bodyLimit: 16_384,
+    logger: env.NODE_ENV === 'test' ? false : {
+      level: env.LOG_LEVEL,
+      redact: ['req.headers.cookie', 'req.headers.authorization', 'req.headers.x-csrf-token',
+        'password', 'token', 'correo'],
+      serializers: { req: (request: { method: string; id: string }) => ({ method: request.method, id: request.id }) },
+    },
+  });
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
+  await app.register(errorHandlerPlugin);
+  await app.register(cookie);
+  await app.register(routeAccessPlugin, auth ? { auth } : {});
+  await registerCors(app, env);
+  await app.register(helmet, { contentSecurityPolicy: { directives: { defaultSrc: ["'none'"] } } });
+  await app.register(rateLimit, { max: 120, timeWindow: '1 minute' });
+  await app.register(sessionAuthPlugin, auth ? { auth } : {});
+  await app.register(csrfPlugin, { secret: env.CSRF_SECRET });
+  if (auth) {
+    await app.register(loginAttemptsPlugin, { auth });
+    registerAuthRoutes(app, auth, env.CSRF_SECRET);
+  }
+  registerHealthRoute(app, checkHealth);
+  if (tickets) registerTicketsRoutes(app, tickets);
+  if (assets) registerAssetsRoutes(app, assets);
+  if (knowledge) registerKnowledgeRoutes(app, knowledge);
+  if (attachments) { await app.register(multipart); registerAttachmentsRoutes(app, attachments); }
+  return app;
+}

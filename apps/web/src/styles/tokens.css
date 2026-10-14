@@ -1,0 +1,13 @@
+@theme {
+  --color-primary: #0B2545;
+  --color-primary-foreground: #FFFFFF;
+  --color-background: #F8FAFC;
+  --color-foreground: #0F172A;
+  --color-card: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-muted: #475569;
+  --color-input: #CBD5E1;
+  --color-danger: #B91C1C;
+  --color-danger-soft: #FEF2F2;
+  --font-sans: Inter, system-ui, sans-serif;
+}

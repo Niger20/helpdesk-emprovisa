@@ -1,0 +1,28 @@
+packages:
+  - apps/*
+  - packages/*
+nodeVersion: 24.21.0
+engineStrict: true
+saveExact: true
+minimumReleaseAgeExclude:
+  - '@typescript-eslint/eslint-plugin@8.71.2'
+  - '@typescript-eslint/parser@8.71.2'
+  - '@typescript-eslint/project-service@8.71.2'
+  - '@typescript-eslint/scope-manager@8.71.2'
+  - '@typescript-eslint/tsconfig-utils@8.71.2'
+  - '@typescript-eslint/type-utils@8.71.2'
+  - '@typescript-eslint/types@8.71.2'
+  - '@typescript-eslint/typescript-estree@8.71.2'
+  - '@typescript-eslint/utils@8.71.2'
+  - '@typescript-eslint/visitor-keys@8.71.2'
+  - '@vitest/mocker@5.0.4'
+  - '@vitest/spy@5.0.4'
+  - typescript-eslint@8.71.2
+  - vitest@5.0.4
+  - zod@4.6.7
+  - '@tanstack/react-table@9.3.1'
+  - '@tanstack/table-core@9.3.1'
+allowBuilds:
+  argon2: true
+  esbuild: true
+  unrs-resolver: true
