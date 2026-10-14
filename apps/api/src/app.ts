@@ -48,10 +48,12 @@ import { registerParametersRoutes } from './modules/settings/parameters/index.js
 import type { ParametersService } from './modules/settings/parameters/index.js';
 import { registerRoleCatalogRoutes } from './modules/rbac/role-catalog/index.js';
 import type { RoleCatalogService } from './modules/rbac/role-catalog/index.js';
+import { registerSlaSettingsRoutes } from './modules/settings/sla/index.js';
+import type { SlaSettingsService } from './modules/settings/sla/index.js';
 
 interface AutomationServices { jobs?: JobsService; notifications?: NotificationsService; surveys?: SurveysService; mail?: MailIngestService;
   invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[]; reports?: ReportsService; audit?: AuditService;
-  users?: UsersService; rbac?: RbacService; groups?: GroupsService; catalog?: CatalogService; calendars?: CalendarsService; parameters?: ParametersService; roleCatalog?: RoleCatalogService }
+  users?: UsersService; rbac?: RbacService; groups?: GroupsService; catalog?: CatalogService; calendars?: CalendarsService; parameters?: ParametersService; roleCatalog?: RoleCatalogService; slaSettings?: SlaSettingsService }
 
 export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, auth?: AuthService, tickets?: TicketsService, assets?: AssetsService, knowledge?: KnowledgeService, attachments?: AttachmentsService, automations: AutomationServices = {}) {
   const app = Fastify({
@@ -97,5 +99,6 @@ export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, au
   if (automations.calendars) registerCalendarsRoutes(app, automations.calendars);
   if (automations.parameters) registerParametersRoutes(app, automations.parameters);
   if (automations.roleCatalog) registerRoleCatalogRoutes(app, automations.roleCatalog);
+  if (automations.slaSettings) registerSlaSettingsRoutes(app, automations.slaSettings);
   return app;
 }

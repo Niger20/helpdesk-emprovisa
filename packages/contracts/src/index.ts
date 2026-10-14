@@ -27,3 +27,4 @@ export * from './catalog.js';
 export * from './calendars.js';
 export * from './parameters.js';
 export * from './role-catalog.js';
+export * from './sla-settings.js';

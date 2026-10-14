@@ -28,6 +28,7 @@ import { knowledgeFeedbackChecks } from './knowledge-feedback-checks.js';
 import { parametersChecks } from './parameters-checks.js';
 import { calendarsChecks } from './calendars-checks.js';
 import { roleCatalogChecks } from './role-catalog-checks.js';
+import { slaSettingsChecks } from './sla-settings-checks.js';
 import { ticketsChecks } from './tickets-checks.js';
 import { assetsChecks } from './assets-checks.js';
 
@@ -113,4 +114,5 @@ describe('PostgreSQL real: bases y roles', () => {
   parametersChecks(appDatabase, env);
   calendarsChecks(appDatabase, env);
   roleCatalogChecks(appDatabase, env);
+  slaSettingsChecks(appDatabase, env);
 });

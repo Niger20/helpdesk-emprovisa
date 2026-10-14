@@ -23,6 +23,7 @@ import { createCatalogService } from './modules/catalog/index.js';
 import { createCalendarsService } from './modules/settings/calendars/index.js';
 import { createParametersService } from './modules/settings/parameters/index.js';
 import { createRoleCatalogService } from './modules/rbac/role-catalog/index.js';
+import { createSlaSettingsService } from './modules/settings/sla/index.js';
 
 loadLocalEnv();
 const env = parseEnv(process.env);
@@ -38,7 +39,7 @@ const jobs = buildJobsService(database, (trx, now) => buildNotificationsService(
 const app = await buildApp(env, checkHealth, auth, buildTicketsService(database, delivery), createAssetsService(database), createKnowledgeService(database), createAttachmentsService(database, env.STORAGE_DIR),
   { jobs, notifications, surveys: createSurveysService(database, env.CSRF_SECRET), mail: buildMailIngestService(database), invitations: delivery.list,
     reports: createReportsService(readonlyDatabase, createReportAuditRecorder(database)), audit: createAuditService(readonlyDatabase),
-    users: createUsersService(database), rbac: createRbacService(database), groups: createGroupsService(database), catalog: createCatalogService(database), calendars: createCalendarsService(database), parameters: createParametersService(database), roleCatalog: createRoleCatalogService(database) });
+    users: createUsersService(database), rbac: createRbacService(database), groups: createGroupsService(database), catalog: createCatalogService(database), calendars: createCalendarsService(database), parameters: createParametersService(database), roleCatalog: createRoleCatalogService(database), slaSettings: createSlaSettingsService(database) });
 let queue: Awaited<ReturnType<typeof startQueue>> | undefined;
 app.addHook('onClose', async () => {
   try { await queue?.stop({ graceful: true, timeout: 5000 }); }
