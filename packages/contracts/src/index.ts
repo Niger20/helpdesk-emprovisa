@@ -1,3 +1,8 @@
+import { z } from 'zod';
+import es from 'zod/v4/locales/es.js';
+
+z.config(es());
+
 export { healthResponseSchema } from './health.js';
 export type { HealthResponse } from './health.js';
 export { errorCodeSchema, problemSchema } from './errors.js';

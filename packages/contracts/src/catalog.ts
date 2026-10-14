@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { tipoTicketSchema } from './domain.js';
 
 export const categoryInputSchema = z.strictObject({
-  nombre: z.string().trim().min(1).max(80), idPadre: z.number().int().positive().nullable(),
+  nombre: z.string().trim().min(1, 'Ingresá un nombre de categoría.').max(80, 'El nombre admite hasta 80 caracteres.'), idPadre: z.number().int().positive().nullable(),
   tipoAplicable: z.union([tipoTicketSchema, z.literal('AMBOS')]), requiereActivo: z.boolean(),
   idGrupoDefault: z.number().int().positive().nullable(), orden: z.number().int().min(0).max(32767), activa: z.boolean(),
 });

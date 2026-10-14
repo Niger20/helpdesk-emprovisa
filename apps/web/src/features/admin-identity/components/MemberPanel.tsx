@@ -1,4 +1,6 @@
 import type { AdminCatalog } from '@helpdesk/contracts';
+import { Controller } from 'react-hook-form';
+import { DateInput } from '../../../components/common/DateInput';
 import { QueryBoundary } from '../../../components/common/QueryBoundary';
 import { useIdentityMutation, useMembers } from '../hooks/useIdentity';
 import { useMemberForm } from '../hooks/useIdentityForms';
@@ -16,12 +18,14 @@ export function MemberPanel({ id, catalog }: { id: number; catalog: AdminCatalog
       <button type="button" className="min-h-10 px-3 text-primary underline" disabled={removal.isPending} onClick={() => removal.mutate(m.idUsuario)}>Retirar miembro</button>
     </li>)}</ul>}</QueryBoundary>
     {removal.error && <p role="alert" className="text-danger">{removal.error.message}</p>}
-    <form className="space-y-4" onSubmit={(event) => { void submit(event); }}><div className="grid gap-4 sm:grid-cols-2">
+    <form noValidate className="space-y-4" onSubmit={(event) => { void submit(event); }}><div className="grid gap-4 sm:grid-cols-2">
       <label>Usuario *<select className={field} required {...form.register('idUsuario', { valueAsNumber: true })}><option value="">Seleccioná usuario</option>
         {catalog.usuarios.map((u) => <option key={u.idUsuario} value={u.idUsuario}>{u.nombreCompleto}</option>)}</select></label>
       <label className="flex min-h-10 items-center gap-2"><input type="checkbox" {...form.register('esCoordinador')} />Es coordinador</label>
-      <label>Desde *<input type="date" className={field} required {...form.register('desde')} /></label>
-      <label>Hasta<input type="date" className={field} {...form.register('hasta', { setValueAs: (v: string) => v || null })} /></label>
+      <Controller name="desde" control={form.control} render={({ field: date, fieldState }) =>
+        <DateInput {...date} label="Desde *" required error={fieldState.error?.message} />} />
+      <Controller name="hasta" control={form.control} render={({ field: date, fieldState }) =>
+        <DateInput {...date} value={date.value ?? ''} onChange={(value) => date.onChange(value || null)} label="Hasta" error={fieldState.error?.message} />} />
     </div><p>Para editar una membresía, seleccioná el mismo usuario y guardá su nueva vigencia.</p>
       <FormFeedback pending={mutation.isPending} error={mutation.error} success={mutation.isSuccess} invalid={Object.keys(form.formState.errors).length > 0} /></form>
   </section>;

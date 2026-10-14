@@ -13,7 +13,7 @@ export function SpecialtyPanel({ id, catalog }: { id: number; catalog: AdminCata
       {item.nombre} · Dominio {item.nivelDominio} <button type="button" className="min-h-10 px-3 text-primary underline" disabled={removal.isPending} onClick={() => removal.mutate(item.idCategoria)}>Retirar especialidad</button>
     </li>)}</ul>}</QueryBoundary>
     {removal.error && <p role="alert" className="text-danger">{removal.error.message}</p>}
-    <form onSubmit={(event) => { void submit(event); }} className="space-y-4"><div className="grid gap-4 sm:grid-cols-2">
+    <form noValidate onSubmit={(event) => { void submit(event); }} className="space-y-4"><div className="grid gap-4 sm:grid-cols-2">
       <label>Categoría *<select className="mt-1 min-h-10 w-full rounded border border-input px-3" {...form.register('idCategoria', { valueAsNumber: true })} required>
         <option value="">Seleccioná categoría</option>{catalog.categorias.map((c) => <option key={c.idCategoria} value={c.idCategoria}>{c.nombre}</option>)}</select></label>
       <label>Nivel de dominio (entero positivo) *<input type="number" min={1} max={32767} className="mt-1 min-h-10 w-full rounded border border-input px-3" {...form.register('nivelDominio', { valueAsNumber: true })} required /></label>

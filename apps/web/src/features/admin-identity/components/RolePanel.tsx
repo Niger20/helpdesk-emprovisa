@@ -1,4 +1,6 @@
 import type { AdminCatalog } from '@helpdesk/contracts';
+import { Controller } from 'react-hook-form';
+import { DateInput } from '../../../components/common/DateInput';
 import { QueryBoundary } from '../../../components/common/QueryBoundary';
 import { useIdentityMutation, useRoleLinks, useRoles } from '../hooks/useIdentity';
 import { useRoleForm } from '../hooks/useIdentityForms';
@@ -17,14 +19,16 @@ export function RolePanel({ id, catalog }: { id: number; catalog: AdminCatalog }
       <button type="button" className="min-h-10 px-3 text-primary underline" onClick={() => choose(link)}>Editar alcance o vigencia</button>
     </li>)}</ul>}</QueryBoundary>
     {removal.error && <p role="alert" className="text-danger">{removal.error.message}</p>}
-    <QueryBoundary query={roles} isEmpty={(data) => data.length === 0}>{(data) => <form onSubmit={(event) => { void submit(event); }} className="space-y-4">
+    <QueryBoundary query={roles} isEmpty={(data) => data.length === 0}>{(data) => <form noValidate onSubmit={(event) => { void submit(event); }} className="space-y-4">
       {idLink !== null && <p>Editando asignación. <button type="button" className="min-h-10 text-primary underline" onClick={cancel}>Cancelar edición</button></p>}
       <div className="grid gap-4 sm:grid-cols-2"><label>Rol *<select className={field} {...form.register('idRol', { valueAsNumber: true })} required>
         <option value="">Seleccioná rol</option>{data.map((role) => <option key={role.idRol} value={role.idRol}>{role.nombre}</option>)}</select></label>
       <label>Alcance<select className={field} {...form.register('idSedeAlcance', { setValueAs: (v: string) => v ? Number(v) : null })}>
         <option value="">Todas las sedes</option>{catalog.sedes.map((s) => <option key={s.idSede} value={s.idSede}>{s.nombre}</option>)}</select></label>
-      <label>Vigente desde *<input type="date" className={field} {...form.register('vigenteDesde')} required /></label>
-      <label>Vigente hasta<input type="date" className={field} {...form.register('vigenteHasta', { setValueAs: (v: string) => v || null })} /></label></div>
+      <Controller name="vigenteDesde" control={form.control} render={({ field: date, fieldState }) =>
+        <DateInput {...date} label="Vigente desde *" required error={fieldState.error?.message} />} />
+      <Controller name="vigenteHasta" control={form.control} render={({ field: date, fieldState }) =>
+        <DateInput {...date} value={date.value ?? ''} onChange={(value) => date.onChange(value || null)} label="Vigente hasta" error={fieldState.error?.message} />} /></div>
       <p>Solo podés conceder permisos y sedes dentro de tu acceso vigente. Los roles y permisos del catálogo son de solo lectura.</p>
       <FormFeedback pending={mutation.isPending} error={mutation.error} success={mutation.isSuccess} invalid={Object.keys(form.formState.errors).length > 0} />
     </form>}</QueryBoundary>

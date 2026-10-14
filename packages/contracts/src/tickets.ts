@@ -5,7 +5,7 @@ export const numeroTicketSchema = z.string().regex(/^TK-\d{6,9}$/);
 export const ticketCreateSchema = z.object({
   titulo: z.string().trim().min(10, 'El título debe tener al menos 10 caracteres.').max(150),
   descripcion: z.string().trim().min(1, 'Describí el requerimiento.').max(8000),
-  tipo: tipoTicketSchema, idCategoria: z.number().int().positive(),
+  tipo: tipoTicketSchema, idCategoria: z.number({ error: 'Seleccioná una categoría.' }).int().positive('Seleccioná una categoría.'),
   impacto: impactoSchema, urgencia: urgenciaSchema,
   idActivo: z.number().int().positive().nullable(),
   idSolicitante: z.number().int().positive(), canalIngreso: canalIngresoSchema,

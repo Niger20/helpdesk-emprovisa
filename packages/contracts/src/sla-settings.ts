@@ -14,14 +14,14 @@ export const matrizNormativa = {
 } as const;
 const plazosSchema = z.object({ minutosRespuesta: z.number().int().positive(), minutosSolucion: z.number().int().positive(),
   modoCalendario: z.enum(['CONTINUO', 'LABORAL']), porcentajeAlerta: z.number().int().min(1).max(99) });
-export const slaPrioritySchema = plazosSchema.extend({ codigo: prioridadSchema, nombre: z.string().trim().min(1).max(30),
+export const slaPrioritySchema = plazosSchema.extend({ codigo: prioridadSchema, nombre: z.string().trim().min(1, 'Ingresá un nombre de prioridad.').max(30, 'El nombre admite hasta 30 caracteres.'),
   activa: z.boolean(), normativa: plazosSchema, cumpleNormativa: z.boolean() });
 export const slaMatrixEntrySchema = z.object({ impacto: impactoSchema, urgencia: urgenciaSchema,
   prioridad: prioridadSchema, prioridadNormativa: prioridadSchema, cumpleNormativa: z.boolean() });
 export const slaSettingsSchema = z.object({ prioridades: z.array(slaPrioritySchema), matriz: z.array(slaMatrixEntrySchema),
   revision: z.string().regex(/^[a-f0-9]{64}$/), cumpleNormativa: z.boolean() });
 export const slaPriorityParamsSchema = z.object({ codigo: prioridadSchema }).strict();
-export const slaPriorityUpdateSchema = z.object({ nombre: z.string().trim().min(1).max(30),
+export const slaPriorityUpdateSchema = z.object({ nombre: slaPrioritySchema.shape.nombre,
   revisionAnterior: z.string().regex(/^[a-f0-9]{64}$/) }).strict();
 export type SlaSettings = z.infer<typeof slaSettingsSchema>;
 export type SlaPriority = z.infer<typeof slaPrioritySchema>;

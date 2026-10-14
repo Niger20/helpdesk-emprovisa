@@ -5,7 +5,7 @@ import { useParameterForm } from '../hooks/useParameterForm';
 export function ParameterForm({ parameter }: { parameter: Parameter }) {
   const { form, mutation, submit, reload } = useParameterForm(parameter);
   const id = `parameter-${parameter.clave}`;
-  return <form onSubmit={(event) => { void submit(event); }} className="space-y-3 rounded border border-border bg-card p-4">
+  return <form noValidate onSubmit={(event) => { void submit(event); }} className="space-y-3 rounded border border-border bg-card p-4">
     <h2 className="font-semibold">{parameter.nombre}</h2>
     <p className="text-sm text-muted" id={`${id}-description`}>{parameter.descripcion}</p>
     <label className="block" htmlFor={id}>Valor en {parameter.unidad}</label>

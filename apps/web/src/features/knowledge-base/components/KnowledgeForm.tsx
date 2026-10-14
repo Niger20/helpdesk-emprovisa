@@ -7,7 +7,7 @@ export function KnowledgeForm({ catalog, article, onCancel }: Props) {
   const { form, submit, pending, error } = useKnowledgeForm(article, onCancel);
   const { register, formState: { errors } } = form;
   const field = 'min-h-10 w-full rounded border border-border bg-background px-3';
-  return <form onSubmit={submit} className="space-y-4 rounded-lg border border-border bg-card p-5" aria-label={article ? 'Editar artículo' : 'Nuevo artículo'}>
+  return <form noValidate onSubmit={submit} className="space-y-4 rounded-lg border border-border bg-card p-5" aria-label={article ? 'Editar artículo' : 'Nuevo artículo'}>
     <h2 className="text-lg font-semibold">{article ? 'Editar artículo' : 'Nuevo artículo'}</h2>
     <p className="text-sm text-muted">Cada guardado conserva una versión. Los borradores no aparecen en autoservicio.</p>
     <label className="block space-y-1 text-sm font-semibold">Título<input {...register('titulo')} maxLength={150} className={field} aria-invalid={!!errors.titulo} /></label>

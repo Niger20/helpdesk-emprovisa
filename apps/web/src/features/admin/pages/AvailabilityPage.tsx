@@ -2,6 +2,7 @@ import { QueryBoundary } from '../../../components/common/QueryBoundary';
 import { AvailabilityCard } from '../components/AvailabilityCard';
 import { useHealth } from '../hooks/useHealth';
 import { SessionPanel } from '../../auth';
+import { Link } from 'react-router';
 
 export function AvailabilityPage() {
   const query = useHealth();
@@ -15,6 +16,7 @@ export function AvailabilityPage() {
         </div>
       </header>
       <div className="mx-auto max-w-3xl p-6">
+        <Link to="/tickets" className="mb-4 inline-flex min-h-10 items-center rounded border border-input px-4 font-semibold text-primary">Abrir mesa de ayuda</Link>
         <SessionPanel />
         <QueryBoundary query={query} isEmpty={() => false}>
           {(health) => <AvailabilityCard health={health} />}

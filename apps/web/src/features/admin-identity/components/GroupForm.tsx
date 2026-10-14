@@ -4,7 +4,7 @@ import { FormFeedback } from './FormFeedback';
 
 export function GroupForm({ group, catalog }: { group: (GroupInput & { idGrupo: number }) | null; catalog: AdminCatalog }) {
   const { form, mutation, submit } = useGroupForm(group); const field = 'mt-1 min-h-10 w-full rounded border border-input bg-card px-3';
-  return <form className="space-y-4 rounded border border-border bg-card p-4 text-sm" onSubmit={(event) => { void submit(event); }}>
+  return <form noValidate className="space-y-4 rounded border border-border bg-card p-4 text-sm" onSubmit={(event) => { void submit(event); }}>
     <h2 className="text-lg font-semibold">{group ? 'Editar grupo resolutor' : 'Nuevo grupo resolutor'}</h2>
     <div className="grid gap-4 sm:grid-cols-2"><label>Nombre *<input className={field} maxLength={80} required {...form.register('nombre')} /></label>
       <label>Nivel *<select className={field} {...form.register('nivel', { valueAsNumber: true })}><option value={1}>Nivel 1</option><option value={2}>Nivel 2</option></select></label>

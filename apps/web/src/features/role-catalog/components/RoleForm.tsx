@@ -5,7 +5,7 @@ import { PermissionField } from './PermissionField';
 export function RoleForm({ role, permissions, onSaved, onCancel }: { role: RoleCatalogRole | null;
   permissions: RoleCatalog['permisos']; onSaved: () => void; onCancel: () => void }) {
   const { form, mutation, submit, reload } = useRoleForm(role, onSaved);
-  return <form className="space-y-4 rounded border border-border bg-card p-4" onSubmit={(event) => { void submit(event); }}>
+  return <form noValidate className="space-y-4 rounded border border-border bg-card p-4" onSubmit={(event) => { void submit(event); }}>
     <h2 className="font-semibold">{role ? `Editar ${role.nombre}` : 'Crear rol personalizado'}</h2>
     <label className="block">Código
       <input className="mt-1 min-h-10 w-full rounded border border-input bg-background px-3" maxLength={30}

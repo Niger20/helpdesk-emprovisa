@@ -4,17 +4,21 @@ import { useCategoryForm } from '../hooks/useCategoryForm';
 export function CategoryForm({ selected, catalog, saved }: { selected: Category | null; catalog: CategoryCatalog; saved: (category: Category) => void }) {
   const { form, mutation, submit } = useCategoryForm(selected, saved);
   const field = 'mt-1 min-h-10 w-full rounded border border-input bg-card px-3';
-  return <form className="space-y-4 rounded border border-border bg-card p-4 text-sm" onSubmit={(event) => { void submit(event); }}>
+  return <form noValidate className="space-y-4 rounded border border-border bg-card p-4 text-sm" onSubmit={(event) => { void submit(event); }}>
     <h2 className="text-lg font-semibold">{selected ? 'Editar categoría' : 'Nueva categoría'}</h2>
     <div className="grid gap-4 sm:grid-cols-2">
-      <label>Nombre *<input className={field} maxLength={80} required {...form.register('nombre')} /></label>
+      <div><label>Nombre *<input className={field} maxLength={80} required {...form.register('nombre')}
+        aria-invalid={Boolean(form.formState.errors.nombre)} aria-describedby={form.formState.errors.nombre ? 'categoria-nombre-error' : undefined} /></label>
+        {form.formState.errors.nombre && <p id="categoria-nombre-error" role="alert" className="text-danger">{form.formState.errors.nombre.message}</p>}</div>
       <label>Tipo de requerimiento<select className={field} {...form.register('tipoAplicable')}><option value="INCIDENTE">Incidente</option><option value="SOLICITUD">Solicitud</option><option value="AMBOS">Ambos</option></select></label>
       <label>Categoría superior<select className={field} {...form.register('idPadre', { setValueAs: (value: string) => value ? Number(value) : null })}><option value="">Sin categoría superior</option>
         {catalog.categorias.filter((category) => category.idCategoria !== selected?.idCategoria).map((category) => <option key={category.idCategoria} value={category.idCategoria}>{category.nombre}{category.activa ? '' : ' (inactiva)'}</option>)}</select></label>
       <label>Grupo responsable por defecto<select className={field} {...form.register('idGrupoDefault', { setValueAs: (value: string) => value ? Number(value) : null })}><option value="">Sin asignación por categoría</option>
         {selected?.idGrupoDefault && !catalog.grupos.some((group) => group.idGrupo === selected.idGrupoDefault) && <option value={selected.idGrupoDefault}>{selected.grupoDefault} (inactivo; seleccioná otro)</option>}
         {catalog.grupos.map((group) => <option key={group.idGrupo} value={group.idGrupo}>{group.nombre} · Nivel {group.nivel} · {group.sede ?? 'Todas las sedes'}</option>)}</select></label>
-      <label>Orden de presentación<input className={field} type="number" min={0} max={32767} required {...form.register('orden', { valueAsNumber: true })} /></label>
+      <div><label>Orden de presentación<input className={field} type="number" min={0} max={32767} required {...form.register('orden', { valueAsNumber: true })}
+        aria-invalid={Boolean(form.formState.errors.orden)} aria-describedby={form.formState.errors.orden ? 'categoria-orden-error' : undefined} /></label>
+        {form.formState.errors.orden && <p id="categoria-orden-error" role="alert" className="text-danger">{form.formState.errors.orden.message}</p>}</div>
       <div><label className="flex min-h-10 items-center gap-2"><input type="checkbox" {...form.register('requiereActivo')} />Exige activo de inventario</label>
         <label className="flex min-h-10 items-center gap-2"><input type="checkbox" {...form.register('activa')} />Categoría activa</label></div>
     </div>

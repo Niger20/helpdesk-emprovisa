@@ -17,7 +17,7 @@ export function UserAccessPanel({ user }: { user: AdminUser }) {
         <button type="button" className="min-h-10 rounded border border-input px-4" disabled={unlock.isPending} onClick={() => unlock.mutate(undefined)}>Desbloquear usuario</button></div>
       {(state.error || unlock.error) && <p role="alert" className="text-danger">{state.error?.message ?? unlock.error?.message}</p>}
       {(state.isSuccess || unlock.isSuccess) && <p aria-live="polite">Acceso actualizado.</p>}
-      <form onSubmit={(event) => { void submit(event); }} className="space-y-4">
+      <form noValidate onSubmit={(event) => { void submit(event); }} className="space-y-4">
         <label>Nueva contraseña (12 a 128 caracteres)<input type="password" autoComplete="new-password" minLength={12} maxLength={128} required className="mt-1 min-h-10 w-full rounded border border-input px-3" {...form.register('password')} /></label>
         <FormFeedback pending={mutation.isPending} error={mutation.error} success={mutation.isSuccess} invalid={Boolean(form.formState.errors.password)} />
       </form>
