@@ -7,7 +7,7 @@ import type { SessionContext } from '../auth/index.js';
 export function createTicketWriteRepository(executor: Database | Transaction<DB>) {
   return {
     requester: (id: number) => executor.selectFrom('usuarios').select(['idUsuario', 'nombreCompleto', 'idSede']).where('idUsuario', '=', id).where('estado', '=', 'ACTIVO').executeTakeFirst(),
-    category: (id: number) => executor.selectFrom('categorias').selectAll().where('idCategoria', '=', id).where('activa', '=', true).executeTakeFirst(),
+    category: (id: number) => executor.selectFrom('categorias').selectAll().where('idCategoria', '=', id).where('activa', '=', true).forShare().executeTakeFirst(),
     resolverGroup: async (idGrupo: number | null, idSede: number) => {
       if (idGrupo === null) return null;
       const group = await executor.selectFrom('gruposResolutores').selectAll().where('idGrupo', '=', idGrupo).where('activo', '=', true).executeTakeFirst();

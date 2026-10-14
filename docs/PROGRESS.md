@@ -326,3 +326,38 @@ formal de todos los RF/RNF. Pendientes: edición del catálogo de roles/permisos
 catálogos, calendarios, feriados y parámetros; votos/vínculos KB; revisión visual,
 accesibilidad y k6; manuales y evidencia de aceptación completa. Continúan los límites
 documentados de correo simulado e invitaciones CSAT tras reinicio.
+
+## 14/10/2026 — Categorías y utilidad de conocimientos, dos sesiones
+
+Hecho aquí: administración de categorías con listado/búsqueda/estado/paginación,
+alta/edición, jerarquía, grupo por defecto, tipo y activo requerido. Ruta lazy
+/administracion/categorias; contratos compartidos, RHF/Zod, TanStack Table y cuatro
+estados de datos. Alcance global, CSRF, ciclos rechazados, referencia anterior para
+conflictos, semántica protegida si hay tickets y evidencia transaccional. Desactivar
+conserva historial; nuevos tickets usan la configuración y bloqueos compatibles.
+Sin migración ni tablas nuevas. Decisión D-021.
+
+Chat 01a13902-9146-7331-9184-a64ec599cd20 entregó votos booleanos actualizables,
+totales y comentario privado, vínculos de artículos publicados a tickets, retirada
+y listas filtradas por permisos/sede/grupo. Integrado en la ficha de conocimientos.
+Idempotencia, CSRF, auditor solo lectura, bloqueos, evidencia encadenada y rollback;
+sin versiones ficticias del vínculo ni catálogo de uso inventado. Decisión D-022.
+
+Validación: pnpm check pasó lint/typecheck/test/build; 282 pruebas en 21 archivos,
+build de 295,11 KB gzip bajo presupuesto de 499 KB. Lint repetido sobre los últimos
+ajustes de presentación. Pruebas de categorías incluyen jerarquía, concurrencia,
+activo/tipo en el alta y rollback de evidencia; conocimientos cubren votos repetidos
+y concurrentes, comentarios privados, sede/grupo vigente y reversión transaccional.
+El aislamiento de intentos de login de los casos nuevos respeta los límites reales.
+
+Prueba HTTP sobre helpdesk: categoría «Demostración de soporte local», artículo
+«Guía de soporte local», voto repetido sin duplicar y vínculo a TK-000015.
+Ambas cadenas verificadas íntegras. Datos ficticios; secretos y herramientas locales
+fuera de Git. El navegador no se afirma revisado: continúa pendiente por el fallo
+de inicialización documentado de cua.
+
+Avance funcional estimado: aproximadamente 90 %, sin equivaler a aceptación formal.
+Pendientes: catálogo de roles/permisos; calendarios/feriados/parámetros y configuración
+de matriz/plazos con protección de SLA existentes; revisión visual y accesibilidad;
+k6, manuales y evidencia completa de aceptación. Se mantienen límites del correo
+simulado y recuperación de invitaciones CSAT tras reinicio.

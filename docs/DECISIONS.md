@@ -389,3 +389,51 @@ JEFE_TI en la base local anterior con la seed vigente: agrega ticket.ver_propios
 ticket.ver_sede cuando faltan, dejando evidencia encadenada. Esto permite delegar
 N1 sin debilitar la comprobación de permisos. El rollback conserva permisos válidos
 y evidencia inmutable; no introduce autorización por nombre de rol en los services.
+
+## D-021 — Categorías compartidas con historial conservado
+
+RF-19 se entrega por capacidades: esta fase administra categorías, jerarquía,
+orden, tipo aplicable, requisito de activo y grupo por defecto. Calendarios,
+feriados, parámetros, matriz y plazos quedan pendientes. La administración requiere
+parametro.administrar con alcance global porque las categorías no pertenecen a una
+sede. AMBOS ya se admite en el alta de tickets; no se duplica el enum de tipos.
+
+No hay borrado: la desactivación impide nuevas altas y conserva consultas históricas.
+Se rechazan ciclos y padres inexistentes; categorías activas requieren antecesoras
+activas y no se desactiva un padre con hijos activos. El grupo elegido debe estar
+activo; cambiarlo afecta la asignación de casos nuevos, sin reasignar existentes.
+Si ya hay tickets, tipo y requisito de activo son inmutables: se crea otra categoría
+para nuevas reglas. Evita reinterpretar los casos y fallar sus actualizaciones por
+el trigger de activo obligatorio. Nombres repetidos no se prohíben: el ER no exige
+unicidad y se distinguen mediante superior/grupo.
+
+La edición compara una referencia anterior de los campos con la fila vigente,
+porque el ER no tiene versión en categorías. Cambios administrativos se serializan,
+bloquean la jerarquía y registran evidencia en la misma transacción; altas de tickets
+leen la categoría con bloqueo compartido para evitar cambios de reglas concurrentes.
+El control no detecta una edición que haya restaurado exactamente los mismos valores;
+no se afirma un contador de versiones inexistente. Se conservan las 45 tablas.
+
+## D-022 — Utilidad de conocimientos y vínculos privados
+
+El ER define votos booleanos únicos por artículo/usuario y comentario opcional de
+300 caracteres. PUT conserva un solo voto actualizable; repetición exacta no escribe
+ni audita. Se muestran totales agregados y el comentario solo a su autor.
+kb.ver permite leer; votar requiere además ticket.crear, capacidad operativa ausente
+del auditor. Falta permiso específico de voto en la fuente, por lo que se usa esa
+capacidad existente sin autorizar por nombre de rol. La UI refleja la misma regla.
+
+Vincular/desvincular exige kb.ver, ticket.atender y alcance de sede/grupo vigente,
+reutilizando políticas reales por la API pública del módulo tickets. Solo se vinculan
+artículos publicados; se pueden retirar vínculos de artículos archivados visibles.
+CERRADO/CANCELADO no admiten cambios; RESUELTO permite documentar la solución.
+El campo uso es texto de 1–10 caracteres conforme ER, sin catálogo inventado;
+«consulta» es una sugerencia editable. La lista solo devuelve números, uso y fecha
+de tickets autorizados; no revela títulos, usuarios, notas ni identificadores internos.
+
+El vínculo no almacena versión de artículo ni altera versión de ticket. Ticket y
+artículo se bloquean en transacción; la PK y el bloqueo por artículo serializan votos.
+Vincular/desvincular registra bitácora del caso y auditoría del sistema; votar registra
+auditoría del sistema. La evidencia solo contiene identificadores, sin comentarios,
+contenido ni uso. Fallar evidencia revierte el cambio. Filtrado de vínculos consulta
+cada ticket; se documenta posible optimización para un volumen mayor al prototipo.

@@ -19,6 +19,7 @@ import { createAuditService, createReportAuditRecorder } from './modules/audit/i
 import { createUsersService } from './modules/users/index.js';
 import { createRbacService } from './modules/rbac/index.js';
 import { createGroupsService } from './modules/groups/index.js';
+import { createCatalogService } from './modules/catalog/index.js';
 
 loadLocalEnv();
 const env = parseEnv(process.env);
@@ -34,7 +35,7 @@ const jobs = buildJobsService(database, (trx, now) => buildNotificationsService(
 const app = await buildApp(env, checkHealth, auth, buildTicketsService(database, delivery), createAssetsService(database), createKnowledgeService(database), createAttachmentsService(database, env.STORAGE_DIR),
   { jobs, notifications, surveys: createSurveysService(database, env.CSRF_SECRET), mail: buildMailIngestService(database), invitations: delivery.list,
     reports: createReportsService(readonlyDatabase, createReportAuditRecorder(database)), audit: createAuditService(readonlyDatabase),
-    users: createUsersService(database), rbac: createRbacService(database), groups: createGroupsService(database) });
+    users: createUsersService(database), rbac: createRbacService(database), groups: createGroupsService(database), catalog: createCatalogService(database) });
 let queue: Awaited<ReturnType<typeof startQueue>> | undefined;
 app.addHook('onClose', async () => {
   try { await queue?.stop({ graceful: true, timeout: 5000 }); }

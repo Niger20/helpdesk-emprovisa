@@ -33,3 +33,10 @@ usuarios LOCAL, roles vinculados, grupos, membresías y especialidades.
 Coordinador integró contratos, rutas lazy, navegación, runtime y pruebas; migración
 021 reconcilia permisos de jefatura de la base anterior con evidencia.
 Cuatro controles en verde: 262 pruebas, build 290,2 KB gzip. Decisiones D-019/D-020.
+
+## Categorías y utilidad de conocimientos — entrega integrada
+
+Esta sesión: gestión de categorías, jerarquía, grupo por defecto y reglas tipo/activo,
+integración global y prueba HTTP. Chat adicional 01a13902-9146-7331-9184-a64ec599cd20:
+votos y vínculos KB-ticket. Integradas ambas capacidades; 282 pruebas en 21 archivos,
+cuatro controles en verde y build 295,11 KB gzip. Decisiones D-021/D-022.

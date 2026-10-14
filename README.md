@@ -231,3 +231,18 @@ La bitácora respeta sede, mientras eventos del sistema y verificación de ambas
 cadenas requieren alcance global. Verificar no modifica registros y describe
 la integridad en ese instante. Consultar/exportar reportes deja evidencia con
 filtros y alcance autorizado; nuevas operaciones humanas registran su IP real.
+
+### Categorías y utilidad de conocimientos
+
+En `/administracion/categorias`, jefatura busca, crea y edita categorías compartidas:
+superior, grupo responsable por defecto, tipo, orden y requisito de activo. Desactivar
+impide nuevos tickets y conserva el historial. Con tickets existentes, para cambiar
+tipo o requisito de activo se crea otra categoría. Ante edición simultánea, recargá
+la lista antes de reintentar. Calendarios, feriados y parámetros siguen pendientes.
+
+La ficha de conocimientos permite registrar o actualizar un voto «Útil/No útil»;
+el comentario opcional solo es visible para su autor. Los analistas vinculan artículos
+publicados mediante el número del ticket y un uso breve. Cada cuenta consulta solo
+los vínculos de tickets autorizados. Auditoría conserva lectura sin votos ni cambios;
+los tickets cerrados o cancelados no admiten vinculación ni retirada de vínculos.
+La repetición de una operación idéntica no duplica datos ni evidencia.
