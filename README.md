@@ -4,11 +4,19 @@ Prototipo local para demostrar el soporte de TI de Managua, Rivas y León,
 basado en SPEC-TI-2026-002. Node.js, Fastify, React y PostgreSQL; Docker solo
 para la base existente del usuario.
 
-Ya funcionan el login local, sesión, CSRF y permisos de BD; creación, cola y
-detalle de tickets con prioridad y SLA; inventario con consulta, alta e historial
-de custodia. La aplicación incluye las 45 tablas y una seed de demostración.
-Después del login se abre la cola según el alcance de la cuenta. Las acciones
-de atención (asignar, responder, pausar, escalar, resolver y cerrar) siguen pendientes.
+El prototipo incluye login local, sesiones, CSRF y permisos de BD; tickets con
+prioridad, SLA y ciclo de atención; inventario con consulta/alta, conocimientos,
+avisos y correo simulados, encuestas, reportes, administración y auditoría.
+Conserva las 45 tablas y datos ficticios de demostración. Después del login se
+abre la cola según el alcance de la cuenta. El detalle y los límites de cada
+capacidad se describen abajo; su presencia no equivale a aceptación completa.
+
+## Manuales
+
+- [Uso por perfiles](docs/manuals/usuario.md).
+- [Operación y desarrollo local](docs/manuals/operacion-local.md).
+- [Recorrido de demostración de extremo a extremo](docs/manuals/demostracion.md).
+- [Seguridad, configuración y limitaciones](docs/manuals/seguridad-limitaciones.md).
 
 ## Ejecución local
 
@@ -68,8 +76,8 @@ Todos estos usuarios pueden iniciar sesión con **`EmprovisaDemo!2026`**:
 Son cuentas LOCAL ficticias con hashes Argon2id. La migración 012 convierte
 los usuarios AD simulados de la primera entrega al modelo local solicitado.
 La seed no reemplaza datos previos; repetirla no duplica registros ni cambia
-la contraseña. Los correos usan `example.invalid` y los jobs están desactivados.
-El prototipo simulará las integraciones de correo cuando se implementen.
+la contraseña. Los correos usan `example.invalid`; los jobs activos arrancan
+con la API. Las integraciones de correo ya se procesan de forma simulada.
 
 La sesión vence tras 30 minutos de inactividad, definidos en parámetros.
 Cinco fallos bloquean la cuenta por 15 minutos; además hay límites de
@@ -149,7 +157,7 @@ cerrado/cancelado. Primero se crea el ticket y luego se agrega evidencia en su f
 En `/conocimientos` se consultan artículos por palabra/categoría. N2 y jefatura
 pueden crear, editar y publicar con historial de versiones; auditoría solo lee.
 Solicitantes ven artículos públicos publicados. Contenido se presenta como texto
-plano; votos y vinculación desde tickets quedan pendientes.
+plano; la ficha permite votos y vínculos por número de ticket según permisos.
 
 Después de actualizar el código, ejecutar `pnpm --filter api db:migrate` y
 reiniciar `pnpm dev`. Este comando compila los contratos antes de arrancar API
@@ -262,7 +270,10 @@ bloqueo tras cinco fallos 15–1440 minutos y adjuntos hasta 10 MB. El cierre de
 resueltos conserva 48 horas y solo se consulta. Origen y fecha de modificación
 visibles; ante un conflicto, recargá antes de guardar. No se muestran secretos
 ni parámetros arbitrarios. Calendarios/feriados y parámetros ya están disponibles;
-la configuración de matriz y plazos sigue pendiente.
+`/administracion/sla` permite consultar matriz/plazos y cumplimiento normativo,
+y editar únicamente nombres de presentación de prioridades. Los minutos, modo
+de calendario, matriz y alerta del 50 % se conservan por las reglas vigentes.
+La pantalla señala diferencias; no repara automáticamente ni modifica ciclos.
 
 ### Roles personalizados y rendimiento
 
