@@ -35,6 +35,7 @@ export function createTicketsRepository(database: Database, executor: Executor =
     'a.nombreCompleto as asignado', 'activo.codigoPatrimonial as activo', 'origen.numero as numeroTicketOrigen',
   ]);
   return {
+    executor,
     ...createTicketWriteRepository(executor),
     ...createAssignmentsRepository(executor),
     ...createCommentsRepository(executor),

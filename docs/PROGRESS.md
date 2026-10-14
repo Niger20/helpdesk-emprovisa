@@ -215,3 +215,45 @@ verificación visual de las nuevas pantallas.
 Pendiente: jobs/alertas/escalamiento y cierre automáticos; asignación automática por
 especialidad/carga; correo simulado; CSAT; reportes/exportaciones; administración;
 votos/vínculos KB; pantalla/endpoint de auditoría; pruebas visuales/accesibilidad/k6.
+
+## 13/10/2026 — Automatizaciones locales y CSAT, dos sesiones
+
+Hecho: pg-boss local sobre PostgreSQL, seis tareas con cron, reintentos/backoff y
+resultado visible; esquema de infraestructura separado de las 45 tablas de dominio.
+Runtime con rol app sin DDL. Alerta de solución al 50 %, escalamiento por falta de
+primera atención conservando plazos, selección de especialista N2 elegible y cierre
+tras 48 horas sin actividad manual. Operaciones idempotentes con bloqueo/transacción
+y bitácora automatica/idTarea. Verificación diaria de las dos cadenas de evidencia.
+Sin destino N2, conserva ticket, informa una vez y reintenta (resultado PARCIAL).
+
+Avisos derivados de eventos, deduplicados por bitácora/destinatario, hasta cinco
+intentos con backoff, entrega simulada y pantalla /avisos por cuenta; jefatura y
+auditor consultan tareas. Inyección de correo ficticio autorizada a jefatura por
+API: alta con clasificación explícita y respuestas públicas al propio hilo mediante
+in_reply_to. Hash verificado, message_id único, registros rechazados sin ticket
+parcial. Ninguna conexión IMAP/SMTP ni correo real. Decisiones D-014/D-016.
+
+Chat CSAT 01a138a5-70c1-7430-b86a-f7c4879243a0 entregó contratos/API/pantalla pública,
+integrados en esta sesión. Cierre manual y automático emiten encuesta en la misma
+transacción; token 32 bytes, solo hash en BD, siete días, un uso, puntuación 1–5 y
+comentario opcional. CSRF específico, rutas públicas de lista blanca, token en
+encabezado redactado; respuesta y auditoría transaccionales. Invitaciones en memoria
+tras commit, solo al solicitante, filtradas nuevamente por estado/vigencia/respuesta.
+Se pierden enlaces pendientes al reiniciar API; no se reemiten desde el hash (D-015).
+
+Validación: pnpm check pasó los cuatro controles, 219 pruebas en 17 archivos y
+171,07 KB gzip (límite 499 KB). Incluye cola pg-boss real con rol app, idempotencia,
+pausas/ciclos, conservación de reloj, ausencia de especialista, límites de cierre,
+actividad posterior, rollback si falla CSAT, cierre manual -> invitación -> respuesta
+pública, privacidad, concurrencia CSAT, backoff/recuperación, recepción/hilos y CSRF.
+Migraciones 016–019 aplicadas en helpdesk conservando datos; tests recrean solo
+public/helpdesk_queue de helpdesk_test. Se verificó salud local y Vite disponible.
+
+Revisión visual pendiente: cua vuelve a fallar antes de conectar por ruta inexistente
+de archivos de su entorno; tampoco pudo iniciar después de que el usuario abrió
+la pestaña /login. No se afirma revisión visual de Avisos/CSAT.
+
+Pendiente: asignación inicial por categoría/especialidad/carga (RF-06), reportes y
+exportaciones, administración, votos/vínculos KB, pantalla/endpoint de auditoría,
+revisión visual/accesibilidad y k6. Correo simulado actual se inyecta por API y no
+incluye adjuntos ni clasificación automática; CSAT no recupera enlaces tras reinicio.

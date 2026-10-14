@@ -16,6 +16,9 @@ import { ticketOperationsChecks } from './ticket-operations-checks.js';
 import { knowledgeChecks } from './knowledge-checks.js';
 import { ticketLifecycleChecks } from './ticket-lifecycle-checks.js';
 import { attachmentsChecks } from './attachments-checks.js';
+import { surveysChecks } from './surveys-checks.js';
+import { jobsChecks } from './jobs-checks.js';
+import { notificationsMailChecks } from './notifications-mail-checks.js';
 import { ticketsChecks } from './tickets-checks.js';
 import { assetsChecks } from './assets-checks.js';
 
@@ -39,6 +42,7 @@ describe('PostgreSQL real: bases y roles', () => {
   beforeAll(async () => {
     const result = await migrator.query<{ current_database: string }>('SELECT current_database()');
     if (result.rows[0]?.current_database !== 'helpdesk_test') throw new Error('La prueba solo puede recrear helpdesk_test.');
+    await migrator.query('DROP SCHEMA IF EXISTS helpdesk_queue CASCADE');
     await migrator.query('DROP SCHEMA public CASCADE');
     await migrator.query('CREATE SCHEMA public AUTHORIZATION helpdesk_migrator');
     await migrator.query('REVOKE ALL ON SCHEMA public FROM PUBLIC');
@@ -88,4 +92,7 @@ describe('PostgreSQL real: bases y roles', () => {
   knowledgeChecks(appDatabase, env);
   ticketLifecycleChecks(appDatabase, env);
   attachmentsChecks(appDatabase, env);
+  surveysChecks(appDatabase, env);
+  jobsChecks(appDatabase, env);
+  notificationsMailChecks(appDatabase, env);
 });

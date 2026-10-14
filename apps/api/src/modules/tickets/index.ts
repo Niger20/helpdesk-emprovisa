@@ -5,8 +5,10 @@ export type { CalendarioLaboral, HorarioLaboral, PausaSla, PrioridadSla, RelojSl
 import type { Database } from '../../infra/db/client.js';
 import { createTicketsRepository, withTicketsTransaction } from './tickets.repository.js';
 import { createTicketsService } from './tickets.service.js';
-export const buildTicketsService = (database: Database) => createTicketsService(createTicketsRepository(database), (action) => withTicketsTransaction(database, action));
+import type { SurveyDelivery } from '../../infra/mail/survey-delivery.js';
+export const buildTicketsService = (database: Database, delivery?: SurveyDelivery) => createTicketsService(createTicketsRepository(database), (action) => withTicketsTransaction(database, action), delivery);
 export { registerTicketsRoutes } from './tickets.routes.js';
 export type { TicketsService } from './tickets.service.js';
 export { ticketScope, requireTicketPermission } from './tickets.policies.js';
 export type { TicketScope } from './tickets.policies.js';
+export { importSimulatedMail } from './mail-import/mail-import.service.js';

@@ -11,7 +11,7 @@ const database = createDatabase(env.DATABASE_MIGRATOR_URL, 1);
 try {
   const source = await generate({
     db: database, dialect: new PostgresDialect({ dateParser: 'string' }),
-    defaultSchemas: ['public'], excludePattern: 'pgmigrations', camelCase: true, outFile: null,
+    defaultSchemas: ['public'], includePattern: 'public.*', excludePattern: 'pgmigrations', camelCase: true, outFile: null,
   });
   const directory = fileURLToPath(new URL('./generated', import.meta.url));
   await mkdir(directory, { recursive: true });

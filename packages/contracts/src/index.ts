@@ -17,3 +17,6 @@ export type { TicketAssign, TicketComment, TicketOperation } from './ticket-acti
 export * from './knowledge.js';
 export * from './ticket-lifecycle.js';
 export * from './attachments.js';
+export * from './jobs.js';
+export * from './surveys.js';
+export * from './mail-simulation.js';

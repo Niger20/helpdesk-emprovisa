@@ -14,6 +14,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {session?.usuario.permisos.includes('activo.ver') && <NavLink to="/activos" className="min-h-10 rounded px-3 py-2 text-sm font-semibold">Inventario</NavLink>}
           {session?.usuario.permisos.includes('kb.ver') && <NavLink to="/conocimientos" className="min-h-10 rounded px-3 py-2 text-sm font-semibold">Conocimientos</NavLink>}
           <NavLink to="/disponibilidad" className="min-h-10 rounded px-3 py-2 text-sm">Servicio</NavLink>
+          <NavLink to="/avisos" className="min-h-10 rounded px-3 py-2 text-sm">Avisos</NavLink>
         </nav><SessionPanel /></aside>
         <div className="min-w-0">{children}</div>
       </div>

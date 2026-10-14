@@ -1,7 +1,8 @@
-import type { Generated, Int8, Timestamp } from './helpers.js';
+import type { Generated, Int8, Json, Timestamp } from './helpers.js';
 
 export interface CorreosEntrantes {
   asunto: string;
+  datosSimulados: Json | null;
   estado: string;
   hashContenido: string;
   idCorreo: Generated<Int8>;

@@ -230,3 +230,73 @@ un archivo huérfano; no existe atomicidad distribuida entre PostgreSQL y filesy
 Se sube evidencia desde el detalle, después de crear el ticket, evitando prometer
 un guardado único para ticket/archivo. No se aceptan idComentario ni otros campos
 multipart; archivos existentes ligados a notas internas se filtran por alcance.
+## D-014 — Automatizaciones del prototipo local
+
+RF-07/CU-05 exigen escalar al vencer la respuesta aun desde NUEVO o REABIERTO,
+pero las semillas originales no contemplaban esos saltos. Se agregan transiciones
+automatica=true desde NUEVO, ASIGNADO, EN_ATENCION y REABIERTO hacia ESCALADO;
+las rutas humanas siguen usando exclusivamente transiciones manuales. Se conserva
+el reloj original y no se registra una primera atención ficticia. Destino: grupo
+N2 activo compatible con sede y miembro vigente con ticket.atender y alcance de BD,
+distinto del solicitante; desempate por carga activa, grupo y usuario. Si ya está
+ESCALADO, se avisa a jefatura una vez por ciclo sin inventar un nivel superior.
+Si no hay destinatario/transición, no se modifica el ticket: aviso deduplicado,
+resultado PARCIAL y nuevo intento en el próximo minuto. RF-06 de asignación inicial
+por especialidad/carga permanece pendiente.
+
+UMBRAL_50 corresponde a la ventana de solución calculada por el motor existente.
+Se omiten estados con reloj detenido y alertas de ciclos anteriores. Cada ejecución
+bloquea su tarea y los tickets; efectos y bitácora automatica/idTarea comparten
+transacción. Cierre automático usa el parámetro inicial de 48 horas desde resolución
+y última actividad manual (comentarios o bitácora); el límite exacto es inclusivo.
+
+pg-boss 12.37.1 usa esquema helpdesk_queue separado de las 45 tablas de dominio.
+Migraciones SQL 017/019 instalan sus objetos y siete colas (seis del dominio y una
+interna de cron), usando los planes oficiales del paquete sin BEGIN/COMMIT propios.
+Runtime usa helpdesk_app, migrate=false, sin DDL ni reindexado; create_queue es un
+guard que únicamente reconoce colas instaladas, sin crear objetos. Instalador y
+funciones de DDL no son ejecutables por app. Tareas locales se activan en seed y
+migración 016; registros heredados ajenos al prototipo se conservan y no se ejecutan.
+Desactivación se verifica en cada job; cambiar cron o activar una tarea que arrancó
+desactivada requiere reiniciar API. Procesos se detienen antes de cerrar pools.
+
+## D-015 — Emisión y entrega de CSAT
+
+RF-11/ER fijan token único y vencimiento, pero no duración. Se adopta siete días,
+como la seed, configurable al emitir (1–365). Una encuesta por ticket: reapertura
+y cierre posterior no reemiten ni renuevan. Se emite dentro de la transacción de
+cierre manual/automático; un fallo revierte también estado y evidencia del cierre.
+
+Token aleatorio de 32 bytes; solo SHA-256 se persiste. Enlace /encuesta#token:
+el fragmento no llega al servidor, y el API público recibe x-survey-token redactado
+en logs. Solo GET/POST /api/v1/encuestas/actual entran en lista blanca explícita;
+POST conserva CSRF con HMAC asociado al token, verificado en plugin y service.
+Respuesta condicionada a ticket cerrado, token vigente y respondida_en NULL.
+Respuesta/auditoría son transaccionales, sin tokens ni comentario en auditoría.
+
+En demostración las invitaciones se conservan únicamente en memoria tras commit.
+Avisos las expone solo al solicitante autenticado, validando nuevamente propietario,
+hash, estado, vencimiento y respuesta en BD. Reiniciar API pierde enlaces pendientes;
+no se recupera ni reemite el secreto desde el hash. El enlace ya copiado funciona
+hasta vencer/ser usado. No se almacena en notificaciones ni bitácora. No hay SMTP.
+
+## D-016 — Cola de avisos y recepción simulada
+
+El ER no daba correlación entre aviso y evento ni fecha para backoff: migración 016
+agrega id_bitacora (FK, único con destinatario) y proximo_intento a notificaciones.
+El despacho deriva CREACION/ASIGNACION/ESCALAMIENTO/RESOLUCION/CIERRE/ALERTA_SLA
+desde evidencia y plantillas activas: solicitante, responsable y, en alerta/escalamiento,
+jefatura identificada por ticket.reasignar vigente y alcance. Nunca copia contenido
+de notas, motivos o soluciones. Transportes simulados, sin conexión externa;
+máximo cinco intentos con esperas 1/2/4/8 minutos antes de estado ERROR. Jobs pg-boss
+también tienen reintento/backoff ante fallos transitorios del procesamiento.
+
+Correo simulado se inyecta solo por jefatura (parametro.administrar global), con
+CSRF, una cuenta ficticia activa y clasificación explícita para un caso nuevo.
+Migración 018 agrega datos_simulados JSONB: el ER conservaba hash/metadata pero
+carecía del payload necesario para la cola local. Hash verificado al consumir;
+message_id único impide duplicados y rechaza reutilización con contenido distinto.
+Ingesta crea ticket/alerta/evidencia y vincula mensaje en una transacción. Respuestas
+usan in_reply_to de un mensaje procesado y solo el solicitante del ticket puede
+agregar comentario público; hilos ajenos/desconocidos/finales y datos inválidos
+se rechazan. No se implementan IMAP, SMTP, parsing institucional ni adjuntos de correo.

@@ -10,8 +10,9 @@ import { createAssignmentsService } from './assignments/assignments.service.js';
 import { createCommentsService } from './comments/comments.service.js';
 import { createLifecycleOptionsService } from './lifecycle/lifecycle-options.service.js';
 import { createLifecycleActionsService } from './lifecycle/lifecycle-actions.service.js';
+import type { SurveyDelivery } from '../../infra/mail/survey-delivery.js';
 
-export function createTicketsService(repository: TicketsRepository, atomic: <T>(action: (repo: TicketsRepository) => Promise<T>) => Promise<T>) {
+export function createTicketsService(repository: TicketsRepository, atomic: <T>(action: (repo: TicketsRepository) => Promise<T>) => Promise<T>, delivery?: SurveyDelivery) {
   const map = async (row: TicketRow, now: Date) => {
     const creation = await repository.cycleStart(row.idTicket, row.fechaCreacion);
     const end = row.fechaResolucion ?? row.fechaCierre ?? now;
@@ -24,7 +25,7 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
     ...createAssignmentsService(repository, atomic),
     ...createCommentsService(atomic),
     lifecycleOptions: createLifecycleOptionsService(repository),
-    lifecycle: createLifecycleActionsService(atomic),
+    lifecycle: createLifecycleActionsService(atomic, delivery),
     options: async (context: SessionContext | null) => {
       requireTicketPermission(context, 'ticket.crear');
       return ticketOptionsSchema.parse(await repository.options(context));

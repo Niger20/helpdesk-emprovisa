@@ -1,4 +1,5 @@
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
+import type { Transaction } from 'kysely';
 import pg from 'pg';
 import type { DB } from './generated-types.js';
 
@@ -15,3 +16,4 @@ export function createDatabase(connectionString: string, max: number) {
 }
 
 export type Database = ReturnType<typeof createDatabase>;
+export type DatabaseExecutor = Database | Transaction<DB>;

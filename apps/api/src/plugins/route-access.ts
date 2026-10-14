@@ -21,7 +21,7 @@ declare module 'fastify' {
   }
 }
 
-const publicRoutes = new Set(['GET /health', 'OPTIONS *', 'GET /api/v1/auth/csrf', 'POST /api/v1/auth/login']);
+const publicRoutes = new Set(['GET /health', 'OPTIONS *', 'GET /api/v1/auth/csrf', 'POST /api/v1/auth/login', 'GET /api/v1/encuestas/actual', 'POST /api/v1/encuestas/actual']);
 
 export const routeAccessPlugin = fp<{ auth?: AuthService }>(async (app, options) => {
   app.decorate('accessRoutes', []);

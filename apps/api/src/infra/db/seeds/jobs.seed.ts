@@ -7,7 +7,7 @@ export async function seedJobs(trx: SeedTransaction, now: Date) {
     ['notification-dispatch', '* * * * *'], ['audit-chain-verify', '0 3 * * *'],
   ];
   await trx.insertInto('tareasProgramadas').values(jobs.map(([codigo, expresionCron], index) => ({
-    idTarea: codigo === 'audit-chain-verify' ? 7 : index + 1, codigo: codigo ?? '', expresionCron: expresionCron ?? '', activa: false,
+    idTarea: codigo === 'audit-chain-verify' ? 7 : index + 1, codigo: codigo ?? '', expresionCron: expresionCron ?? '', activa: true,
   }))).execute();
   await trx.insertInto('plantillasNotificacion').values({
     idPlantilla: 1, codigoEvento: 'TICKET_CREADO', asunto: 'Ticket registrado',

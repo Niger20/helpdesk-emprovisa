@@ -8,3 +8,11 @@ Esta sesión integra exports/rutas y ejecuta los cuatro controles globales. La n
 Ambas entregas integradas y verificadas: pnpm check pasó con 170 pruebas;
 pantallas comprobadas a 360 px. El avance y pendientes están en PROGRESS,
 con decisiones D-010/D-011. La sesión de conocimientos terminó su entrega.
+
+## Automatizaciones y CSAT — siguiente entrega
+
+Esta sesión integra jobs/pg-boss, avisos y correo simulados, emisión de encuesta en
+cierre y archivos compartidos. Chat nuevo de CSAT:
+01a138a5-70c1-7430-b86a-f7c4879243a0, entregó contratos, módulo surveys, pantalla y
+helper de integración (commit d347bd6). Entrega integrada; pnpm check pasó con
+219 pruebas y 171,07 KB gzip. Pendientes y límites en PROGRESS; decisiones D-014–D-016.

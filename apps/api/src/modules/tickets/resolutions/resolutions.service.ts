@@ -4,8 +4,10 @@ import type { TicketsRepository, TicketRow } from '../tickets.repository.js';
 import { lifecycleTransition, lifecycleStateLog, assertTicketResolver, assertTicketOwner } from '../lifecycle/lifecycle.service.js';
 import { evaluarCumplimientoSla } from '../domain/sla-compliance.js';
 import { AppError } from '../../../common/errors/app-error.js';
+import type { SurveyDelivery } from '../../../infra/mail/survey-delivery.js';
+import { surveyIssuer } from '../../../infra/mail/survey-delivery.js';
 
-export async function executeResolution(repo: TicketsRepository, row: TicketRow, context: SessionContext, input: Extract<TicketLifecycleCommand, { accion: 'resolver' | 'cerrar' | 'cancelar' }>, now: Date) {
+export async function executeResolution(repo: TicketsRepository, row: TicketRow, context: SessionContext, input: Extract<TicketLifecycleCommand, { accion: 'resolver' | 'cerrar' | 'cancelar' }>, now: Date, delivery: SurveyDelivery = surveyIssuer) {
   if (input.accion === 'resolver') {
     assertTicketResolver(context, row);
     const idEstado = await lifecycleTransition(repo, row, 'RESUELTO', context, input.solucion);
@@ -31,4 +33,8 @@ export async function executeResolution(repo: TicketsRepository, row: TicketRow,
   await repo.lifecycleAlerts(row.idTicket, row.numeroReaperturas + 1, null);
   await repo.log(row.idTicket, context, input.accion === 'cerrar' ? 'CIERRE' : 'CANCELACION', {}, { motivo }, now);
   await lifecycleStateLog(repo, row, destino, context, now);
+  if (destino === 'CERRADO') {
+    const invitation = await delivery.issue(repo.executor, row.idTicket, now);
+    if (invitation) return { idUsuario: row.idSolicitante, numero: row.numero, invitation };
+  }
 }

@@ -7,6 +7,7 @@ import { loadTicketQueuePage, loadNewTicketPage, loadTicketDetailPage } from '..
 import { loadAssetListPage, loadAssetDetailPage } from '../../features/assets';
 import { loadKnowledgeListPage, loadKnowledgeDetailPage } from '../../features/knowledge-base';
 import { RequirePermission } from './guards/RequirePermission';
+import { loadNotificationsPage } from '../../features/notifications';
 
 const AvailabilityPage = lazy(() => import('../../features/admin').then((feature) => ({ default: feature.AvailabilityPage })));
 const LoginPage = lazy(() => loadLoginPage().then((feature) => ({ default: feature.LoginPage })));
@@ -17,12 +18,15 @@ const AssetListPage = lazy(() => loadAssetListPage().then((feature) => ({ defaul
 const AssetDetailPage = lazy(() => loadAssetDetailPage().then((feature) => ({ default: feature.AssetDetailPage })));
 const KnowledgeListPage = lazy(loadKnowledgeListPage);
 const KnowledgeDetailPage = lazy(loadKnowledgeDetailPage);
+const NotificationsPage = lazy(loadNotificationsPage);
+const SurveyPage = lazy(() => import('../../features/surveys').then((feature) => ({ default: feature.SurveyPage })));
 
 export function AppRoutes() {
   return (
     <Suspense fallback={<TableSkeleton />}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/encuesta" element={<SurveyPage />} />
         <Route element={<RequireAuth />}>
           <Route path="/" element={<Navigate to="/tickets" replace />} />
           <Route path="/tickets" element={<TicketQueuePage />} />
@@ -33,6 +37,7 @@ export function AppRoutes() {
           <Route path="/conocimientos" element={<RequirePermission permiso="kb.ver"><KnowledgeListPage /></RequirePermission>} />
           <Route path="/conocimientos/:idArticulo" element={<RequirePermission permiso="kb.ver"><KnowledgeDetailPage /></RequirePermission>} />
           <Route path="/disponibilidad" element={<AvailabilityPage />} />
+          <Route path="/avisos" element={<NotificationsPage />} />
         </Route>
         <Route path="*" element={<p className="p-8">La página solicitada no existe.</p>} />
       </Routes>

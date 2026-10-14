@@ -163,11 +163,35 @@ pnpm build
 pnpm --filter api db:codegen
 ```
 
-Las pruebas usan PostgreSQL real y **recrean exclusivamente el esquema public
-de helpdesk_test** antes de aplicar las migraciones y la seed. Necesitan `.env`
+Las pruebas usan PostgreSQL real y **recrean exclusivamente los esquemas public
+y helpdesk_queue de helpdesk_test** antes de aplicar las migraciones y la seed. Necesitan `.env`
 local y el contenedor disponible. No apuntan a helpdesk ni a las otras bases.
 Los tipos Kysely se generan y dividen por tabla para respetar los límites de
 archivo. Las migraciones son SQL puro; su registro usa node-pg-migrate.
 
 Fuentes: [AGENTS.md](AGENTS.md), `docs/specs/`, `docs/er/`, `docs/mockups/`.
 Ver [avance](docs/PROGRESS.md) y [decisiones](docs/DECISIONS.md).
+
+### Automatizaciones, avisos y satisfacción
+
+Al arrancar API, pg-boss programa alertas al 50 % y escalamiento por vencimiento
+cada minuto; cierre por inactividad cada 15 minutos; recepción simulada cada dos
+minutos; entrega de avisos cada minuto y verificación de auditoría diaria a las
+03:00 de Managua. Se conservan las fechas SLA al escalar y se cierran casos
+resueltos con 48 horas sin actividad manual. No hay envío real de correo.
+
+En `/avisos`, cada cuenta consulta sus entregas simuladas y encuestas pendientes.
+Jefatura y auditoría también consultan el estado de tareas. Cerrar un ticket, manual
+o automáticamente, emite una encuesta de 1–5 con comentario opcional, válida siete
+días y de un solo uso. El enlace abre `/encuesta` sin iniciar sesión.
+La BD guarda únicamente el hash del token; enlaces pendientes viven en memoria
+y dejan de mostrarse al reiniciar API. Los enlaces ya copiados conservan vigencia.
+Reabrir el caso no genera otra encuesta.
+
+Para probar recepción sin IMAP, jefatura puede usar `POST /api/v1/correo-simulado`
+con su sesión y `x-csrf-token`. Cuerpo: `messageId`, `inReplyTo` (null para alta),
+`usernameRemitente` (cuenta demo), `contenido` y `solicitud` (datos del formulario
+de ticket, excepto solicitante/canal/origen). En respuesta usar `inReplyTo` del
+mensaje procesado y `solicitud: null`. El job crea el caso o agrega comentario
+público al hilo del propio solicitante; duplicados no crean nuevos registros.
+La inyección se ofrece por API; no se afirma un cliente de correo completo.
