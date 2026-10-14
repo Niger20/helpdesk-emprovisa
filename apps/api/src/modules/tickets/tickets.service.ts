@@ -11,6 +11,7 @@ import { createCommentsService } from './comments/comments.service.js';
 import { createLifecycleOptionsService } from './lifecycle/lifecycle-options.service.js';
 import { createLifecycleActionsService } from './lifecycle/lifecycle-actions.service.js';
 import type { SurveyDelivery } from '../../infra/mail/survey-delivery.js';
+import { assignTicketAutomatically, serializeTicketAssignment } from './assignments/automatic-assignment.service.js';
 
 export function createTicketsService(repository: TicketsRepository, atomic: <T>(action: (repo: TicketsRepository) => Promise<T>) => Promise<T>, delivery?: SurveyDelivery) {
   const map = async (row: TicketRow, now: Date) => {
@@ -79,6 +80,7 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
         const idTicket = await repo.newId();
         const number = `TK-${String(idTicket).padStart(6, '0')}`;
         const state = await repo.newState();
+        await serializeTicketAssignment(repo.executor);
         await repo.insert({ ...ticketData, idTicket, numero: number, idSolicitante: requester.idUsuario, idTicketOrigen: origin?.idTicket ?? null,
           idRegistradoPor: context.usuario.idUsuario, idSede: requester.idSede, idGrupo,
           idPrioridad: priority.idPrioridad, prioridadManual: false, idEstado: state.idEstado,
@@ -87,6 +89,7 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
         });
         await repo.logCreation(idTicket, context, now);
         if (limits.fechaAlertaSolucion) await repo.alert(idTicket, 'UMBRAL_50', limits.fechaAlertaSolucion);
+        await assignTicketAutomatically(repo.executor, idTicket, now);
         return number;
       });
       return { numero };

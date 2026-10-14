@@ -26,6 +26,7 @@ export async function seedPermissions(trx: SeedTransaction) {
     [6, 7, 'ticket.cerrar', false], [6, 7, 'ticket.cerrar', true], [6, 3, 'ticket.reabrir', false],
     [7, 8, 'ticket.reabrir', false], [8, 3, 'ticket.atender', false],
     [1, 5, 'ticket.escalar', true], [2, 5, 'ticket.escalar', true],
+    [1, 2, 'ticket.asignar', true],
     [3, 5, 'ticket.escalar', true], [8, 5, 'ticket.escalar', true],
   ];
   await trx.insertInto('transicionesEstado').values(transitions.map(([idEstadoOrigen, idEstadoDestino, permiso, automatica]) => ({

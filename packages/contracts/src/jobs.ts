@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const jobCodeSchema = z.enum(['sla-threshold', 'sla-breach-escalation', 'auto-close-resolved', 'mail-ingest', 'notification-dispatch', 'audit-chain-verify']);
+export const jobCodeSchema = z.enum(['sla-threshold', 'sla-breach-escalation', 'auto-close-resolved', 'mail-ingest', 'notification-dispatch', 'audit-chain-verify', 'ticket-auto-assignment']);
 export type JobCode = z.infer<typeof jobCodeSchema>;
 export const notificationEventSchema = z.enum(['CREACION', 'ASIGNACION', 'ESCALAMIENTO', 'RESOLUCION', 'CIERRE', 'ALERTA_SLA']);
 export const notificationStateSchema = z.enum(['PENDIENTE', 'ENVIADA', 'ERROR']);

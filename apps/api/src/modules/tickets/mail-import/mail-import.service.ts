@@ -4,6 +4,7 @@ import { createTicketWriteRepository } from '../ticket-write.repository.js';
 import { createMailImportRepository } from './mail-import.repository.js';
 import { calcularFechasLimiteSla } from '../domain/sla-calculator.js';
 import { AppError } from '../../../common/errors/app-error.js';
+import { assignTicketAutomatically, serializeTicketAssignment } from '../assignments/automatic-assignment.service.js';
 
 export async function importSimulatedMail(executor: DatabaseExecutor, input: SimulatedMail, idSolicitante: number, idCorreo: string, idTicketThread: number | null, idTarea: number, now: Date) {
   const repo = createTicketWriteRepository(executor);
@@ -32,11 +33,13 @@ export async function importSimulatedMail(executor: DatabaseExecutor, input: Sim
   const limits = calcularFechasLimiteSla(now, priority, await repo.calendar(requester.idSede));
   if (!limits.fechaLimiteRespuesta || !limits.fechaLimiteSolucion) throw new Error('Plazos iniciales inválidos.');
   const idTicket = await repo.newId();
+  await serializeTicketAssignment(executor);
   await repo.insert({ ...data, descripcion: input.contenido, idTicket, numero: `TK-${String(idTicket).padStart(6, '0')}`, idSolicitante, idRegistradoPor: idSolicitante,
     idSede: requester.idSede, idGrupo, idPrioridad: priority.idPrioridad, prioridadManual: false, idEstado: (await repo.newState()).idEstado,
     canalIngreso: 'CORREO', numeroReaperturas: 0, fechaCreacion: now, fechaLimiteRespuesta: limits.fechaLimiteRespuesta,
     fechaLimiteSolucion: limits.fechaLimiteSolucion, minutosPausa: 0, version: 1 });
   await mail.log(idTicket, idTarea, 'CREACION', now);
   if (limits.fechaAlertaSolucion) await repo.alert(idTicket, 'UMBRAL_50', limits.fechaAlertaSolucion);
+  await assignTicketAutomatically(executor, idTicket, now);
   return idTicket;
 }

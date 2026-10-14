@@ -2,7 +2,7 @@ import type { z } from 'zod';
 import type { automationStatusSchema } from '@helpdesk/contracts';
 import { formatDate } from '../../../lib/format';
 
-const names = { 'sla-threshold': 'Alertas de plazo', 'sla-breach-escalation': 'Escalamiento por falta de atención',
+const names = { 'ticket-auto-assignment': 'Asignación automática de tickets', 'sla-threshold': 'Alertas de plazo', 'sla-breach-escalation': 'Escalamiento por falta de atención',
   'auto-close-resolved': 'Cierre por inactividad', 'mail-ingest': 'Recepción de correo simulada', 'notification-dispatch': 'Entrega de avisos simulada', 'audit-chain-verify': 'Verificación de bitácora' };
 export function AutomationStatus({ data }: { data: z.infer<typeof automationStatusSchema> }) {
   return <section className="space-y-3" aria-label="Tareas automáticas">

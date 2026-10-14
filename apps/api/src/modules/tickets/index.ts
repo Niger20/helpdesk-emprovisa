@@ -12,3 +12,4 @@ export type { TicketsService } from './tickets.service.js';
 export { ticketScope, requireTicketPermission } from './tickets.policies.js';
 export type { TicketScope } from './tickets.policies.js';
 export { importSimulatedMail } from './mail-import/mail-import.service.js';
+export { runAutomaticAssignments, serializeTicketAssignment } from './assignments/automatic-assignment.service.js';

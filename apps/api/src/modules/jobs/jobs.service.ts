@@ -7,6 +7,7 @@ import { AppError } from '../../common/errors/app-error.js';
 import type { DatabaseExecutor } from '../../infra/db/client.js';
 import { surveyIssuer } from '../../infra/mail/survey-delivery.js';
 import type { SurveyDelivery, SurveyInvitation } from '../../infra/mail/survey-delivery.js';
+import { runAutomaticAssignments } from '../tickets/index.js';
 
 type Atomic = <T>(action: (repo: JobsRepository) => Promise<T>) => Promise<T>;
 export function createJobsService(repository: JobsRepository, atomic: Atomic, dispatch: (executor: DatabaseExecutor, now: Date) => Promise<void>, ingest: (executor: DatabaseExecutor, now: Date) => Promise<void>, delivery: SurveyDelivery = surveyIssuer) {
@@ -52,7 +53,8 @@ export function createJobsService(repository: JobsRepository, atomic: Atomic, di
             const invitation = await delivery.issue(repo.executor, row.idTicket, now);
             if (invitation) invitations.push({ idUsuario: row.idSolicitante, numero: row.numero, invitation });
           }
-        } else if (codigo === 'audit-chain-verify') await repo.integrity();
+        } else if (codigo === 'ticket-auto-assignment') await runAutomaticAssignments(repo.executor, now);
+        else if (codigo === 'audit-chain-verify') await repo.integrity();
         else if (codigo === 'notification-dispatch') await dispatch(repo.executor, now);
         else if (codigo === 'mail-ingest') await ingest(repo.executor, now);
         await repo.taskResult(task.idTarea, now, partial ? 'PARCIAL' : 'CORRECTO');

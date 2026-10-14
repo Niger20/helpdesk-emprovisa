@@ -3,7 +3,7 @@ import { simulatedMailSchema, simulatedMailReceiptSchema } from '@helpdesk/contr
 import type { SimulatedMail } from '@helpdesk/contracts';
 import type { MailIngestRepository } from './mail-ingest.repository.js';
 import type { SessionContext } from '../auth/index.js';
-import { importSimulatedMail } from '../tickets/index.js';
+import { importSimulatedMail, serializeTicketAssignment } from '../tickets/index.js';
 import { AppError } from '../../common/errors/app-error.js';
 
 const hashContent = (input: SimulatedMail) => createHash('sha256').update(JSON.stringify(input)).digest('hex');
@@ -21,6 +21,7 @@ export function createMailIngestService(repo: MailIngestRepository) {
       return simulatedMailReceiptSchema.parse({ messageId: data.messageId, estado: 'PENDIENTE', simulada: true });
     },
     ingest: async (now = new Date()) => {
+      await serializeTicketAssignment(repo.executor);
       const task = await repo.task();
       for (const row of await repo.pending()) {
         const parsed = simulatedMailSchema.safeParse(row.datosSimulados);

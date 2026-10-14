@@ -5,9 +5,10 @@ export async function seedJobs(trx: SeedTransaction, now: Date) {
     ['sla-threshold', '* * * * *'], ['sla-breach-escalation', '* * * * *'],
     ['auto-close-resolved', '*/15 * * * *'], ['mail-ingest', '*/2 * * * *'],
     ['notification-dispatch', '* * * * *'], ['audit-chain-verify', '0 3 * * *'],
+    ['ticket-auto-assignment', '* * * * *'],
   ];
   await trx.insertInto('tareasProgramadas').values(jobs.map(([codigo, expresionCron], index) => ({
-    idTarea: codigo === 'audit-chain-verify' ? 7 : index + 1, codigo: codigo ?? '', expresionCron: expresionCron ?? '', activa: true,
+    idTarea: index >= 5 ? index + 2 : index + 1, codigo: codigo ?? '', expresionCron: expresionCron ?? '', activa: true,
   }))).execute();
   await trx.insertInto('plantillasNotificacion').values({
     idPlantilla: 1, codigoEvento: 'TICKET_CREADO', asunto: 'Ticket registrado',

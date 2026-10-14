@@ -11,6 +11,7 @@ export function TicketHeader({ ticket }: { ticket: Ticket }) {
     <p className="mt-4 whitespace-pre-wrap">{ticket.descripcion}</p>
     <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2"><div><dt className="font-semibold">Solicitante y sede</dt><dd>{ticket.solicitante} · {ticket.sede}</dd></div>
     <div><dt className="font-semibold">Categoría y activo</dt><dd>{ticket.categoria} · {ticket.activo ?? 'Sin activo'}</dd></div>
+    <div><dt className="font-semibold">Responsable</dt><dd>{ticket.asignado ?? 'En cola, pendiente de asignación'}</dd></div>
     <div><dt className="font-semibold">Límite de respuesta</dt><dd>{formatDate(ticket.fechaLimiteRespuesta)}</dd></div>
     <div><dt className="font-semibold">Límite de solución</dt><dd>{formatDate(ticket.fechaLimiteSolucion)}</dd></div></dl>
   </section>;

@@ -99,7 +99,7 @@ export function jobsChecks(database: Database, env: Env) {
       const requester = await authenticated(app, 'ana.managua'); const auditor = await authenticated(app, 'auditor.demo');
       expect((await app.inject({ url: '/api/v1/tareas', headers: { cookie: requester.cookie } })).statusCode).toBe(403);
       const response = await app.inject({ url: '/api/v1/tareas', headers: { cookie: auditor.cookie } });
-      expect(response.statusCode).toBe(200); expect(response.json().tareas).toHaveLength(6);
+      expect(response.statusCode).toBe(200); expect(response.json().tareas).toHaveLength(7);
       const other = await authenticated(app, 'carlos.rivas');
       const invites = await app.inject({ url: '/api/v1/encuestas/invitaciones', headers: { cookie: other.cookie } });
       expect(invites.statusCode).toBe(200); expect(invites.body).not.toContain('/encuesta#');
@@ -138,13 +138,13 @@ export function jobsChecks(database: Database, env: Env) {
       const logs = await database.selectFrom('bitacora').selectAll().where('idTicket', '=', ticket.idTicket).execute();
       expect(JSON.stringify(logs)).not.toContain(token);
     });
-    it('pg-boss arranca con rol app sin DDL, registra seis cron y ejecuta un trabajo real', async () => {
+    it('pg-boss arranca con rol app sin DDL, registra siete cron y ejecuta un trabajo real', async () => {
       await database.insertInto('tareasProgramadas').values({ codigo: 'legacy-disabled', expresionCron: '0 0 * * *', activa: false }).execute();
       const run = vi.fn(async () => {});
       const errors: Error[] = [];
       const boss = await startQueue(env.DATABASE_URL, { ...jobs, run }, (error) => errors.push(error));
       try {
-        expect(await boss.getSchedules()).toHaveLength(6);
+        expect(await boss.getSchedules()).toHaveLength(7);
         await boss.send('audit-chain-verify');
         await vi.waitFor(() => expect(run).toHaveBeenCalledWith('audit-chain-verify'), { timeout: 8000, interval: 50 });
         expect(errors).toHaveLength(0);
