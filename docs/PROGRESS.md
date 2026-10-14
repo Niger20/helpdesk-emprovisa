@@ -398,3 +398,21 @@ Avance funcional estimado: aproximadamente 94 %, no aceptación formal RF/RNF.
 Pendientes: administración del catálogo de roles/permisos y de matriz/plazos bajo
 las reglas vigentes; revisión visual/accesibilidad, k6, manuales y evidencia completa
 de aceptación. Se conservan los límites de correo simulado y enlaces CSAT en memoria.
+
+## 14/10/2026 — Catálogo de roles personalizados
+
+Chat 01a13920-f8cd-7632-9a8b-fd9da6400016 entregó catálogo de permisos y roles
+personalizados; integrada ruta lazy /administracion/roles, runtime y pruebas.
+Roles de sistema inmutables, sin borrado ni permisos inventados. Concurrencia,
+delegación global, revalidación de sesión/BD, autoedición futura bloqueada, revocación
+de sesiones y continuidad del último administrador en la misma transacción. D-026.
+
+Validación integrada: lint/typecheck/test/build en verde, 308 pruebas en 22 archivos
+y 305,93 KB gzip. Casos cubren login custom, sede, elevación, contextos obsoletos,
+ediciones/códigos concurrentes y rollback del último administrador. HTTP local:
+LECTURA_LOCAL creado/editado, cinco roles de sistema protegidos y cadenas íntegras.
+Se estabilizó el caso de adjuntos de parámetros seleccionando un ticket activo;
+ya no depende del orden de filas ni intenta subir archivos a un caso cerrado.
+
+Pendientes: medición final de rendimiento local, configuración de matriz/plazos,
+revisión visual/accesibilidad y documentación/evidencia de aceptación completa.

@@ -485,3 +485,21 @@ en una transacción, con relectura validada antes de responder. Límites inváli
 el bloqueo al alcanzar cinco fallos y adjuntos al cargar. No se modifica el vencimiento
 ya fijado de un bloqueo. La repetición de valores compara campos, sin prometer
 detectar una secuencia que vuelva exactamente al valor anterior.
+
+## D-026 — Roles personalizados con catálogo de permisos existente
+
+RF-18 incorpora creación/edición de roles personalizados; los cinco roles del sistema
+y todo es_sistema permanecen inmutables, especialmente auditoría solo lectura. No hay
+borrado ni códigos de permiso nuevos. El ER permite codigo/nombre/descripcion y
+es_sistema, sin activo/versión/grupo_rol: no se agregan campos ni tablas. Los códigos
+de sistema se reservan mediante el enum único; roles personalizados requieren
+auth.sesion porque el inicio de sesión lo exige. Auth ya admite códigos string.
+
+El editor exige rol.administrar global y permisos globales propios para lo que
+concede. Revalida sesión y grants desde BD dentro de la transacción, con el mismo
+advisory lock 2026018,1 de identidad. Compara referencia anterior de todos los campos
+y permisos; duplicación y cambios concurrentes dan 409. Rechaza modificar un rol
+propio incluso con vínculo futuro, revisa coherencia de sedes y revoca sesiones de
+usuarios afectados con vínculos no vencidos. Continuidad del último administrador,
+permisos, revocaciones y auditoría van en una transacción. El catálogo enumera solo
+permisos conocidos en contracts y BD. La retirada de acceso usa vínculos existentes.

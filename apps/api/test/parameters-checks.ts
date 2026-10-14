@@ -89,7 +89,9 @@ export function parametersChecks(database: Database, env: Env) {
       expect((await edit('adjunto.maximo_bytes', 1024, 10485760)).statusCode).toBe(200);
       const login = await authenticated(app, 'ana.managua'); const auth = await createAuthService(database, env.CSRF_SECRET);
       const context = await auth.load(login.rawToken, new Date());
-      const ticket = await database.selectFrom('tickets').select('numero').where('idSolicitante', '=', login.session.usuario.idUsuario).executeTakeFirstOrThrow();
+      const ticket = await database.selectFrom('tickets as t').innerJoin('estadosTicket as e', 'e.idEstado', 't.idEstado').select('t.numero')
+        .where('t.idSolicitante', '=', login.session.usuario.idUsuario).where('e.codigo', 'not in', ['RESUELTO', 'CERRADO', 'CANCELADO'])
+        .orderBy('t.idTicket', 'desc').executeTakeFirstOrThrow();
       const attachments = createAttachmentsService(database, env.STORAGE_DIR);
       expect(await attachments.uploadLimit(context, ticket.numero)).toBe(1024);
       await expect(attachments.upload(context, ticket.numero, 'exceso.pdf', Buffer.alloc(1025))).rejects.toMatchObject({ statusCode: 413 });

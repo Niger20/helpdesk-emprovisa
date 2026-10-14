@@ -15,6 +15,7 @@ import { loadAdminIdentityPage } from '../../features/admin-identity';
 import { loadCategoryAdminPage } from '../../features/catalog';
 import { loadCalendarsPage } from '../../features/calendars';
 import { loadParametersPage } from '../../features/parameters';
+import { loadRoleCatalogPage } from '../../features/role-catalog';
 
 const AvailabilityPage = lazy(() => import('../../features/admin').then((feature) => ({ default: feature.AvailabilityPage })));
 const LoginPage = lazy(() => loadLoginPage().then((feature) => ({ default: feature.LoginPage })));
@@ -32,6 +33,7 @@ const AdminIdentityPage = lazy(loadAdminIdentityPage);
 const CategoryAdminPage = lazy(loadCategoryAdminPage);
 const CalendarsPage = lazy(loadCalendarsPage);
 const ParametersPage = lazy(loadParametersPage);
+const RoleCatalogPage = lazy(loadRoleCatalogPage);
 const SurveyPage = lazy(() => import('../../features/surveys').then((feature) => ({ default: feature.SurveyPage })));
 
 export function AppRoutes() {
@@ -57,6 +59,7 @@ export function AppRoutes() {
           <Route path="/administracion/categorias" element={<RequirePermission permiso="parametro.administrar"><CategoryAdminPage /></RequirePermission>} />
           <Route path="/administracion/calendarios" element={<RequirePermission permiso="parametro.administrar"><CalendarsPage /></RequirePermission>} />
           <Route path="/administracion/parametros" element={<RequirePermission permiso="parametro.administrar"><ParametersPage /></RequirePermission>} />
+          <Route path="/administracion/roles" element={<RequirePermission permiso="rol.administrar"><RoleCatalogPage /></RequirePermission>} />
         </Route>
         <Route path="*" element={<p className="p-8">La página solicitada no existe.</p>} />
       </Routes>

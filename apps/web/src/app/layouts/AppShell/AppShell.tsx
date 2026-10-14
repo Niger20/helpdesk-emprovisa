@@ -21,6 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {session?.usuario.permisos.includes('parametro.administrar') && <NavLink to="/administracion/categorias" className="min-h-10 rounded px-3 py-2 text-sm">Categorías</NavLink>}
           {session?.usuario.permisos.includes('parametro.administrar') && <NavLink to="/administracion/calendarios" className="min-h-10 rounded px-3 py-2 text-sm">Calendarios</NavLink>}
           {session?.usuario.permisos.includes('parametro.administrar') && <NavLink to="/administracion/parametros" className="min-h-10 rounded px-3 py-2 text-sm">Parámetros</NavLink>}
+          {session?.usuario.permisos.includes('rol.administrar') && <NavLink to="/administracion/roles" className="min-h-10 rounded px-3 py-2 text-sm">Roles y permisos</NavLink>}
         </nav><SessionPanel /></aside>
         <div className="min-w-0">{children}</div>
       </div>
