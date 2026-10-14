@@ -24,3 +24,4 @@ export * from './reports.js';
 export * from './audit.js';
 export * from './admin-identity.js';
 export * from './catalog.js';
+export * from './parameters.js';
