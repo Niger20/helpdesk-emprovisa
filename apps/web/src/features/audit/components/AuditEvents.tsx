@@ -13,9 +13,9 @@ export function AuditEvents({ result, onPage }: { result: z.infer<typeof auditLi
       <dl className="space-y-2"><div><dt className="font-semibold">Hash anterior</dt><dd className="break-all font-mono text-xs">{event.hashPrevio}</dd></div>
         <div><dt className="font-semibold">Hash del registro</dt><dd className="break-all font-mono text-xs">{event.hashRegistro}</dd></div></dl>
     </details>
-  </article>)}<div className="flex flex-wrap items-center justify-between gap-2">
+  </article>)}<div className="grid grid-cols-2 items-center gap-2">
+    <span className="col-span-2 text-center">Página {result.meta.page} · {result.meta.total} registros</span>
     <button disabled={result.meta.page === 1} onClick={() => onPage(result.meta.page - 1)} className="min-h-10 rounded border border-border px-4 disabled:opacity-50">Anterior</button>
-    <span>Página {result.meta.page} · {result.meta.total} registros</span>
     <button disabled={result.meta.page * result.meta.pageSize >= result.meta.total} onClick={() => onPage(result.meta.page + 1)} className="min-h-10 rounded border border-border px-4 disabled:opacity-50">Siguiente</button>
   </div></section>;
 }

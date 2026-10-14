@@ -2,6 +2,10 @@
 @import "./tokens.css";
 
 @layer base {
-  body { @apply m-0 font-sans; }
-  button { @apply cursor-pointer; }
+  body { @apply m-0 font-sans; overflow-wrap: anywhere; }
+  button { @apply min-h-10 min-w-10 cursor-pointer; }
+  input, select, textarea { @apply min-w-0 max-w-full; }
+  :focus-visible:not(.sr-only) {
+    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-card;
+  }
 }

@@ -7,7 +7,7 @@ export function AssetTable({ data, onPage }: Props) {
   const table = useTable({ features: assetTableFeatures, columns: assetColumns, data: data.data });
   const { page, pageSize, total } = data.meta;
   return <div className="rounded-lg border border-border bg-card">
-    <div className="overflow-x-auto"><table className="w-full text-left text-sm">
+    <div className="overflow-x-auto" role="region" tabIndex={0} aria-label="Inventario de activos de TI"><table className="w-full text-left text-sm">
       <caption className="sr-only">Inventario de activos de TI</caption>
       <thead className="bg-background text-muted">{table.getHeaderGroups().map((group) => <tr key={group.id}>
         {group.headers.map((header) => <th scope="col" key={header.id} className="whitespace-nowrap border-b border-border px-4 py-3">{flexRender(header.column.columnDef.header, header.getContext())}</th>)}

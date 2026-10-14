@@ -37,7 +37,7 @@ export function IdentityWorkspace() {
         {state.group && <MemberPanel key={`miembros-${state.group.idGrupo}`} id={state.group.idGrupo} catalog={catalog} />}
       </div>}</QueryBoundary>}
     </>}
-    <div className="flex items-center gap-3 text-sm"><button type="button" disabled={state.page <= 1} className="min-h-10 rounded border border-input px-3 disabled:opacity-50" onClick={() => state.setPage(state.page - 1)}>Anterior</button>
+    <div className="flex flex-wrap items-center gap-3 text-sm"><button type="button" disabled={state.page <= 1} className="min-h-10 rounded border border-input px-3 disabled:opacity-50" onClick={() => state.setPage(state.page - 1)}>Anterior</button>
       <span>Página {state.page}</span><button type="button" disabled={state.page * 20 >= (state.tab === 'users' ? state.users.data?.meta.total ?? 0 : state.groups.data?.meta.total ?? 0)} className="min-h-10 rounded border border-input px-3 disabled:opacity-50" onClick={() => state.setPage(state.page + 1)}>Siguiente</button></div>
   </div>;
 }
