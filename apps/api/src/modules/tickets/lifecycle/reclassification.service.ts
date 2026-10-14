@@ -15,7 +15,7 @@ export async function executeReclassification(repo: TicketsRepository, row: Tick
   }
   const priority = input.prioridad ? await repo.manualPriority(input.prioridad) : await repo.priority(input.impacto, input.urgencia);
   if (!priority) throw new AppError('CATALOGO_INVALIDO', 400, 'La prioridad no está disponible.');
-  const limits = calcularFechasLimiteSla(await repo.cycleStart(row.idTicket, row.fechaCreacion), priority, await repo.calendar(row.idSede), await repo.pauses(row.idTicket));
+  const limits = calcularFechasLimiteSla(await repo.cycleStart(row.idTicket, row.fechaCreacion), priority, await repo.cycleCalendar(row.idTicket, row.numeroReaperturas + 1, row.idSede), await repo.pauses(row.idTicket));
   if (!limits.fechaLimiteRespuesta || !limits.fechaLimiteSolucion) throw new AppError('TRANSICION_INVALIDA', 409, 'Reanudá la pausa antes de reclasificar.');
   await repo.lifecycleUpdate(row.idTicket, { idCategoria: input.idCategoria, idActivo: input.idActivo, impacto: input.impacto, urgencia: input.urgencia,
     idPrioridad: priority.idPrioridad, prioridadManual: input.prioridad !== null, justificacionPrioridad: input.justificacionPrioridad,

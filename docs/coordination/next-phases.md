@@ -40,3 +40,10 @@ Esta sesión: gestión de categorías, jerarquía, grupo por defecto y reglas ti
 integración global y prueba HTTP. Chat adicional 01a13902-9146-7331-9184-a64ec599cd20:
 votos y vínculos KB-ticket. Integradas ambas capacidades; 282 pruebas en 21 archivos,
 cuatro controles en verde y build 295,11 KB gzip. Decisiones D-021/D-022.
+
+## Calendarios y parámetros — entrega integrada
+
+Esta sesión: calendarios/feriados, asignación a sedes y protección del calendario de
+cada ciclo en bitácora; migración 022 y seed. Chat adicional de parámetros:
+01a1390f-79b8-7d22-99c7-3a696fb4afab. Integrados runtime, rutas, navegación y pruebas.
+301 pruebas en 22 archivos, cuatro controles en verde y 302,51 KB gzip. D-023/D-024.

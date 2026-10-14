@@ -42,12 +42,14 @@ import { registerGroupsRoutes } from './modules/groups/index.js';
 import type { GroupsService } from './modules/groups/index.js';
 import { registerCatalogRoutes } from './modules/catalog/index.js';
 import type { CatalogService } from './modules/catalog/index.js';
+import { registerCalendarsRoutes } from './modules/settings/calendars/index.js';
+import type { CalendarsService } from './modules/settings/calendars/index.js';
 import { registerParametersRoutes } from './modules/settings/parameters/index.js';
 import type { ParametersService } from './modules/settings/parameters/index.js';
 
 interface AutomationServices { jobs?: JobsService; notifications?: NotificationsService; surveys?: SurveysService; mail?: MailIngestService;
   invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[]; reports?: ReportsService; audit?: AuditService;
-  users?: UsersService; rbac?: RbacService; groups?: GroupsService; catalog?: CatalogService; parameters?: ParametersService }
+  users?: UsersService; rbac?: RbacService; groups?: GroupsService; catalog?: CatalogService; calendars?: CalendarsService; parameters?: ParametersService }
 
 export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, auth?: AuthService, tickets?: TicketsService, assets?: AssetsService, knowledge?: KnowledgeService, attachments?: AttachmentsService, automations: AutomationServices = {}) {
   const app = Fastify({
@@ -90,6 +92,7 @@ export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, au
   if (automations.rbac) registerRbacRoutes(app, automations.rbac);
   if (automations.groups) registerGroupsRoutes(app, automations.groups);
   if (automations.catalog) registerCatalogRoutes(app, automations.catalog);
+  if (automations.calendars) registerCalendarsRoutes(app, automations.calendars);
   if (automations.parameters) registerParametersRoutes(app, automations.parameters);
   return app;
 }

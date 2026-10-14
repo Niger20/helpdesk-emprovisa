@@ -7,6 +7,7 @@ import type { DatabaseExecutor } from '../../infra/db/client.js';
 import type { SessionContext } from '../auth/index.js';
 import { requireTicketPermission, ticketScope } from './tickets.policies.js';
 import { AppError } from '../../common/errors/app-error.js';
+import { createCalendarSlaRepository } from './calendar-sla.repository.js';
 import { createTicketsRepository, withTicketsTransaction } from './tickets.repository.js';
 import { createTicketsService } from './tickets.service.js';
 import type { SurveyDelivery } from '../../infra/mail/survey-delivery.js';
@@ -15,6 +16,10 @@ export { registerTicketsRoutes } from './tickets.routes.js';
 export type { TicketsService } from './tickets.service.js';
 export { ticketScope, requireTicketPermission } from './tickets.policies.js';
 export type { TicketScope } from './tickets.policies.js';
+export async function captureTicketCalendar(executor: DatabaseExecutor, ticket: { idTicket: number; idSede: number; numeroReaperturas: number }, now: Date) {
+  const repo = createCalendarSlaRepository(executor);
+  await repo.recordCalendar(ticket.idTicket, ticket.numeroReaperturas + 1, await repo.calendar(ticket.idSede), now, null);
+}
 export { importSimulatedMail } from './mail-import/mail-import.service.js';
 export { runAutomaticAssignments, serializeTicketAssignment } from './assignments/automatic-assignment.service.js';
 

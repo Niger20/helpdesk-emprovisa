@@ -26,6 +26,7 @@ import { adminIdentityChecks } from './admin-identity-checks.js';
 import { catalogChecks } from './catalog-checks.js';
 import { knowledgeFeedbackChecks } from './knowledge-feedback-checks.js';
 import { parametersChecks } from './parameters-checks.js';
+import { calendarsChecks } from './calendars-checks.js';
 import { ticketsChecks } from './tickets-checks.js';
 import { assetsChecks } from './assets-checks.js';
 
@@ -109,4 +110,5 @@ describe('PostgreSQL real: bases y roles', () => {
   catalogChecks(appDatabase, env);
   knowledgeFeedbackChecks(appDatabase, env);
   parametersChecks(appDatabase, env);
+  calendarsChecks(appDatabase, env);
 });

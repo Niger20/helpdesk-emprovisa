@@ -14,7 +14,7 @@ export function createLifecycleOptionsService(repository: TicketsRepository) {
     const own = row.idSolicitante === context.usuario.idUsuario;
     const assigned = row.idAsignado === context.usuario.idUsuario;
     const active = !['RESUELTO', 'CERRADO', 'CANCELADO'].includes(row.estado);
-    const deadline = row.estado === 'CERRADO' && row.fechaCierre ? calcularLimiteReapertura(row.fechaCierre, await repository.calendar(row.idSede)) : null;
+    const deadline = row.estado === 'CERRADO' && row.fechaCierre ? calcularLimiteReapertura(row.fechaCierre, await repository.cycleCalendar(row.idTicket, row.numeroReaperturas + 1, row.idSede)) : null;
     const actions = ticketLifecycleActionSchema.options.filter((action) => {
       const permission = ticketLifecyclePermission[action];
       if (!context.usuario.permisos.includes(permission) || !context.grants.some((grant) => grant.codigo === permission

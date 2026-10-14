@@ -8,6 +8,7 @@ import { seedTickets } from './tickets.seed.js';
 import { seedKnowledge } from './knowledge.seed.js';
 import { seedJobs } from './jobs.seed.js';
 import { syncSequences } from './sequence.repository.js';
+import { seedCalendarSnapshots } from './calendar-snapshots.repository.js';
 
 export async function seedDemo(database: Database, password: string, now = new Date()) {
   return database.transaction().execute(async (trx) => {
@@ -27,6 +28,7 @@ export async function seedDemo(database: Database, password: string, now = new D
     await seedIdentity(trx, password, now);
     await seedAssets(trx, now);
     await seedTickets(trx, now);
+    await seedCalendarSnapshots(trx, now);
     await seedKnowledge(trx, now);
     await seedJobs(trx, now);
     await trx.insertInto('auditoriaSistema').values({

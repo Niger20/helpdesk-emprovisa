@@ -238,7 +238,7 @@ En `/administracion/categorias`, jefatura busca, crea y edita categorías compar
 superior, grupo responsable por defecto, tipo, orden y requisito de activo. Desactivar
 impide nuevos tickets y conserva el historial. Con tickets existentes, para cambiar
 tipo o requisito de activo se crea otra categoría. Ante edición simultánea, recargá
-la lista antes de reintentar. Calendarios, feriados y parámetros siguen pendientes.
+la lista antes de reintentar.
 
 La ficha de conocimientos permite registrar o actualizar un voto «Útil/No útil»;
 el comentario opcional solo es visible para su autor. Los analistas vinculan artículos
@@ -246,3 +246,20 @@ publicados mediante el número del ticket y un uso breve. Cada cuenta consulta s
 los vínculos de tickets autorizados. Auditoría conserva lectura sin votos ni cambios;
 los tickets cerrados o cancelados no admiten vinculación ni retirada de vínculos.
 La repetición de una operación idéntica no duplica datos ni evidencia.
+
+### Calendarios, feriados y parámetros
+
+Jefatura administra `/administracion/calendarios`: horarios de lunes a viernes,
+intervalos partidos, feriados y calendario de cada sede. Zona America/Managua;
+no se admiten horas superpuestas ni fechas duplicadas. Cada ciclo de ticket guarda
+su calendario en la bitácora: editar o asignar conserva los SLA de ciclos anteriores.
+Reabrir o rechazar una solución inicia un ciclo con la configuración vigente.
+La ventana de reapertura conserva el calendario del ciclo cerrado. P1/P2 siguen
+en horario continuo. La migración 022 protege los ciclos locales anteriores.
+
+En `/administracion/parametros`, inactividad de sesión admite 1–30 minutos,
+bloqueo tras cinco fallos 15–1440 minutos y adjuntos hasta 10 MB. El cierre de
+resueltos conserva 48 horas y solo se consulta. Origen y fecha de modificación
+visibles; ante un conflicto, recargá antes de guardar. No se muestran secretos
+ni parámetros arbitrarios. Calendarios/feriados y parámetros ya están disponibles;
+la matriz/plazos y el catálogo de roles/permisos siguen pendientes.

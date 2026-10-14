@@ -3,9 +3,11 @@ import type { Insertable, Transaction } from 'kysely';
 import type { Database } from '../../infra/db/client.js';
 import type { DB } from '../../infra/db/generated-types.js';
 import type { SessionContext } from '../auth/index.js';
+import { createCalendarSlaRepository } from './calendar-sla.repository.js';
 
 export function createTicketWriteRepository(executor: Database | Transaction<DB>) {
   return {
+    ...createCalendarSlaRepository(executor),
     requester: (id: number) => executor.selectFrom('usuarios').select(['idUsuario', 'nombreCompleto', 'idSede']).where('idUsuario', '=', id).where('estado', '=', 'ACTIVO').executeTakeFirst(),
     category: (id: number) => executor.selectFrom('categorias').selectAll().where('idCategoria', '=', id).where('activa', '=', true).forShare().executeTakeFirst(),
     resolverGroup: async (idGrupo: number | null, idSede: number) => {
@@ -20,13 +22,6 @@ export function createTicketWriteRepository(executor: Database | Transaction<DB>
     priority: (impacto: string, urgencia: string) => executor.selectFrom('matrizPrioridad as m')
       .innerJoin('prioridadesSla as p', 'p.idPrioridad', 'm.idPrioridad').selectAll('p')
       .where('m.impacto', '=', impacto).where('m.urgencia', '=', urgencia).where('p.activa', '=', true).executeTakeFirst(),
-    calendar: async (siteId: number) => {
-      const calendar = await executor.selectFrom('sedes').innerJoin('calendariosLaborales', 'calendariosLaborales.idCalendario', 'sedes.idCalendario')
-        .select(['calendariosLaborales.idCalendario', 'zonaHoraria']).where('idSede', '=', siteId).where('sedes.activa', '=', true).executeTakeFirstOrThrow();
-      const horarios = await executor.selectFrom('horariosLaborales').select(['diaSemana', 'horaInicio', 'horaFin']).where('idCalendario', '=', calendar.idCalendario).execute();
-      const feriados = await executor.selectFrom('feriados').select('fecha').where('idCalendario', '=', calendar.idCalendario).execute();
-      return { zonaHoraria: calendar.zonaHoraria, horarios, feriados: feriados.map((day) => day.fecha) };
-    },
     newId: async () => Number((await sql<{ id: string }>`select nextval(pg_get_serial_sequence('tickets', 'id_ticket')) as id`.execute(executor)).rows[0]?.id),
     newState: () => executor.selectFrom('estadosTicket').select('idEstado').where('codigo', '=', 'NUEVO').executeTakeFirstOrThrow(),
     insert: (ticket: Insertable<DB['tickets']>) => executor.insertInto('tickets').values(ticket).execute(),

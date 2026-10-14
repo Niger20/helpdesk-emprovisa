@@ -64,7 +64,8 @@ export function ticketsChecks(database: Database, env: Env) {
       expect(new Date(created?.fechaLimiteSolucion ?? '').getTime() - new Date(created?.fechaCreacion ?? '').getTime()).toBe(120 * 60_000);
       const row = await database.selectFrom('tickets').selectAll().where('titulo', '=', payload.titulo).executeTakeFirstOrThrow();
       expect(row.idRegistradoPor).toBe(2);
-      expect(await database.selectFrom('bitacora').select('idBitacora').where('idTicket', '=', row.idTicket).execute()).toHaveLength(1);
+      const evidence = await database.selectFrom('bitacora').select('accion').where('idTicket', '=', row.idTicket).execute();
+      expect(evidence.map((event) => event.accion).sort()).toEqual(['CREACION', 'SLA_CALENDARIO_FIJADO']);
       expect(await database.selectFrom('slaAlertas').select('idAlerta').where('idTicket', '=', row.idTicket).execute()).toHaveLength(1);
     });
   });

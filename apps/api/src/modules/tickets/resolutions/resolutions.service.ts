@@ -14,7 +14,7 @@ export async function executeResolution(repo: TicketsRepository, row: TicketRow,
     const start = await repo.cycleStart(row.idTicket, row.fechaCreacion);
     const priority = await repo.lifecyclePriority(row.idPrioridad);
     const firstReply = row.fechaPrimeraRespuesta ?? now;
-    const compliance = evaluarCumplimientoSla(start, firstReply, now, priority, await repo.calendar(row.idSede), await repo.pauses(row.idTicket));
+    const compliance = evaluarCumplimientoSla(start, firstReply, now, priority, await repo.cycleCalendar(row.idTicket, row.numeroReaperturas + 1, row.idSede), await repo.pauses(row.idTicket));
     await repo.resolveRecord(row.idTicket, row.numeroReaperturas + 1, context.usuario.idUsuario, input.causa, input.solucion, now);
     await repo.lifecycleUpdate(row.idTicket, { idEstado, fechaResolucion: now, fechaPrimeraRespuesta: firstReply,
       slaRespuestaCumplido: compliance.slaRespuestaCumplido, slaSolucionCumplido: compliance.slaSolucionCumplido });

@@ -20,7 +20,7 @@ export async function executePause(repo: TicketsRepository, row: TicketRow, cont
   const idEstado = await lifecycleTransition(repo, row, 'EN_ATENCION', context, input.motivo);
   const pause = await repo.openPause(row.idTicket);
   if (!pause || now < pause.inicio) throw new AppError('TRANSICION_INVALIDA', 409, 'No hay una pausa válida para reanudar.');
-  const calendar = await repo.calendar(row.idSede);
+  const calendar = await repo.cycleCalendar(row.idTicket, row.numeroReaperturas + 1, row.idSede);
   const priority = await repo.lifecyclePriority(row.idPrioridad);
   const minutes = Math.floor(contarMinutosSla(pause.inicio, now, { modoCalendario: priority.modoCalendario, calendario: calendar }));
   await repo.endPause(pause.idPausa, now, minutes);

@@ -361,3 +361,40 @@ Pendientes: catálogo de roles/permisos; calendarios/feriados/parámetros y conf
 de matriz/plazos con protección de SLA existentes; revisión visual y accesibilidad;
 k6, manuales y evidencia completa de aceptación. Se mantienen límites del correo
 simulado y recuperación de invitaciones CSAT tras reinicio.
+
+## 14/10/2026 — Calendarios protegidos y parámetros locales
+
+Hecho aquí: calendarios/horarios partidos/feriados, alta/edición y asignación a sedes;
+ruta lazy /administracion/calendarios, RHF/Zod, cuatro estados de datos y control
+global de permiso. Validación de solapamientos/fines de semana, referencias anteriores,
+concurrencia y escritura con evidencia en transacción. No hay borrado de calendarios.
+
+SLA preservado por fotografía de calendario en la bitácora de cada ciclo. Migración
+022 aplicada a helpdesk, sin reescribir historia ni plazos. Seed y altas portal/correo
+capturan configuración; pausas, resolución, reclasificación, consumo y ventana de
+reapertura usan el ciclo protegido. Un ciclo nuevo adopta el calendario vigente.
+Índice parcial para recuperar fotografías; siguen las 45 tablas y pools existentes.
+Edición/asignación bloqueada si hay tickets importados sin fotografía. D-023.
+
+Chat 01a1390f-79b8-7d22-99c7-3a696fb4afab entregó parámetros API/UI y pruebas;
+integradas ruta /administracion/parametros y cuatro claves permitidas. Inactividad
+1–30 min, bloqueo 15–1440 min, adjuntos hasta 10 MB; cierre 48 h solo consulta.
+CSRF, alcance global, fallback real explícito, conflictos de upsert y auditoría
+transaccional. No se exponen claves arbitrarias ni secretos. D-024.
+
+Validación: pnpm check con lint/typecheck/test/build en verde, 301 pruebas en 22
+archivos y build de 302,51 KB gzip. Incluye consumidor de sesión/adjuntos/bloqueo,
+límites, concurrencia sobre valor ausente, rollback, intervalos/feriados y protección
+de ciclos al cambiar configuración, pausar/reanudar/resolver/cerrar/reabrir.
+Las pruebas anteriores de alta también verifican la nueva evidencia de calendario.
+
+Prueba HTTP local: cuatro parámetros consultables, cierre no editable y calendario
+«Calendario local de demostración» con 10 intervalos y un feriado asignado a Managua.
+El plazo de TK-000015 se conservó; ambas cadenas verificadas íntegras. Datos ficticios,
+sin otras bases ni recursos externos. Revisión visual continúa pendiente por fallo
+de inicialización de cua; no se afirma revisión de las pantallas nuevas.
+
+Avance funcional estimado: aproximadamente 94 %, no aceptación formal RF/RNF.
+Pendientes: administración del catálogo de roles/permisos y de matriz/plazos bajo
+las reglas vigentes; revisión visual/accesibilidad, k6, manuales y evidencia completa
+de aceptación. Se conservan los límites de correo simulado y enlaces CSAT en memoria.

@@ -30,7 +30,8 @@ export async function importSimulatedMail(executor: DatabaseExecutor, input: Sim
   const idGrupo = await repo.resolverGroup(category.idGrupoDefault, requester.idSede);
   const priority = await repo.priority(data.impacto, data.urgencia);
   if (idGrupo === undefined || !priority) throw new AppError('CATALOGO_INVALIDO', 400, 'Falta configuración de soporte.');
-  const limits = calcularFechasLimiteSla(now, priority, await repo.calendar(requester.idSede));
+  const calendar = await repo.calendar(requester.idSede);
+  const limits = calcularFechasLimiteSla(now, priority, calendar);
   if (!limits.fechaLimiteRespuesta || !limits.fechaLimiteSolucion) throw new Error('Plazos iniciales inválidos.');
   const idTicket = await repo.newId();
   await serializeTicketAssignment(executor);
@@ -39,6 +40,7 @@ export async function importSimulatedMail(executor: DatabaseExecutor, input: Sim
     canalIngreso: 'CORREO', numeroReaperturas: 0, fechaCreacion: now, fechaLimiteRespuesta: limits.fechaLimiteRespuesta,
     fechaLimiteSolucion: limits.fechaLimiteSolucion, minutosPausa: 0, version: 1 });
   await mail.log(idTicket, idTarea, 'CREACION', now);
+  await repo.recordCalendar(idTicket, 1, calendar, now, null, idTarea);
   if (limits.fechaAlertaSolucion) await repo.alert(idTicket, 'UMBRAL_50', limits.fechaAlertaSolucion);
   await assignTicketAutomatically(executor, idTicket, now);
   return idTicket;

@@ -17,7 +17,7 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
   const map = async (row: TicketRow, now: Date) => {
     const creation = await repository.cycleStart(row.idTicket, row.fechaCreacion);
     const end = row.fechaResolucion ?? row.fechaCierre ?? now;
-    const calendar = await repository.calendar(row.idSede);
+    const calendar = await repository.cycleCalendar(row.idTicket, row.numeroReaperturas + 1, row.idSede);
     const pauses = await repository.pauses(row.idTicket);
     const used = end >= creation ? contarMinutosSla(creation, end, { calendario: calendar, modoCalendario: row.modoCalendario, pausas: pauses }) : 0;
     return mapTicket(row, used * 100 / row.minutosSolucion);
@@ -75,7 +75,8 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
         }
         const priority = await repo.priority(data.impacto, data.urgencia);
         if (!priority) throw new AppError('CATALOGO_INVALIDO', 400, 'No existe prioridad activa para esa combinación.');
-        const limits = calcularFechasLimiteSla(now, priority, await repo.calendar(requester.idSede));
+        const calendar = await repo.calendar(requester.idSede);
+        const limits = calcularFechasLimiteSla(now, priority, calendar);
         if (!limits.fechaLimiteRespuesta || !limits.fechaLimiteSolucion) throw new Error('No se calcularon los plazos iniciales.');
         const idTicket = await repo.newId();
         const number = `TK-${String(idTicket).padStart(6, '0')}`;
@@ -88,6 +89,7 @@ export function createTicketsService(repository: TicketsRepository, atomic: <T>(
           fechaLimiteSolucion: limits.fechaLimiteSolucion, minutosPausa: 0, version: 1,
         });
         await repo.logCreation(idTicket, context, now);
+        await repo.recordCalendar(idTicket, 1, calendar, now, context);
         if (limits.fechaAlertaSolucion) await repo.alert(idTicket, 'UMBRAL_50', limits.fechaAlertaSolucion);
         await assignTicketAutomatically(repo.executor, idTicket, now);
         return number;

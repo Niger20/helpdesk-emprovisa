@@ -437,3 +437,51 @@ Vincular/desvincular registra bitácora del caso y auditoría del sistema; votar
 auditoría del sistema. La evidencia solo contiene identificadores, sin comentarios,
 contenido ni uso. Fallar evidencia revierte el cambio. Filtrado de vínculos consulta
 cada ticket; se documenta posible optimización para un volumen mayor al prototipo.
+
+## D-023 — Calendario protegido por ciclo SLA
+
+RF-19 habilita calendarios, intervalos partidos, feriados y asignación a sedes desde
+la interfaz. El ER admite días 1–7, mientras RN-09 excluye fines de semana: la
+configuración administrativa acepta lunes a viernes, zona America/Managua y al menos
+un intervalo. Se rechazan solapamientos, horas invertidas y feriados duplicados.
+No hay borrado de calendarios; horarios/feriados se reemplazan en una transacción.
+Permiso parametro.administrar global porque un calendario puede regir varias sedes.
+
+Cambiar el calendario vigente no debe reinterpretar SLA existentes. Sin agregar una
+tabla ni columna al ER, cada ciclo guarda sus horarios, feriados y zona en una entrada
+SLA_CALENDARIO_FIJADO de la bitácora encadenada. Altas portal/correo la escriben en
+la misma transacción; consumo, pausas, reclasificación y resolución usan esa entrada.
+La ventana de cinco días hábiles usa el calendario del ciclo cerrado. Reabrir o
+rechazar una solución inicia ciclo nuevo con el calendario vigente de la sede.
+P1/P2 conservan modo continuo, P3/P4 laboral y los plazos de prioridad existentes.
+
+Migración 022 añade evidencia para ciclos actuales anteriores a esta capacidad,
+capturando la configuración observada al migrar; no reconstruye configuraciones
+históricas desconocidas ni reescribe filas/plazos. La seed captura sus escenarios.
+Si un ticket importado carece de fotografía de ciclo, la lectura conserva fallback
+compatible pero no se permite editar/asignar su calendario hasta protegerlo.
+El cambio administrativo se serializa, compara referencia anterior y bloquea calendario
+o sede; el alta toma bloqueo compartido antes de leer intervalos. No se añaden versiones
+ficticias ni se ocultan conflictos. Se mantiene el modelo de 45 tablas.
+
+## D-024 — Parámetros operativos con límites conservados
+
+La administración solo expone cuatro claves realmente consumidas: inactividad de
+sesión (1–30 min), bloqueo de cuenta (15–1440 min), tamaño de adjunto (1–10485760
+bytes) y cierre por inactividad (48 h, solo consulta conforme RN-06). No se exponen
+claves arbitrarias, marcador de seed, secretos ni entorno. Se mantienen cinco fallos
+consecutivos, Argon2, hashes y validación del tipo real de adjuntos.
+
+El ER no define intervalos configurables; se fijan límites conservadores según los
+controles vigentes y el máximo local sembrado de 10 MB. Sesión/bloqueo tienen fallback
+real y pueden persistirse por upsert. Adjuntos/cierre ausentes o corruptos dan error
+explícito, sin inventar predeterminados en consumidores que no los tienen.
+La UI muestra origen configurado/predeterminado, unidad y fecha Managua.
+
+El cambio exige parametro.administrar global, CSRF y valorAnterior coincidente;
+advisory lock protege también filas ausentes. Se guardan valor y evidencia sanitizada
+en una transacción, con relectura validada antes de responder. Límites inválidos dan
+400 y conflictos 409. La sesión usa el valor al ingresar y recargar actividad;
+el bloqueo al alcanzar cinco fallos y adjuntos al cargar. No se modifica el vencimiento
+ya fijado de un bloqueo. La repetición de valores compara campos, sin prometer
+detectar una secuencia que vuelva exactamente al valor anterior.
