@@ -1,4 +1,15 @@
 import { z } from 'zod';
+import { numeroTicketSchema } from './tickets.js';
+
+export const knowledgeVoteSchema = z.object({ util: z.boolean(), comentario: z.string().trim().max(300).nullable() });
+export const knowledgeFeedbackSchema = z.object({ utiles: z.number().int().nonnegative(), noUtiles: z.number().int().nonnegative(),
+  miVoto: knowledgeVoteSchema.nullable() });
+export const knowledgeLinkSchema = z.object({ numero: numeroTicketSchema, uso: z.string().trim().min(1).max(10) });
+export const knowledgeLinkParamsSchema = z.object({ idArticulo: z.coerce.number().int().positive(), numero: numeroTicketSchema });
+export const knowledgeLinksSchema = z.object({ data: z.array(knowledgeLinkSchema.extend({ fecha: z.iso.datetime() })) });
+export const knowledgeFeedbackResultSchema = z.object({ actualizado: z.boolean() });
+export type KnowledgeVote = z.infer<typeof knowledgeVoteSchema>;
+export type KnowledgeLink = z.infer<typeof knowledgeLinkSchema>;
 
 export const estadoArticuloSchema = z.enum(['BORRADOR', 'PUBLICADO', 'ARCHIVADO']);
 export const visibilidadArticuloSchema = z.enum(['PUBLICO', 'INTERNO']);

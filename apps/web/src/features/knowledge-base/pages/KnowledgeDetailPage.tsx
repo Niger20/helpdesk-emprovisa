@@ -5,6 +5,8 @@ import { useKnowledgeDetail } from '../hooks/useKnowledgeDetail';
 import { KnowledgeArticle } from '../components/KnowledgeArticle';
 import { KnowledgeHistory } from '../components/KnowledgeHistory';
 import { KnowledgeForm } from '../components/KnowledgeForm';
+import { KnowledgeVote } from '../components/KnowledgeVote';
+import { KnowledgeLinks } from '../components/KnowledgeLinks';
 
 export function KnowledgeDetailPage() {
   const state = useKnowledgeDetail();
@@ -15,6 +17,8 @@ export function KnowledgeDetailPage() {
       {state.editing && state.canEdit && <QueryBoundary query={state.catalog} isEmpty={(data) => data.categorias.length === 0}>{(catalog) =>
         <KnowledgeForm key={`${article.idArticulo}-${article.versionActual}`} article={article} catalog={catalog} onCancel={() => state.setEditing(false)} />}</QueryBoundary>}
       <KnowledgeArticle article={article} /><KnowledgeHistory versions={article.versiones} />
+      <KnowledgeVote state={state.feedback} publicado={article.estado === 'PUBLICADO'} />
+      <KnowledgeLinks state={state.feedback} publicado={article.estado === 'PUBLICADO'} />
     </>}</QueryBoundary>
   </div></AppShell>;
 }

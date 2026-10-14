@@ -3,8 +3,10 @@ import { knowledgeParamsSchema, knowledgeQuerySchema, knowledgeListSchema, knowl
 import type { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import type { KnowledgeService } from './knowledge.service.js';
+import { registerFeedbackRoutes } from './feedback.routes.js';
 
 export function registerKnowledgeRoutes(app: FastifyInstance, service: KnowledgeService) {
+  registerFeedbackRoutes(app, service);
   const routes = app.withTypeProvider<ZodTypeProvider>();
   routes.get('/api/v1/conocimientos', { config: { permiso: 'kb.ver' },
     schema: { querystring: knowledgeQuerySchema, response: { 200: knowledgeListSchema } } }, (request) => service.list(request.sesion, request.query));

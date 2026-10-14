@@ -5,8 +5,9 @@ import { AppError } from '../../common/errors/app-error.js';
 import { knowledgeAccess } from './knowledge.policies.js';
 import { mapKnowledge } from './knowledge.mapper.js';
 import type { KnowledgeRepository } from './knowledge.repository.js';
+import type { FeedbackService } from './feedback.service.js';
 
-export function buildKnowledgeService(repository: KnowledgeRepository) {
+export function buildKnowledgeService(repository: KnowledgeRepository, feedback: FeedbackService) {
   const detail = async (context: SessionContext | null, id: number) => {
     const access = knowledgeAccess(context);
     const { idArticulo } = knowledgeParamsSchema.parse({ idArticulo: id });
@@ -41,7 +42,7 @@ export function buildKnowledgeService(repository: KnowledgeRepository) {
     });
     return detail(context, saved);
   };
-  return { detail, list: async (context: SessionContext | null, query: KnowledgeQuery) => {
+  return { ...feedback, detail, list: async (context: SessionContext | null, query: KnowledgeQuery) => {
     const access = knowledgeAccess(context);
     const input = knowledgeQuerySchema.parse(query);
     const result = await repository.list(input, access);
