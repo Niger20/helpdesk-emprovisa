@@ -1,0 +1,160 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Catálogos, SLA y configuración\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "categorias" as categorias {
+  *id_categoria : serial <<PK>>
+  --
+  id_padre : int <<FK>>
+  *nombre : varchar(80)
+  *tipo_aplicable : varchar(10)
+  *requiere_activo : boolean
+  id_grupo_default : int <<FK>>
+  *orden : smallint
+  *activa : boolean
+}
+entity "estados_ticket" as estados_ticket {
+  *id_estado : serial <<PK>>
+  --
+  *codigo : varchar(20) <<UK>>
+  *nombre : varchar(40)
+  *es_final : boolean
+  *reloj_corre : boolean
+  *orden : smallint
+}
+entity "transiciones_estado" as transiciones_estado {
+  *id_transicion : serial <<PK>>
+  --
+  *id_estado_origen : int <<FK>>
+  *id_estado_destino : int <<FK>>
+  *id_permiso : int <<FK>>
+  *requiere_motivo : boolean
+  *requiere_confirmacion_solicitante : boolean
+  *automatica : boolean
+}
+entity "prioridades_sla" as prioridades_sla {
+  *id_prioridad : serial <<PK>>
+  --
+  *codigo : char(2) <<UK>>
+  *nombre : varchar(30)
+  *minutos_respuesta : int
+  *minutos_solucion : int
+  *modo_calendario : varchar(10)
+  *porcentaje_alerta : smallint
+  *color_hex : char(7)
+  *activa : boolean
+}
+entity "matriz_prioridad" as matriz_prioridad {
+  *id_matriz : serial <<PK>>
+  --
+  *impacto : varchar(10)
+  *urgencia : varchar(10)
+  *id_prioridad : int <<FK>>
+}
+entity "calendarios_laborales" as calendarios_laborales {
+  *id_calendario : serial <<PK>>
+  --
+  *nombre : varchar(60)
+  *zona_horaria : varchar(40)
+}
+entity "horarios_laborales" as horarios_laborales {
+  *id_horario : serial <<PK>>
+  --
+  *id_calendario : int <<FK>>
+  *dia_semana : smallint
+  *hora_inicio : time
+  *hora_fin : time
+}
+entity "feriados" as feriados {
+  *id_feriado : serial <<PK>>
+  --
+  *id_calendario : int <<FK>>
+  *fecha : date
+  *descripcion : varchar(100)
+}
+entity "parametros" as parametros {
+  *clave : varchar(60) <<PK>>
+  --
+  *valor : text
+  *tipo_dato : varchar(15)
+  descripcion : varchar(200)
+  modificado_por : int <<FK>>
+  *modificado_en : timestamptz
+}
+entity "plantillas_notificacion" as plantillas_notificacion {
+  *id_plantilla : serial <<PK>>
+  --
+  *codigo_evento : varchar(40) <<UK>>
+  *asunto : varchar(150)
+  *cuerpo : text
+  *activa : boolean
+}
+entity "tareas_programadas" as tareas_programadas {
+  *id_tarea : serial <<PK>>
+  --
+  *codigo : varchar(40) <<UK>>
+  *expresion_cron : varchar(50)
+  ultima_ejecucion : timestamptz
+  ultimo_resultado : varchar(20)
+  *activa : boolean
+}
+entity "grupos_resolutores" as grupos_resolutores #E2E8F0 {
+  *id_grupo : serial <<PK>>
+}
+entity "permisos" as permisos #E2E8F0 {
+  *id_permiso : serial <<PK>>
+}
+categorias |o..o{ categorias : "subcategoría"
+grupos_resolutores |o..o{ categorias : "atiende por defecto"
+estados_ticket ||--o{ transiciones_estado : "origen"
+estados_ticket ||--o{ transiciones_estado : "destino"
+permisos ||--o{ transiciones_estado : "autoriza"
+prioridades_sla ||--o{ matriz_prioridad : "resulta de"
+calendarios_laborales ||--o{ horarios_laborales : "define"
+calendarios_laborales ||--o{ feriados : "excluye"
+note right of transiciones_estado
+La máquina de estados vive en datos.
+Un cambio de estado es válido solo si existe la fila
+y el usuario posee el permiso indicado.
+end note
+@enduml

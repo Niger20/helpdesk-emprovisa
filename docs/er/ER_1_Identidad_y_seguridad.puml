@@ -1,0 +1,208 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Identidad, acceso y seguridad\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "sedes" as sedes {
+  *id_sede : serial <<PK>>
+  --
+  *codigo : varchar(10) <<UK>>
+  *nombre : varchar(50)
+  *ciudad : varchar(50)
+  direccion : varchar(150)
+  *id_calendario : int <<FK>>
+  *activa : boolean
+}
+entity "departamentos" as departamentos {
+  *id_departamento : serial <<PK>>
+  --
+  *id_sede : int <<FK>>
+  *nombre : varchar(80)
+}
+entity "usuarios" as usuarios {
+  *id_usuario : serial <<PK>>
+  --
+  *username : varchar(50) <<UK>>
+  guid_directorio : uuid <<UK>>
+  *nombre_completo : varchar(100)
+  *correo : varchar(120) <<UK>>
+  cargo : varchar(80)
+  extension : varchar(10)
+  *id_sede : int <<FK>>
+  id_departamento : int <<FK>>
+  id_jefe_inmediato : int <<FK>>
+  *origen_cuenta : varchar(10)
+  password_hash : varchar(255)
+  *estado : varchar(10)
+  *intentos_fallidos : smallint
+  bloqueado_hasta : timestamptz
+  ultimo_acceso : timestamptz
+  sincronizado_en : timestamptz
+}
+entity "roles" as roles {
+  *id_rol : serial <<PK>>
+  --
+  *codigo : varchar(30) <<UK>>
+  *nombre : varchar(60)
+  descripcion : varchar(200)
+  *es_sistema : boolean
+}
+entity "permisos" as permisos {
+  *id_permiso : serial <<PK>>
+  --
+  *codigo : varchar(60) <<UK>>
+  *modulo : varchar(30)
+  *accion : varchar(30)
+  descripcion : varchar(200)
+}
+entity "rol_permiso" as rol_permiso {
+  *id_rol : int <<PK,FK>>
+  *id_permiso : int <<PK,FK>>
+}
+entity "usuario_rol" as usuario_rol {
+  *id_usuario_rol : serial <<PK>>
+  --
+  *id_usuario : int <<FK>>
+  *id_rol : int <<FK>>
+  id_sede_alcance : int <<FK>>
+  *vigente_desde : date
+  vigente_hasta : date
+  *asignado_por : int <<FK>>
+}
+entity "grupos_resolutores" as grupos_resolutores {
+  *id_grupo : serial <<PK>>
+  --
+  *nombre : varchar(80)
+  *nivel : smallint
+  id_sede : int <<FK>>
+  correo_grupo : varchar(120)
+  *activo : boolean
+}
+entity "grupo_miembros" as grupo_miembros {
+  *id_grupo : int <<PK,FK>>
+  *id_usuario : int <<PK,FK>>
+  --
+  *es_coordinador : boolean
+  *desde : date
+  hasta : date
+}
+entity "usuario_especialidad" as usuario_especialidad {
+  *id_usuario : int <<PK,FK>>
+  *id_categoria : int <<PK,FK>>
+  --
+  *nivel_dominio : smallint
+}
+entity "delegaciones" as delegaciones {
+  *id_delegacion : serial <<PK>>
+  --
+  *id_delegante : int <<FK>>
+  *id_delegado : int <<FK>>
+  *desde : timestamptz
+  *hasta : timestamptz
+  *motivo : varchar(200)
+  *aprobada_por : int <<FK>>
+}
+entity "sesiones" as sesiones {
+  *id_sesion : uuid <<PK>>
+  --
+  *id_usuario : int <<FK>>
+  *token_hash : char(64) <<UK>>
+  *direccion_ip : inet
+  user_agent : varchar(255)
+  *creada_en : timestamptz
+  *ultima_actividad : timestamptz
+  *expira_en : timestamptz
+  revocada_en : timestamptz
+  motivo_revocacion : varchar(60)
+}
+entity "intentos_login" as intentos_login {
+  *id_intento : bigserial <<PK>>
+  --
+  id_usuario : int <<FK>>
+  *username_intentado : varchar(50)
+  *direccion_ip : inet
+  *exitoso : boolean
+  motivo_fallo : varchar(40)
+  *fecha_hora : timestamptz
+}
+entity "categorias" as categorias #E2E8F0 {
+  *id_categoria : serial <<PK>>
+}
+entity "calendarios_laborales" as calendarios_laborales #E2E8F0 {
+  *id_calendario : serial <<PK>>
+}
+sedes ||--o{ departamentos : "tiene"
+sedes ||--o{ usuarios : "agrupa"
+departamentos |o..o{ usuarios : "integra"
+usuarios |o..o{ usuarios : "jefe de"
+usuarios ||--o{ usuario_rol : "recibe"
+roles ||--o{ usuario_rol : "se asigna"
+sedes |o..o{ usuario_rol : "limita alcance"
+roles ||--o{ rol_permiso : "otorga"
+permisos ||--o{ rol_permiso : "se concede"
+sedes |o..o{ grupos_resolutores : "atiende"
+grupos_resolutores ||--o{ grupo_miembros : "integra"
+usuarios ||--o{ grupo_miembros : "pertenece"
+usuarios ||--o{ usuario_especialidad : "domina"
+categorias ||--o{ usuario_especialidad : "requiere"
+usuarios ||--o{ delegaciones : "delega"
+usuarios ||--o{ delegaciones : "recibe delegación"
+usuarios ||--o{ sesiones : "abre"
+usuarios |o..o{ intentos_login : "intenta acceder"
+calendarios_laborales ||--o{ sedes : "rige"
+note right of usuario_rol
+Rol con alcance por sede (id_sede_alcance nulo = todas).
+Vigencia con fechas para altas y bajas controladas.
+end note
+note right of delegaciones
+Cubre ausencias: durante la vigencia el delegado
+ve y atiende la cola del delegante.
+end note
+note right of sesiones
+Solo se guarda el hash del token.
+Expira por inactividad y es revocable.
+end note
+note right of intentos_login
+5 fallos consecutivos bloquean la cuenta
+(usuarios.bloqueado_hasta). Base del control NOR-SEG-001.
+end note
+@enduml

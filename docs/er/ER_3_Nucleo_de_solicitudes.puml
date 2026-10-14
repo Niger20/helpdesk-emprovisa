@@ -1,0 +1,304 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Núcleo de solicitudes\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "tickets" as tickets {
+  *id_ticket : serial <<PK>>
+  --
+  *numero : varchar(12) <<UK>>
+  *tipo : varchar(10)
+  *titulo : varchar(150)
+  *descripcion : text
+  *id_solicitante : int <<FK>>
+  *id_registrado_por : int <<FK>>
+  id_asignado : int <<FK>>
+  id_grupo : int <<FK>>
+  *id_sede : int <<FK>>
+  *id_categoria : int <<FK>>
+  id_activo : int <<FK>>
+  *impacto : varchar(10)
+  *urgencia : varchar(10)
+  *id_prioridad : int <<FK>>
+  *prioridad_manual : boolean
+  justificacion_prioridad : text
+  *id_estado : int <<FK>>
+  *canal_ingreso : varchar(20)
+  id_ticket_origen : int <<FK>>
+  *numero_reaperturas : smallint
+  *fecha_creacion : timestamptz
+  *fecha_limite_respuesta : timestamptz
+  *fecha_limite_solucion : timestamptz
+  fecha_primera_respuesta : timestamptz
+  fecha_resolucion : timestamptz
+  fecha_cierre : timestamptz
+  *minutos_pausa : int
+  sla_respuesta_cumplido : boolean
+  sla_solucion_cumplido : boolean
+  *version : int
+}
+entity "ticket_asignaciones" as ticket_asignaciones {
+  *id_asignacion : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  id_usuario : int <<FK>>
+  id_grupo : int <<FK>>
+  *tipo : varchar(15)
+  asignado_por : int <<FK>>
+  motivo : varchar(200)
+  *desde : timestamptz
+  hasta : timestamptz
+}
+entity "ticket_escalamientos" as ticket_escalamientos {
+  *id_escalamiento : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  *nivel_origen : smallint
+  *nivel_destino : smallint
+  *id_grupo_destino : int <<FK>>
+  *tipo : varchar(10)
+  *motivo : varchar(200)
+  escalado_por : int <<FK>>
+  *fecha : timestamptz
+  aceptado_por : int <<FK>>
+  aceptado_en : timestamptz
+}
+entity "ticket_comentarios" as ticket_comentarios {
+  *id_comentario : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  id_autor : int <<FK>>
+  *visibilidad : varchar(10)
+  *contenido : text
+  *origen : varchar(10)
+  id_correo : bigint <<FK>>
+  *fecha_creacion : timestamptz
+}
+entity "ticket_adjuntos" as ticket_adjuntos {
+  *id_adjunto : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  id_comentario : int <<FK>>
+  *nombre_original : varchar(200)
+  *nombre_almacenado : uuid <<UK>>
+  *mime_type : varchar(100)
+  *tamano_bytes : int
+  *hash_sha256 : char(64)
+  *estado_validacion : varchar(10)
+  *subido_por : int <<FK>>
+  *fecha_subida : timestamptz
+}
+entity "pausas_sla" as pausas_sla {
+  *id_pausa : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  *motivo : varchar(20)
+  *detalle : varchar(250)
+  referencia_externa : varchar(60)
+  *iniciada_por : int <<FK>>
+  aprobada_por : int <<FK>>
+  *inicio : timestamptz
+  fin : timestamptz
+  minutos_descontados : int
+}
+entity "sla_alertas" as sla_alertas {
+  *id_alerta : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  *ciclo_sla : smallint
+  *tipo : varchar(20)
+  *programada_para : timestamptz
+  disparada_en : timestamptz
+  *estado : varchar(10)
+}
+entity "ticket_reaperturas" as ticket_reaperturas {
+  *id_reapertura : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  *solicitada_por : int <<FK>>
+  *motivo : varchar(250)
+  *fecha : timestamptz
+  *nuevo_limite_solucion : timestamptz
+}
+entity "ticket_resoluciones" as ticket_resoluciones {
+  *id_resolucion : serial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  *ciclo : smallint
+  *id_resolutor : int <<FK>>
+  causa : varchar(100)
+  *solucion : text
+  *fecha_resolucion : timestamptz
+}
+entity "ticket_articulos" as ticket_articulos {
+  *id_ticket : int <<PK,FK>>
+  *id_articulo : int <<PK,FK>>
+  --
+  *uso : varchar(10)
+  *vinculado_por : int <<FK>>
+  *fecha : timestamptz
+}
+entity "encuestas_csat" as encuestas_csat {
+  *id_encuesta : serial <<PK>>
+  --
+  *id_ticket : int <<FK,UK>>
+  *token_hash : char(64) <<UK>>
+  calificacion : smallint
+  comentario : varchar(500)
+  *enviada_en : timestamptz
+  respondida_en : timestamptz
+  *expira_en : timestamptz
+}
+entity "notificaciones" as notificaciones {
+  *id_notificacion : bigserial <<PK>>
+  --
+  id_ticket : int <<FK>>
+  id_destinatario : int <<FK>>
+  *id_plantilla : int <<FK>>
+  *correo_destino : varchar(120)
+  *asunto : varchar(150)
+  *estado : varchar(10)
+  *intentos : smallint
+  ultimo_error : varchar(250)
+  *encolada_en : timestamptz
+  enviada_en : timestamptz
+}
+entity "correos_entrantes" as correos_entrantes {
+  *id_correo : bigserial <<PK>>
+  --
+  *message_id : varchar(255) <<UK>>
+  in_reply_to : varchar(255)
+  *remitente : varchar(120)
+  id_usuario_remitente : int <<FK>>
+  *asunto : varchar(250)
+  *recibido_en : timestamptz
+  *estado : varchar(20)
+  id_ticket : int <<FK>>
+  motivo_rechazo : varchar(150)
+  *hash_contenido : char(64)
+}
+entity "usuarios" as usuarios #E2E8F0 {
+  *id_usuario : serial <<PK>>
+}
+entity "grupos_resolutores" as grupos_resolutores #E2E8F0 {
+  *id_grupo : serial <<PK>>
+}
+entity "sedes" as sedes #E2E8F0 {
+  *id_sede : serial <<PK>>
+}
+entity "categorias" as categorias #E2E8F0 {
+  *id_categoria : serial <<PK>>
+}
+entity "activos_ti" as activos_ti #E2E8F0 {
+  *id_activo : serial <<PK>>
+}
+entity "prioridades_sla" as prioridades_sla #E2E8F0 {
+  *id_prioridad : serial <<PK>>
+}
+entity "estados_ticket" as estados_ticket #E2E8F0 {
+  *id_estado : serial <<PK>>
+}
+entity "articulos_kb" as articulos_kb #E2E8F0 {
+  *id_articulo : serial <<PK>>
+}
+entity "plantillas_notificacion" as plantillas_notificacion #E2E8F0 {
+  *id_plantilla : serial <<PK>>
+}
+usuarios ||--o{ tickets : "solicita"
+usuarios |o..o{ tickets : "atiende"
+grupos_resolutores |o..o{ tickets : "cola del grupo"
+sedes ||--o{ tickets : "cola de sede"
+categorias ||--o{ tickets : "clasifica"
+activos_ti |o..o{ tickets : "afecta"
+prioridades_sla ||--o{ tickets : "fija plazos"
+estados_ticket ||--o{ tickets : "estado actual"
+tickets |o..o{ tickets : "reabierto como"
+tickets ||--o{ ticket_asignaciones : "historial de"
+grupos_resolutores |o..o{ ticket_asignaciones : "cola asignada"
+usuarios |o..o{ ticket_asignaciones : "asignado a"
+tickets ||--o{ ticket_escalamientos : "escala"
+grupos_resolutores ||--o{ ticket_escalamientos : "destino"
+tickets ||--o{ ticket_comentarios : "diálogo"
+usuarios |o..o{ ticket_comentarios : "escribe"
+correos_entrantes |o..o{ ticket_comentarios : "origina"
+tickets ||--o{ ticket_adjuntos : "adjunta"
+ticket_comentarios |o..o{ ticket_adjuntos : "incluye"
+tickets ||--o{ pausas_sla : "detiene reloj"
+tickets ||--o{ sla_alertas : "programa"
+tickets ||--o{ ticket_reaperturas : "reabre"
+tickets ||--o{ ticket_resoluciones : "resuelve"
+usuarios ||--o{ ticket_resoluciones : "resolvió"
+tickets ||--o{ ticket_articulos : "cita"
+articulos_kb ||--o{ ticket_articulos : "se aplica en"
+tickets ||--o| encuestas_csat : "evalúa"
+tickets |o..o{ notificaciones : "genera"
+usuarios |o..o{ notificaciones : "recibe"
+plantillas_notificacion ||--o{ notificaciones : "da formato"
+tickets |o..o{ correos_entrantes : "recibe"
+usuarios |o..o{ correos_entrantes : "remite"
+note right of tickets
+prioridad = matriz_prioridad(impacto, urgencia).
+Cambio manual: exige justificacion_prioridad (RN-11).
+Fechas límite: horarios_laborales + feriados (RN-09).
+version = bloqueo optimista ante edición concurrente.
+RN-05: quien es solicitante no puede resolver ni validar el ticket.
+end note
+note right of ticket_adjuntos
+Archivo físico fuera de la raíz web.
+Se valida tipo, tamaño y hash SHA-256.
+end note
+note right of pausas_sla
+Solo REPUESTOS o PROVEEDOR_EXTERNO (RN-03).
+Al cerrar la pausa se suman los minutos a tickets.minutos_pausa.
+end note
+note right of sla_alertas
+El planificador recorre alertas PENDIENTE vencidas:
+UMBRAL_50 avisa (RN-07); VENC_RESPUESTA escala (RF-07).
+end note
+note right of encuestas_csat
+Token de un solo uso; solo se guarda su hash. Expira.
+end note
+note right of correos_entrantes
+message_id único = ingesta idempotente.
+in_reply_to enlaza la respuesta al ticket existente.
+end note
+@enduml

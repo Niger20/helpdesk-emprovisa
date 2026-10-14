@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#E8ECF1;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#13315C}a:hover{color:#0B2545}*{box-sizing:border-box}</style></helmet>
+
+<section style="padding:40px 44px 48px">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 20px">
+    <span style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#0B2545;color:#fff;border-radius:4px">Lámina</span>
+    <span style="font:600 13px/1.2 Inter,system-ui,sans-serif;color:#0B2545">Componentes reutilizables</span>
+  </div>
+
+  <div style="width:1200px;display:flex;flex-direction:column;gap:20px">
+
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:24px">
+      <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Chips de prioridad</div>
+      <div style="display:flex;gap:12px">
+        <span style="padding:5px 14px;border-radius:4px;font-size:13px;font-weight:700;color:#B91C1C;background:#FEE2E2;border:1px solid #DC2626">P1 · Crítica</span>
+        <span style="padding:5px 14px;border-radius:4px;font-size:13px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2 · Alta</span>
+        <span style="padding:5px 14px;border-radius:4px;font-size:13px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3 · Media</span>
+        <span style="padding:5px 14px;border-radius:4px;font-size:13px;font-weight:700;color:#475569;background:#F1F5F9;border:1px solid #94A3B8">P4 · Baja</span>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:24px">
+      <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Etiquetas de estado del ticket</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#13315C;background:#EEF3FA;border:1px solid #C5D6EC;white-space:nowrap;flex:none">Nuevo</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#13315C;background:#EEF3FA;border:1px solid #13315C;white-space:nowrap;flex:none">Asignado</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#0B2545;background:#DCE5F0;border:1px solid #0B2545;white-space:nowrap;flex:none">En atención</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#475569;background:#F1F5F9;border:1px solid #94A3B8;white-space:nowrap;flex:none">En espera</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B;white-space:nowrap;flex:none">Escalado</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:700;color:#047857;background:#D1FAE5;border:1px solid #10B981;white-space:nowrap;flex:none">Resuelto</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#475569;background:#F1F5F9;border:1px solid #CBD5E1;white-space:nowrap;flex:none">Cerrado</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:700;color:#B91C1C;background:#FEE2E2;border:1px solid #DC2626;white-space:nowrap;flex:none">Reabierto</span>
+        <span style="padding:4px 12px;border-radius:4px;font-size:12.5px;font-weight:600;color:#475569;background:#F1F5F9;border:1px solid #CBD5E1;white-space:nowrap;flex:none">Cancelado</span>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:24px">
+      <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Barra de SLA — cuatro variantes</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span style="width:8px;height:8px;border-radius:50%;background:#10B981"></span><span style="font-size:12px;font-weight:700;color:#047857">En plazo</span><span style="margin-left:auto;font-size:12px;color:#475569">3h 40m</span></div>
+          <div style="height:6px;border-radius:3px;background:#E2E8F0;overflow:hidden"><div style="height:6px;width:38%;background:#10B981"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span style="width:8px;height:8px;border-radius:50%;background:#F59E0B"></span><span style="font-size:12px;font-weight:700;color:#92400E">En riesgo</span><span style="margin-left:auto;font-size:12px;color:#475569">1h 20m</span></div>
+          <div style="height:6px;border-radius:3px;background:#E2E8F0;overflow:hidden"><div style="height:6px;width:68%;background:#F59E0B"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span style="width:8px;height:8px;border-radius:50%;background:#DC2626"></span><span style="font-size:12px;font-weight:700;color:#B91C1C">Vencido</span><span style="margin-left:auto;font-size:12px;color:#475569">-0h 45m</span></div>
+          <div style="height:6px;border-radius:3px;background:#E2E8F0;overflow:hidden"><div style="height:6px;width:100%;background:#DC2626"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span style="width:8px;height:8px;border-radius:50%;background:#94A3B8"></span><span style="font-size:12px;font-weight:700;color:#475569">En pausa</span><span style="margin-left:auto;font-size:12px;color:#475569">1d 4h</span></div>
+          <div style="height:6px;border-radius:3px;background:#E2E8F0;overflow:hidden"><div style="height:6px;width:45%;background:#94A3B8"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:24px">
+      <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Botones</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">PRIMARIO</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button style="height:40px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Normal</button>
+            <button style="height:40px;border:1px solid #13315C;background:#13315C;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Hover</button>
+            <button style="height:40px;border:1px solid #E2E8F0;background:#F1F5F9;color:#94A3B8;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:not-allowed">Deshabilitado</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">SECUNDARIO</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button style="height:40px;border:1px solid #CBD5E1;background:#fff;color:#334155;font:500 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Normal</button>
+            <button style="height:40px;border:1px solid #CBD5E1;background:#F1F5F9;color:#334155;font:500 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Hover</button>
+            <button style="height:40px;border:1px solid #E2E8F0;background:#F8FAFC;color:#CBD5E1;font:500 13.5px Inter,sans-serif;border-radius:6px;cursor:not-allowed">Deshabilitado</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">PELIGRO</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button style="height:40px;border:1px solid #DC2626;background:#DC2626;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Normal</button>
+            <button style="height:40px;border:1px solid #B91C1C;background:#B91C1C;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Hover</button>
+            <button style="height:40px;border:1px solid #E2E8F0;background:#F1F5F9;color:#94A3B8;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:not-allowed">Deshabilitado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:24px">
+      <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Campos de formulario</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">NORMAL</div>
+          <label style="display:block;font-size:13px;font-weight:600;color:#0F172A;margin-bottom:6px">Título</label>
+          <div style="height:40px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#0F172A">Correo no sincroniza</div>
+          <div style="font-size:12px;color:#64748B;margin-top:6px">Resumí el problema en una línea.</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">CON FOCO</div>
+          <label style="display:block;font-size:13px;font-weight:600;color:#0F172A;margin-bottom:6px">Título</label>
+          <div style="height:40px;border:2px solid #13315C;box-shadow:0 0 0 3px rgba(19,49,92,.15);border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#0F172A">Correo no sincroniza<span style="width:1px;height:16px;background:#0F172A;margin-left:1px"></span></div>
+          <div style="font-size:12px;color:#64748B;margin-top:6px">Resumí el problema en una línea.</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#64748B;margin-bottom:10px">CON ERROR</div>
+          <label style="display:block;font-size:13px;font-weight:600;color:#0F172A;margin-bottom:6px">Título</label>
+          <div style="height:40px;border:2px solid #DC2626;background:#FEF2F2;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#0F172A">No me llega</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:6px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#DC2626" stroke-width="1.8"><circle cx="8" cy="8" r="6"></circle><path d="M8 4.8v3.6"></path><path d="M8 11h.01"></path></svg><span style="font-size:12px;font-weight:600;color:#B91C1C">El título debe tener al menos 10 caracteres.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:1120}}"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Auditoría y trazabilidad\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "bitacora" as bitacora {
+  *id_bitacora : bigserial <<PK>>
+  --
+  *id_ticket : int <<FK>>
+  id_usuario : int <<FK>>
+  id_sesion : uuid <<FK>>
+  id_tarea : int <<FK>>
+  *accion : varchar(40)
+  campo_afectado : varchar(60)
+  valor_anterior : jsonb
+  valor_nuevo : jsonb
+  *fecha_hora : timestamptz
+  direccion_ip : inet
+  *automatica : boolean
+  *hash_previo : char(64)
+  *hash_registro : char(64) <<UK>>
+}
+entity "auditoria_sistema" as auditoria_sistema {
+  *id_auditoria : bigserial <<PK>>
+  --
+  id_usuario : int <<FK>>
+  id_sesion : uuid <<FK>>
+  id_tarea : int <<FK>>
+  *accion : varchar(40)
+  *entidad : varchar(50)
+  id_entidad : varchar(40)
+  detalle : jsonb
+  *resultado : varchar(10)
+  direccion_ip : inet
+  *fecha_hora : timestamptz
+  *hash_previo : char(64)
+  *hash_registro : char(64) <<UK>>
+}
+entity "tickets" as tickets #E2E8F0 {
+  *id_ticket : serial <<PK>>
+}
+entity "usuarios" as usuarios #E2E8F0 {
+  *id_usuario : serial <<PK>>
+}
+entity "sesiones" as sesiones #E2E8F0 {
+  *id_sesion : uuid <<PK>>
+}
+entity "tareas_programadas" as tareas_programadas #E2E8F0 {
+  *id_tarea : serial <<PK>>
+}
+tickets ||--o{ bitacora : "registra"
+usuarios |o..o{ bitacora : "actúa"
+sesiones |o..o{ bitacora : "origen"
+tareas_programadas |o..o{ bitacora : "ejecuta"
+usuarios |o..o{ auditoria_sistema : "actúa"
+sesiones |o..o{ auditoria_sistema : "origen"
+tareas_programadas |o..o{ auditoria_sistema : "ejecuta"
+note right of bitacora
+Solo INSERT y SELECT para la cuenta de BD de la aplicación.
+hash_registro = SHA-256(hash_previo + contenido).
+Cumple RN-12 y no repudio (RNF-06).
+end note
+note right of auditoria_sistema
+Eventos fuera del ticket: login, cambios de rol,
+parámetros, accesos denegados, exportación de reportes.
+Misma cadena de hashes que bitacora.
+end note
+@enduml

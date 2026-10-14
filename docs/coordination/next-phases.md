@@ -1,0 +1,10 @@
+# Dos fases en paralelo — 13/10/2026
+
+1. Operación inicial de tickets (esta sesión): asignación y toma, inicio de atención, respuestas públicas y notas internas; primera respuesta SLA, control de versión y bitácora transaccional. Propiedad tickets API/web, ticket-actions.ts, permisos/migración/seed y archivos compartidos de integración.
+2. Base de conocimientos (chat 01a13422-b5fd-7ed2-9b34-a668ec1fa38c): listado/búsqueda, consulta y edición con historial de versiones. Propiedad knowledge API, knowledge-base web, knowledge.ts, knowledge-checks.ts y coordination/knowledge.md.
+
+Esta sesión integra exports/rutas y ejecuta los cuatro controles globales. La nueva sesión no recrea helpdesk_test ni ejecuta integración/globales. No se desplegará ni creará infraestructura externa. Adjuntos, escalamiento/pausas, resolución/cierre/reapertura, jobs y CSAT se mantienen pendientes.
+
+Ambas entregas integradas y verificadas: pnpm check pasó con 170 pruebas;
+pantallas comprobadas a 360 px. El avance y pendientes están en PROGRESS,
+con decisiones D-010/D-011. La sesión de conocimientos terminó su entrega.

@@ -1,0 +1,625 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 110
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Modelo entidad-relación completo (45 entidades)\nSistema de mesa de ayuda EMPROVISA · SPEC-TI-2026-002 v2.0 · PostgreSQL 15
+package "Identidad, acceso y seguridad" #E3ECF9 {
+  entity "sedes" as sedes {
+    *id_sede : serial <<PK>>
+    --
+    *codigo : varchar(10) <<UK>>
+    *nombre : varchar(50)
+    *ciudad : varchar(50)
+    direccion : varchar(150)
+    *id_calendario : int <<FK>>
+    *activa : boolean
+  }
+  entity "departamentos" as departamentos {
+    *id_departamento : serial <<PK>>
+    --
+    *id_sede : int <<FK>>
+    *nombre : varchar(80)
+  }
+  entity "usuarios" as usuarios {
+    *id_usuario : serial <<PK>>
+    --
+    *username : varchar(50) <<UK>>
+    guid_directorio : uuid <<UK>>
+    *nombre_completo : varchar(100)
+    *correo : varchar(120) <<UK>>
+    cargo : varchar(80)
+    extension : varchar(10)
+    *id_sede : int <<FK>>
+    id_departamento : int <<FK>>
+    id_jefe_inmediato : int <<FK>>
+    *origen_cuenta : varchar(10)
+    password_hash : varchar(255)
+    *estado : varchar(10)
+    *intentos_fallidos : smallint
+    bloqueado_hasta : timestamptz
+    ultimo_acceso : timestamptz
+    sincronizado_en : timestamptz
+  }
+  entity "roles" as roles {
+    *id_rol : serial <<PK>>
+    --
+    *codigo : varchar(30) <<UK>>
+    *nombre : varchar(60)
+    descripcion : varchar(200)
+    *es_sistema : boolean
+  }
+  entity "permisos" as permisos {
+    *id_permiso : serial <<PK>>
+    --
+    *codigo : varchar(60) <<UK>>
+    *modulo : varchar(30)
+    *accion : varchar(30)
+    descripcion : varchar(200)
+  }
+  entity "rol_permiso" as rol_permiso {
+    *id_rol : int <<PK,FK>>
+    *id_permiso : int <<PK,FK>>
+  }
+  entity "usuario_rol" as usuario_rol {
+    *id_usuario_rol : serial <<PK>>
+    --
+    *id_usuario : int <<FK>>
+    *id_rol : int <<FK>>
+    id_sede_alcance : int <<FK>>
+    *vigente_desde : date
+    vigente_hasta : date
+    *asignado_por : int <<FK>>
+  }
+  entity "grupos_resolutores" as grupos_resolutores {
+    *id_grupo : serial <<PK>>
+    --
+    *nombre : varchar(80)
+    *nivel : smallint
+    id_sede : int <<FK>>
+    correo_grupo : varchar(120)
+    *activo : boolean
+  }
+  entity "grupo_miembros" as grupo_miembros {
+    *id_grupo : int <<PK,FK>>
+    *id_usuario : int <<PK,FK>>
+    --
+    *es_coordinador : boolean
+    *desde : date
+    hasta : date
+  }
+  entity "usuario_especialidad" as usuario_especialidad {
+    *id_usuario : int <<PK,FK>>
+    *id_categoria : int <<PK,FK>>
+    --
+    *nivel_dominio : smallint
+  }
+  entity "delegaciones" as delegaciones {
+    *id_delegacion : serial <<PK>>
+    --
+    *id_delegante : int <<FK>>
+    *id_delegado : int <<FK>>
+    *desde : timestamptz
+    *hasta : timestamptz
+    *motivo : varchar(200)
+    *aprobada_por : int <<FK>>
+  }
+  entity "sesiones" as sesiones {
+    *id_sesion : uuid <<PK>>
+    --
+    *id_usuario : int <<FK>>
+    *token_hash : char(64) <<UK>>
+    *direccion_ip : inet
+    user_agent : varchar(255)
+    *creada_en : timestamptz
+    *ultima_actividad : timestamptz
+    *expira_en : timestamptz
+    revocada_en : timestamptz
+    motivo_revocacion : varchar(60)
+  }
+  entity "intentos_login" as intentos_login {
+    *id_intento : bigserial <<PK>>
+    --
+    id_usuario : int <<FK>>
+    *username_intentado : varchar(50)
+    *direccion_ip : inet
+    *exitoso : boolean
+    motivo_fallo : varchar(40)
+    *fecha_hora : timestamptz
+  }
+}
+package "Catálogos, SLA y configuración" #EEF1F5 {
+  entity "categorias" as categorias {
+    *id_categoria : serial <<PK>>
+    --
+    id_padre : int <<FK>>
+    *nombre : varchar(80)
+    *tipo_aplicable : varchar(10)
+    *requiere_activo : boolean
+    id_grupo_default : int <<FK>>
+    *orden : smallint
+    *activa : boolean
+  }
+  entity "estados_ticket" as estados_ticket {
+    *id_estado : serial <<PK>>
+    --
+    *codigo : varchar(20) <<UK>>
+    *nombre : varchar(40)
+    *es_final : boolean
+    *reloj_corre : boolean
+    *orden : smallint
+  }
+  entity "transiciones_estado" as transiciones_estado {
+    *id_transicion : serial <<PK>>
+    --
+    *id_estado_origen : int <<FK>>
+    *id_estado_destino : int <<FK>>
+    *id_permiso : int <<FK>>
+    *requiere_motivo : boolean
+    *requiere_confirmacion_solicitante : boolean
+    *automatica : boolean
+  }
+  entity "prioridades_sla" as prioridades_sla {
+    *id_prioridad : serial <<PK>>
+    --
+    *codigo : char(2) <<UK>>
+    *nombre : varchar(30)
+    *minutos_respuesta : int
+    *minutos_solucion : int
+    *modo_calendario : varchar(10)
+    *porcentaje_alerta : smallint
+    *color_hex : char(7)
+    *activa : boolean
+  }
+  entity "matriz_prioridad" as matriz_prioridad {
+    *id_matriz : serial <<PK>>
+    --
+    *impacto : varchar(10)
+    *urgencia : varchar(10)
+    *id_prioridad : int <<FK>>
+  }
+  entity "calendarios_laborales" as calendarios_laborales {
+    *id_calendario : serial <<PK>>
+    --
+    *nombre : varchar(60)
+    *zona_horaria : varchar(40)
+  }
+  entity "horarios_laborales" as horarios_laborales {
+    *id_horario : serial <<PK>>
+    --
+    *id_calendario : int <<FK>>
+    *dia_semana : smallint
+    *hora_inicio : time
+    *hora_fin : time
+  }
+  entity "feriados" as feriados {
+    *id_feriado : serial <<PK>>
+    --
+    *id_calendario : int <<FK>>
+    *fecha : date
+    *descripcion : varchar(100)
+  }
+  entity "parametros" as parametros {
+    *clave : varchar(60) <<PK>>
+    --
+    *valor : text
+    *tipo_dato : varchar(15)
+    descripcion : varchar(200)
+    modificado_por : int <<FK>>
+    *modificado_en : timestamptz
+  }
+  entity "plantillas_notificacion" as plantillas_notificacion {
+    *id_plantilla : serial <<PK>>
+    --
+    *codigo_evento : varchar(40) <<UK>>
+    *asunto : varchar(150)
+    *cuerpo : text
+    *activa : boolean
+  }
+  entity "tareas_programadas" as tareas_programadas {
+    *id_tarea : serial <<PK>>
+    --
+    *codigo : varchar(40) <<UK>>
+    *expresion_cron : varchar(50)
+    ultima_ejecucion : timestamptz
+    ultimo_resultado : varchar(20)
+    *activa : boolean
+  }
+}
+package "Núcleo de solicitudes" #E4F5EE {
+  entity "tickets" as tickets {
+    *id_ticket : serial <<PK>>
+    --
+    *numero : varchar(12) <<UK>>
+    *tipo : varchar(10)
+    *titulo : varchar(150)
+    *descripcion : text
+    *id_solicitante : int <<FK>>
+    *id_registrado_por : int <<FK>>
+    id_asignado : int <<FK>>
+    id_grupo : int <<FK>>
+    *id_sede : int <<FK>>
+    *id_categoria : int <<FK>>
+    id_activo : int <<FK>>
+    *impacto : varchar(10)
+    *urgencia : varchar(10)
+    *id_prioridad : int <<FK>>
+    *prioridad_manual : boolean
+    justificacion_prioridad : text
+    *id_estado : int <<FK>>
+    *canal_ingreso : varchar(20)
+    id_ticket_origen : int <<FK>>
+    *numero_reaperturas : smallint
+    *fecha_creacion : timestamptz
+    *fecha_limite_respuesta : timestamptz
+    *fecha_limite_solucion : timestamptz
+    fecha_primera_respuesta : timestamptz
+    fecha_resolucion : timestamptz
+    fecha_cierre : timestamptz
+    *minutos_pausa : int
+    sla_respuesta_cumplido : boolean
+    sla_solucion_cumplido : boolean
+    *version : int
+  }
+  entity "ticket_asignaciones" as ticket_asignaciones {
+    *id_asignacion : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    id_usuario : int <<FK>>
+    id_grupo : int <<FK>>
+    *tipo : varchar(15)
+    asignado_por : int <<FK>>
+    motivo : varchar(200)
+    *desde : timestamptz
+    hasta : timestamptz
+  }
+  entity "ticket_escalamientos" as ticket_escalamientos {
+    *id_escalamiento : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    *nivel_origen : smallint
+    *nivel_destino : smallint
+    *id_grupo_destino : int <<FK>>
+    *tipo : varchar(10)
+    *motivo : varchar(200)
+    escalado_por : int <<FK>>
+    *fecha : timestamptz
+    aceptado_por : int <<FK>>
+    aceptado_en : timestamptz
+  }
+  entity "ticket_comentarios" as ticket_comentarios {
+    *id_comentario : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    id_autor : int <<FK>>
+    *visibilidad : varchar(10)
+    *contenido : text
+    *origen : varchar(10)
+    id_correo : bigint <<FK>>
+    *fecha_creacion : timestamptz
+  }
+  entity "ticket_adjuntos" as ticket_adjuntos {
+    *id_adjunto : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    id_comentario : int <<FK>>
+    *nombre_original : varchar(200)
+    *nombre_almacenado : uuid <<UK>>
+    *mime_type : varchar(100)
+    *tamano_bytes : int
+    *hash_sha256 : char(64)
+    *estado_validacion : varchar(10)
+    *subido_por : int <<FK>>
+    *fecha_subida : timestamptz
+  }
+  entity "pausas_sla" as pausas_sla {
+    *id_pausa : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    *motivo : varchar(20)
+    *detalle : varchar(250)
+    referencia_externa : varchar(60)
+    *iniciada_por : int <<FK>>
+    aprobada_por : int <<FK>>
+    *inicio : timestamptz
+    fin : timestamptz
+    minutos_descontados : int
+  }
+  entity "sla_alertas" as sla_alertas {
+    *id_alerta : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    *ciclo_sla : smallint
+    *tipo : varchar(20)
+    *programada_para : timestamptz
+    disparada_en : timestamptz
+    *estado : varchar(10)
+  }
+  entity "ticket_reaperturas" as ticket_reaperturas {
+    *id_reapertura : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    *solicitada_por : int <<FK>>
+    *motivo : varchar(250)
+    *fecha : timestamptz
+    *nuevo_limite_solucion : timestamptz
+  }
+  entity "ticket_resoluciones" as ticket_resoluciones {
+    *id_resolucion : serial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    *ciclo : smallint
+    *id_resolutor : int <<FK>>
+    causa : varchar(100)
+    *solucion : text
+    *fecha_resolucion : timestamptz
+  }
+  entity "ticket_articulos" as ticket_articulos {
+    *id_ticket : int <<PK,FK>>
+    *id_articulo : int <<PK,FK>>
+    --
+    *uso : varchar(10)
+    *vinculado_por : int <<FK>>
+    *fecha : timestamptz
+  }
+  entity "encuestas_csat" as encuestas_csat {
+    *id_encuesta : serial <<PK>>
+    --
+    *id_ticket : int <<FK,UK>>
+    *token_hash : char(64) <<UK>>
+    calificacion : smallint
+    comentario : varchar(500)
+    *enviada_en : timestamptz
+    respondida_en : timestamptz
+    *expira_en : timestamptz
+  }
+  entity "notificaciones" as notificaciones {
+    *id_notificacion : bigserial <<PK>>
+    --
+    id_ticket : int <<FK>>
+    id_destinatario : int <<FK>>
+    *id_plantilla : int <<FK>>
+    *correo_destino : varchar(120)
+    *asunto : varchar(150)
+    *estado : varchar(10)
+    *intentos : smallint
+    ultimo_error : varchar(250)
+    *encolada_en : timestamptz
+    enviada_en : timestamptz
+  }
+  entity "correos_entrantes" as correos_entrantes {
+    *id_correo : bigserial <<PK>>
+    --
+    *message_id : varchar(255) <<UK>>
+    in_reply_to : varchar(255)
+    *remitente : varchar(120)
+    id_usuario_remitente : int <<FK>>
+    *asunto : varchar(250)
+    *recibido_en : timestamptz
+    *estado : varchar(20)
+    id_ticket : int <<FK>>
+    motivo_rechazo : varchar(150)
+    *hash_contenido : char(64)
+  }
+}
+package "Activos de TI (CMDB)" #FDF1DC {
+  entity "tipos_activo" as tipos_activo {
+    *id_tipo_activo : serial <<PK>>
+    --
+    *nombre : varchar(60) <<UK>>
+    *familia : varchar(20)
+  }
+  entity "activos_ti" as activos_ti {
+    *id_activo : serial <<PK>>
+    --
+    *codigo_patrimonial : varchar(20) <<UK>>
+    *id_tipo_activo : int <<FK>>
+    marca : varchar(50)
+    modelo : varchar(80)
+    numero_serie : varchar(60)
+    *descripcion : text
+    *id_sede : int <<FK>>
+    id_custodio : int <<FK>>
+    *estado : varchar(15)
+    *acta_numero : varchar(30)
+    fecha_adquisicion : date
+    garantia_hasta : date
+  }
+  entity "activo_custodia_historial" as activo_custodia_historial {
+    *id_custodia : serial <<PK>>
+    --
+    *id_activo : int <<FK>>
+    *id_usuario : int <<FK>>
+    *desde : date
+    hasta : date
+    *acta_numero : varchar(30)
+    *registrado_por : int <<FK>>
+  }
+}
+package "Base de conocimientos" #F0E8FA {
+  entity "articulos_kb" as articulos_kb {
+    *id_articulo : serial <<PK>>
+    --
+    *titulo : varchar(150)
+    resumen : varchar(300)
+    *contenido : text
+    *id_categoria : int <<FK>>
+    *id_autor : int <<FK>>
+    id_revisor : int <<FK>>
+    *estado : varchar(12)
+    *visibilidad : varchar(12)
+    *version_actual : int
+    publicado_en : timestamptz
+    *total_vistas : int
+  }
+  entity "articulos_kb_versiones" as articulos_kb_versiones {
+    *id_version : serial <<PK>>
+    --
+    *id_articulo : int <<FK>>
+    *numero_version : int
+    *titulo : varchar(150)
+    *contenido : text
+    *editado_por : int <<FK>>
+    *fecha_edicion : timestamptz
+    motivo_cambio : varchar(200)
+  }
+  entity "kb_votos" as kb_votos {
+    *id_articulo : int <<PK,FK>>
+    *id_usuario : int <<PK,FK>>
+    --
+    *util : boolean
+    comentario : varchar(300)
+    *fecha : timestamptz
+  }
+}
+package "Auditoría y trazabilidad" #FBE6E6 {
+  entity "bitacora" as bitacora {
+    *id_bitacora : bigserial <<PK>>
+    --
+    *id_ticket : int <<FK>>
+    id_usuario : int <<FK>>
+    id_sesion : uuid <<FK>>
+    id_tarea : int <<FK>>
+    *accion : varchar(40)
+    campo_afectado : varchar(60)
+    valor_anterior : jsonb
+    valor_nuevo : jsonb
+    *fecha_hora : timestamptz
+    direccion_ip : inet
+    *automatica : boolean
+    *hash_previo : char(64)
+    *hash_registro : char(64) <<UK>>
+  }
+  entity "auditoria_sistema" as auditoria_sistema {
+    *id_auditoria : bigserial <<PK>>
+    --
+    id_usuario : int <<FK>>
+    id_sesion : uuid <<FK>>
+    id_tarea : int <<FK>>
+    *accion : varchar(40)
+    *entidad : varchar(50)
+    id_entidad : varchar(40)
+    detalle : jsonb
+    *resultado : varchar(10)
+    direccion_ip : inet
+    *fecha_hora : timestamptz
+    *hash_previo : char(64)
+    *hash_registro : char(64) <<UK>>
+  }
+}
+sedes ||--o{ departamentos : "tiene"
+sedes ||--o{ usuarios : "agrupa"
+departamentos |o..o{ usuarios : "integra"
+usuarios |o..o{ usuarios : "jefe de"
+usuarios ||--o{ usuario_rol : "recibe"
+roles ||--o{ usuario_rol : "se asigna"
+roles ||--o{ rol_permiso : "otorga"
+permisos ||--o{ rol_permiso : "se concede"
+grupos_resolutores ||--o{ grupo_miembros : "integra"
+usuarios ||--o{ grupo_miembros : "pertenece"
+usuarios ||--o{ usuario_especialidad : "domina"
+categorias ||--o{ usuario_especialidad : "requiere"
+usuarios ||--o{ delegaciones : "delega"
+usuarios ||--o{ sesiones : "abre"
+usuarios |o..o{ intentos_login : "intenta acceder"
+categorias |o..o{ categorias : "subcategoría"
+estados_ticket ||--o{ transiciones_estado : "origen"
+estados_ticket ||--o{ transiciones_estado : "destino"
+permisos ||--o{ transiciones_estado : "autoriza"
+prioridades_sla ||--o{ matriz_prioridad : "resulta de"
+calendarios_laborales ||--o{ horarios_laborales : "define"
+calendarios_laborales ||--o{ feriados : "excluye"
+calendarios_laborales ||--o{ sedes : "rige"
+usuarios ||--o{ tickets : "solicita"
+categorias ||--o{ tickets : "clasifica"
+activos_ti |o..o{ tickets : "afecta"
+prioridades_sla ||--o{ tickets : "fija plazos"
+estados_ticket ||--o{ tickets : "estado actual"
+tickets |o..o{ tickets : "reabierto como"
+tickets ||--o{ ticket_asignaciones : "historial de"
+tickets ||--o{ ticket_escalamientos : "escala"
+tickets ||--o{ ticket_comentarios : "diálogo"
+correos_entrantes |o..o{ ticket_comentarios : "origina"
+tickets ||--o{ ticket_adjuntos : "adjunta"
+ticket_comentarios |o..o{ ticket_adjuntos : "incluye"
+tickets ||--o{ pausas_sla : "detiene reloj"
+tickets ||--o{ sla_alertas : "programa"
+tickets ||--o{ ticket_reaperturas : "reabre"
+tickets ||--o{ ticket_resoluciones : "resuelve"
+tickets ||--o{ ticket_articulos : "cita"
+articulos_kb ||--o{ ticket_articulos : "se aplica en"
+tickets ||--o| encuestas_csat : "evalúa"
+tickets |o..o{ notificaciones : "genera"
+plantillas_notificacion ||--o{ notificaciones : "da formato"
+tickets |o..o{ correos_entrantes : "recibe"
+tipos_activo ||--o{ activos_ti : "tipifica"
+activos_ti ||--o{ activo_custodia_historial : "traza"
+categorias ||--o{ articulos_kb : "organiza"
+articulos_kb ||--o{ articulos_kb_versiones : "versiona"
+articulos_kb ||--o{ kb_votos : "recibe"
+tickets ||--o{ bitacora : "registra"
+sesiones |o..o{ bitacora : "origen"
+tareas_programadas |o..o{ bitacora : "ejecuta"
+sesiones |o..o{ auditoria_sistema : "origen"
+legend right
+  <b>Notación</b>
+  |= Símbolo |= Significado |
+  | 1 | uno y solo uno (extremo con doble barra) |
+  | 0..1 | cero o uno (círculo y barra) |
+  | 0..N | cero o muchos (círculo y pata de gallo) |
+  | 1..N | uno o muchos (barra y pata de gallo) |
+  | línea continua | FK obligatoria (NOT NULL) |
+  | línea discontinua | FK opcional (admite NULL) |
+  | * campo | NOT NULL |
+  | PK / FK / UK | clave primaria, foránea, única |
+
+  <b>Reglas de lógica y seguridad</b>
+  |= Tema |= Regla |
+  | Prioridad | Se deriva de matriz~_prioridad(impacto, urgencia); el cambio manual deja justificación (RN-11). |
+  | SLA | Plazos de prioridades~_sla sobre calendarios laborales; las pausas se descuentan (RN-03, RN-09). |
+  | Estados | Solo se permiten las transiciones registradas en transiciones~_estado y con permiso suficiente. |
+  | Escalamiento | Manual o automático; conserva el reloj original y queda en ticket~_escalamientos. |
+  | Segregación | Quien solicita un ticket no lo resuelve ni lo valida (RN-05). |
+  | Evidencia | bitacora y auditoria~_sistema son solo-inserción con cadena de hashes (RN-12, RNF-06). |
+  | Acceso | Roles por sede + permisos; sesiones con hash de token; bloqueo tras 5 intentos. |
+  | Autoría | Las FK de autoría hacia usuarios (columnas terminadas en ~_por) se listan pero no se dibujan. |
+endlegend
+@enduml

@@ -1,0 +1,92 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Activos de TI (CMDB)\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "tipos_activo" as tipos_activo {
+  *id_tipo_activo : serial <<PK>>
+  --
+  *nombre : varchar(60) <<UK>>
+  *familia : varchar(20)
+}
+entity "activos_ti" as activos_ti {
+  *id_activo : serial <<PK>>
+  --
+  *codigo_patrimonial : varchar(20) <<UK>>
+  *id_tipo_activo : int <<FK>>
+  marca : varchar(50)
+  modelo : varchar(80)
+  numero_serie : varchar(60)
+  *descripcion : text
+  *id_sede : int <<FK>>
+  id_custodio : int <<FK>>
+  *estado : varchar(15)
+  *acta_numero : varchar(30)
+  fecha_adquisicion : date
+  garantia_hasta : date
+}
+entity "activo_custodia_historial" as activo_custodia_historial {
+  *id_custodia : serial <<PK>>
+  --
+  *id_activo : int <<FK>>
+  *id_usuario : int <<FK>>
+  *desde : date
+  hasta : date
+  *acta_numero : varchar(30)
+  *registrado_por : int <<FK>>
+}
+entity "sedes" as sedes #E2E8F0 {
+  *id_sede : serial <<PK>>
+}
+entity "usuarios" as usuarios #E2E8F0 {
+  *id_usuario : serial <<PK>>
+}
+tipos_activo ||--o{ activos_ti : "tipifica"
+sedes ||--o{ activos_ti : "ubica"
+usuarios |o..o{ activos_ti : "custodia"
+activos_ti ||--o{ activo_custodia_historial : "traza"
+usuarios ||--o{ activo_custodia_historial : "custodió"
+note right of activos_ti
+RN-04: categorías con requiere_activo exigen id_activo.
+acta_numero referencia el formulario F-ACT-01.
+end note
+@enduml

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E8ECF1;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#13315C}a:hover{color:#0B2545}*{box-sizing:border-box}
+@keyframes shimmer{0%{background-position:-300px 0}100%{background-position:300px 0}}
+.skel{background:linear-gradient(90deg,#EEF1F5 25%,#E2E8F0 37%,#EEF1F5 63%);background-size:400px 100%;animation:shimmer 1.4s ease-in-out infinite;border-radius:4px}
+</style></helmet>
+
+<section style="padding:40px 44px 48px">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 20px">
+    <span style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#0B2545;color:#fff;border-radius:4px">Lámina</span>
+    <span style="font:600 13px/1.2 Inter,system-ui,sans-serif;color:#0B2545">Estados de interfaz — ejemplo: Cola de trabajo del analista (P-04)</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1400px">
+
+    <div>
+      <div style="font:600 12px Inter,sans-serif;color:#475569;margin-bottom:8px">1 · Estado de carga</div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between"><div class="skel" style="width:120px;height:22px"></div><div class="skel" style="width:110px;height:36px;border-radius:6px"></div></div>
+        <div style="padding:16px 20px">
+          <sc-for list="{{ skelRows }}" as="i" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid #F1F5F9">
+              <div class="skel" style="width:70px;height:14px"></div>
+              <div class="skel" style="width:220px;height:14px"></div>
+              <div class="skel" style="width:90px;height:14px"></div>
+              <div class="skel" style="width:60px;height:20px;border-radius:4px"></div>
+              <div class="skel" style="width:140px;height:14px;margin-left:auto"></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 12px Inter,sans-serif;color:#475569;margin-bottom:8px">2 · Estado vacío</div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:56px 32px;text-align:center;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <svg width="48" height="48" viewBox="0 0 16 16" fill="none" stroke="#CBD5E1" stroke-width="1.3" style="margin-bottom:16px"><path d="M2 9.5h3l1 2h4l1-2h3"></path><path d="M3.4 3.2h9.2l1.4 6.3v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3l1.4-6.3Z"></path></svg>
+        <div style="font-size:15px;font-weight:600;color:#334155;margin-bottom:6px">No hay casos asignados a vos en este momento</div>
+        <p style="margin:0 0 20px;font-size:13px;color:#64748B;max-width:320px">Cuando te asignen un ticket o tomes uno de la cola, va a aparecer aquí.</p>
+        <button style="height:40px;padding:0 18px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Ver casos sin asignar</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 12px Inter,sans-serif;color:#475569;margin-bottom:8px">3 · Estado de error</div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:56px 32px;text-align:center;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <svg width="48" height="48" viewBox="0 0 16 16" fill="none" stroke="#DC2626" stroke-width="1.3" style="margin-bottom:16px"><circle cx="8" cy="8" r="6.4"></circle><path d="M8 4.6v4"></path><path d="M8 11.2h.01"></path></svg>
+        <div style="font-size:15px;font-weight:600;color:#B91C1C;margin-bottom:6px">No se pudo cargar la información</div>
+        <p style="margin:0 0 20px;font-size:13px;color:#64748B;max-width:320px">Revisá tu conexión a la VPN e intentá de nuevo. Si el problema sigue, llamá a la extensión 105.</p>
+        <button style="height:40px;padding:0 18px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><path d="M13 8a5 5 0 1 1-1.5-3.6"></path><path d="M13 3v3h-3"></path></svg>Reintentar</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 12px Inter,sans-serif;color:#475569;margin-bottom:8px">4 · Estado con datos</div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between"><div style="font-size:16px;font-weight:700;color:#0B2545">Mis casos</div><button style="height:36px;padding:0 14px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 12.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Nuevo ticket</button></div>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="background:#F1F5F9"><th style="text-align:left;padding:8px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px;border-bottom:1px solid #E2E8F0">ID</th><th style="text-align:left;padding:8px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px;border-bottom:1px solid #E2E8F0">TÍTULO</th><th style="text-align:left;padding:8px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px;border-bottom:1px solid #E2E8F0">PRIOR.</th><th style="text-align:left;padding:8px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px;border-bottom:1px solid #E2E8F0">ACTUALIZADO</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:9px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000487</td><td style="padding:9px 12px;color:#0F172A">Impresora sin conexión en recepción</td><td style="padding:9px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:9px 12px;color:#475569">20/09/2026 09:14</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:9px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000484</td><td style="padding:9px 12px;color:#0F172A">Alta de usuario en dominio</td><td style="padding:9px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2</span></td><td style="padding:9px 12px;color:#475569">20/09/2026 09:05</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:9px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000480</td><td style="padding:9px 12px;color:#0F172A">Restablecer contraseña de dominio</td><td style="padding:9px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:9px 12px;color:#475569">20/09/2026 08:12</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:9px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000476</td><td style="padding:9px 12px;color:#0F172A">Grabador NVR sin espacio en disco</td><td style="padding:9px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#B91C1C;background:#FEE2E2;border:1px solid #DC2626">P1</span></td><td style="padding:9px 12px;color:#475569">20/09/2026 09:38</td></tr>
+            <tr><td style="padding:9px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000478</td><td style="padding:9px 12px;color:#0F172A">Sistema de rondas no carga reportes</td><td style="padding:9px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:9px 12px;color:#475569">20/09/2026 07:40</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1460,&quot;height&quot;:1200}}"></script>
+</body>
+</html>

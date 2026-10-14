@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#E8ECF1;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#13315C}a:hover{color:#0B2545}*{box-sizing:border-box}</style></helmet>
+
+<section style="padding:40px;display:flex;justify-content:center">
+  <div style="width:1440px;height:900px;background:#F8FAFC;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(11,37,69,.12);display:flex;flex-direction:column">
+
+    <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+      <div style="height:898px;display:flex;align-items:stretch">
+        <div style="width:480px;flex:none;background:#0B2545;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
+          <div style="width:72px;height:72px;border-radius:14px;background:#13315C;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="38" height="38" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.4"><path d="M8 1.6 2.6 3.9v4c0 3 2.3 5.4 5.4 6.5 3.1-1.1 5.4-3.5 5.4-6.5v-4L8 1.6Z"></path></svg></div>
+          <div style="color:#fff;font-size:24px;font-weight:700;letter-spacing:-.2px">EMPROVISA</div>
+          <div style="color:#B9C7DC;font-size:15px;font-weight:500;margin-top:4px">Sistema de Mesa de Ayuda</div>
+          <p style="color:#B9C7DC;font-size:13px;line-height:1.6;text-align:center;max-width:300px;margin:20px 0 0">Uso exclusivo del personal de EMPROVISA. Prototipo de navegación — sin autenticación real.</p>
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:64px 0 24px">
+          <div style="width:360px">
+            <h1 style="margin:0 0 6px;font-size:24px;font-weight:700;color:#0B2545">Iniciar sesión</h1>
+            <p style="margin:0 0 18px;font-size:13.5px;color:#475569">Elegí con qué cuenta de demostración querés entrar.</p>
+
+            <button onClick="{{ loginSolicitante }}" style="width:100%;height:60px;border:1px solid #CBD5E1;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:10px;text-align:left" style-hover="background:#F8FAFC">
+              <div style="width:36px;height:36px;border-radius:50%;background:#DCE5F0;color:#13315C;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none">NP</div>
+              <div><div style="font-size:14px;font-weight:600;color:#0F172A">Néstor Palacios</div><div style="font-size:12px;color:#64748B">Usuario solicitante · Managua</div></div>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#94A3B8" stroke-width="1.8" style="margin-left:auto;flex:none"><path d="m6 3.5 4.5 4.5L6 12.5"></path></svg>
+            </button>
+
+            <button onClick="{{ loginAnalista }}" style="width:100%;height:60px;border:1px solid #CBD5E1;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:10px;text-align:left" style-hover="background:#F8FAFC">
+              <div style="width:36px;height:36px;border-radius:50%;background:#3E6DB0;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none">CZ</div>
+              <div><div style="font-size:14px;font-weight:600;color:#0F172A">Carlos Zeledón</div><div style="font-size:12px;color:#64748B">Analista N1 · Managua</div></div>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#94A3B8" stroke-width="1.8" style="margin-left:auto;flex:none"><path d="m6 3.5 4.5 4.5L6 12.5"></path></svg>
+            </button>
+
+            <button onClick="{{ loginJefe }}" style="width:100%;height:60px;border:1px solid #CBD5E1;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:16px;text-align:left" style-hover="background:#F8FAFC">
+              <div style="width:36px;height:36px;border-radius:50%;background:#0B2545;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none">YC</div>
+              <div><div style="font-size:14px;font-weight:600;color:#0F172A">Yorlene Cardoza</div><div style="font-size:12px;color:#64748B">Jefe de TI</div></div>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#94A3B8" stroke-width="1.8" style="margin-left:auto;flex:none"><path d="m6 3.5 4.5 4.5L6 12.5"></path></svg>
+            </button>
+
+            <div style="border-top:1px solid #E2E8F0;padding-top:16px;text-align:center;font-size:12.5px;color:#64748B">¿Problemas para ingresar? Llamá a la extensión <strong style="color:#334155">105</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+      <div style="height:56px;flex:none;background:#0B2545;display:flex;align-items:center;gap:24px;padding:0 16px">
+        <div style="display:flex;align-items:center;gap:10px;min-width:200px">
+          <div style="width:26px;height:26px;border-radius:6px;background:#13315C;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.22)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.6"><path d="M8 1.6 2.6 3.9v4c0 3 2.3 5.4 5.4 6.5 3.1-1.1 5.4-3.5 5.4-6.5v-4L8 1.6Z"></path></svg></div>
+          <span style="color:#fff;font-size:14.5px;font-weight:600">EMPROVISA · Mesa de Ayuda</span>
+        </div>
+        <div style="flex:1;max-width:460px;height:34px;background:#13315C;border:1px solid #2A4A78;border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 10px">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#B9C7DC" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"></circle><path d="m10.6 10.6 3 3"></path></svg>
+          <span style="color:#B9C7DC;font-size:12.5px">Buscar…</span>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+          <div style="display:flex;align-items:center;gap:8px;padding:4px 8px 4px 4px;border-radius:6px;background:#13315C">
+            <div style="width:26px;height:26px;border-radius:50%;background:{{ avatarBg }};color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ userInitials }}</div>
+            <div style="line-height:1.2"><div style="color:#fff;font-size:11.5px;font-weight:600">{{ userName }}</div><div style="color:#B9C7DC;font-size:10px">{{ userRole }}</div></div>
+          </div>
+          <button onClick="{{ logout }}" style="height:32px;padding:0 12px;border:1px solid #2A4A78;background:transparent;color:#DCE5F0;font:500 12px Inter,sans-serif;border-radius:6px;cursor:pointer">Salir</button>
+        </div>
+      </div>
+
+      <div style="flex:1;display:flex;min-height:0">
+
+        <sc-if value="{{ isSolicitante }}" hint-placeholder-val="{{ true }}">
+          <nav style="width:210px;flex:none;background:#fff;border-right:1px solid #E2E8F0;padding:12px 0">
+            <a href="#" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;font-size:13px;color:#334155;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.6"><path d="M2.5 7.5 8 3l5.5 4.5"></path><path d="M4 8.5v5h8v-5"></path></svg>Inicio</a>
+            <a href="#" onClick="{{ gotoForm }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navFormColor }};background:{{ navFormBg }};border-left:3px solid {{ navFormBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3.2v9.6"></path><path d="M3.2 8h9.6"></path></svg>Nuevo requerimiento</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;font-size:13px;color:#334155;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.6"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"></rect><path d="M5 6h6M5 9h4"></path></svg>Mis solicitudes</a>
+            <a href="#" onClick="{{ gotoAyuda }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navAyudaColor }};background:{{ navAyudaBg }};border-left:3px solid {{ navAyudaBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 2.5h9v11l-4.5-2.4L3.5 13.5v-11Z"></path></svg>Ayuda y guías</a>
+          </nav>
+        </sc-if>
+
+        <sc-if value="{{ isAnalista }}" hint-placeholder-val="{{ false }}">
+          <nav style="width:210px;flex:none;background:#fff;border-right:1px solid #E2E8F0;padding:12px 0">
+            <a href="#" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;font-size:13px;color:#334155;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.6"><rect x="2" y="2" width="5" height="5" rx="1"></rect><rect x="9" y="2" width="5" height="5" rx="1"></rect><rect x="2" y="9" width="5" height="5" rx="1"></rect><rect x="9" y="9" width="5" height="5" rx="1"></rect></svg>Tablero</a>
+            <a href="#" onClick="{{ gotoCola }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navColaColor }};background:{{ navColaBg }};border-left:3px solid {{ navColaBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 9.5h3l1 2h4l1-2h3"></path><path d="M3.4 3.2h9.2l1.4 6.3v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3l1.4-6.3Z"></path></svg>Mis casos</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;font-size:13px;color:#334155;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.6"><circle cx="8" cy="8" r="6"></circle><path d="M8 4.6V8l2.2 1.6"></path></svg>SLA y vencimientos</a>
+            <a href="#" onClick="{{ gotoInventario }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navInvColor }};background:{{ navInvBg }};border-left:3px solid {{ navInvBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="3" width="11" height="8" rx="1.5"></rect><path d="M5.5 13.5h5"></path></svg>Inventario de activos</a>
+          </nav>
+        </sc-if>
+
+        <sc-if value="{{ isJefe }}" hint-placeholder-val="{{ false }}">
+          <nav style="width:210px;flex:none;background:#fff;border-right:1px solid #E2E8F0;padding:12px 0">
+            <a href="#" onClick="{{ gotoTablero }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navTableroColor }};background:{{ navTableroBg }};border-left:3px solid {{ navTableroBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2.5 13.5v-4"></path><path d="M6.5 13.5v-8"></path><path d="M10.5 13.5v-5.5"></path><path d="M14 13.5v-10"></path></svg>Tablero ejecutivo</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;font-size:13px;color:#334155;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.6"><path d="M2 9.5h3l1 2h4l1-2h3"></path><path d="M3.4 3.2h9.2l1.4 6.3v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3l1.4-6.3Z"></path></svg>Todos los tickets</a>
+            <a href="#" onClick="{{ gotoAdmin }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 13px 0 16px;font-size:13px;font-weight:600;text-decoration:none;color:{{ navAdminColor }};background:{{ navAdminBg }};border-left:3px solid {{ navAdminBorder }}"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2"></circle><path d="M8 2.5v1.8M8 11.7v1.8M2.5 8h1.8M11.7 8h1.8M4.3 4.3l1.3 1.3M10.4 10.4l1.3 1.3M11.7 4.3l-1.3 1.3M5.6 10.4l-1.3 1.3"></path></svg>Administración</a>
+          </nav>
+        </sc-if>
+
+        <main style="flex:1;min-width:0;overflow:auto;padding:24px">
+
+          <sc-if value="{{ isPortal }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:880px;margin:0 auto">
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:22px;display:flex;align-items:center;gap:20px;margin-bottom:20px">
+                <div><h1 style="margin:0;font-size:24px;font-weight:700;color:#0B2545">Buenos días, Néstor</h1><p style="margin:6px 0 0;font-size:13.5px;color:#475569">Tenés 1 solicitud en proceso.</p></div>
+                <button onClick="{{ gotoForm }}" style="margin-left:auto;height:52px;padding:0 20px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:700 15px Inter,sans-serif;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#13315C"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2"><path d="M8 3.2v9.6"></path><path d="M3.2 8h9.6"></path></svg>Nuevo requerimiento</button>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px">
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px;display:flex;align-items:center;gap:12px"><div style="width:38px;height:38px;border-radius:8px;background:#EEF3FA;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.6"><circle cx="8" cy="8" r="6"></circle><path d="M8 4.6V8l2.2 1.6"></path></svg></div><div><div style="font-size:26px;font-weight:700;color:#0B2545">1</div><div style="font-size:13px;color:#475569">En proceso</div></div></div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:inset 3px 0 0 #F59E0B"><div style="width:38px;height:38px;border-radius:8px;background:#FEF3C7;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 16 16" fill="none" stroke="#92400E" stroke-width="1.7"><path d="m3.5 8.4 3 3 6-6.8"></path></svg></div><div><div style="font-size:26px;font-weight:700;color:#92400E">1</div><div style="font-size:13px;color:#475569">Esperando confirmación</div></div></div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px;display:flex;align-items:center;gap:12px"><div style="width:38px;height:38px;border-radius:8px;background:#D1FAE5;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 16 16" fill="none" stroke="#047857" stroke-width="1.7"><circle cx="8" cy="8" r="6"></circle><path d="m5.4 8.2 1.9 1.9 3.5-4"></path></svg></div><div><div style="font-size:26px;font-weight:700;color:#047857">5</div><div style="font-size:13px;color:#475569">Cerrados este mes</div></div></div>
+              </div>
+              <div style="font-size:16px;font-weight:700;color:#0B2545;margin-bottom:10px">Mis solicitudes</div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-left:4px solid #13315C;border-radius:8px;padding:16px 18px;margin-bottom:10px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span style="font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000128</span><span style="padding:3px 9px;border-radius:4px;font-size:11.5px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #C5D6EC">En atención</span></div>
+                <div style="font-size:14.5px;font-weight:600;color:#0F172A">Correo no sincroniza en Outlook de escritorio</div>
+                <div style="font-size:12.5px;color:#475569;margin-top:4px">Última actualización: hace 2 horas por Carlos Zeledón</div>
+              </div>
+              <div style="background:#fff;border:1px solid #F59E0B;border-left:4px solid #F59E0B;border-radius:8px;padding:16px 18px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span style="font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000471</span><span style="padding:3px 9px;border-radius:4px;font-size:11.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">Resuelto, esperando tu confirmación</span></div>
+                <div style="font-size:14.5px;font-weight:600;color:#0F172A">Impresora sin conexión en contabilidad</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:20px;justify-content:center">
+              <div style="width:620px">
+                <h1 style="margin:0 0 4px;font-size:22px;font-weight:700;color:#0B2545">Nuevo requerimiento</h1>
+                <p style="margin:0 0 18px;font-size:13px;color:#475569">Los campos con <span style="color:#DC2626;font-weight:700">*</span> son obligatorios.</p>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:18px">
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#0F172A;margin-bottom:8px">Tipo de requerimiento <span style="color:#DC2626">*</span></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                      <div onClick="{{ setIncidente }}" style="border:2px solid {{ incBorder }};background:{{ incBg }};border-radius:8px;padding:12px;cursor:pointer"><div style="font-size:13px;font-weight:700;color:#0F172A">Incidente</div><div style="font-size:12px;color:#475569;margin-top:2px">Algo dejó de funcionar</div></div>
+                      <div onClick="{{ setSolicitud }}" style="border:2px solid {{ solBorder }};background:{{ solBg }};border-radius:8px;padding:12px;cursor:pointer"><div style="font-size:13px;font-weight:700;color:#0F172A">Solicitud de servicio</div><div style="font-size:12px;color:#475569;margin-top:2px">Necesito algo nuevo</div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:13px;font-weight:600;color:#0F172A;margin-bottom:6px">Título <span style="color:#DC2626">*</span></label>
+                    <div style="height:40px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#0F172A">Correo no sincroniza en Outlook de escritorio</div>
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:13px;font-weight:600;color:#0F172A;margin-bottom:6px">Descripción <span style="color:#DC2626">*</span></label>
+                    <div style="border:1px solid #CBD5E1;border-radius:6px;background:#fff;padding:10px 12px;min-height:70px;font-size:13.5px;line-height:1.6;color:#0F172A">Desde ayer Outlook no baja correos nuevos. En el teléfono sí me llegan.</div>
+                  </div>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#0F172A;margin-bottom:8px">Impacto <span style="color:#DC2626">*</span></div>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <sc-for list="{{ impactos }}" as="o" hint-placeholder-count="3">
+                        <div onClick="{{ o.pick }}" style="border:2px solid {{ o.border }};background:{{ o.bg }};border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;gap:10px;align-items:center"><span style="width:16px;height:16px;flex:none;border-radius:50%;border:2px solid {{ o.dot }};background:#fff;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ o.fill }}"></span></span><span style="font-size:13px;font-weight:700;color:#0F172A;min-width:46px">{{ o.label }}</span><span style="font-size:12.5px;color:#475569">{{ o.desc }}</span></div>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#0F172A;margin-bottom:8px">Urgencia <span style="color:#DC2626">*</span></div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                      <sc-for list="{{ urgencias }}" as="u" hint-placeholder-count="3">
+                        <div onClick="{{ u.pick }}" style="border:2px solid {{ u.border }};background:{{ u.bg }};border-radius:8px;padding:10px;cursor:pointer;text-align:center"><span style="font-size:13px;font-weight:700;color:#0F172A">{{ u.label }}</span></div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:16px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:16px">
+                  <button onClick="{{ gotoPortal }}" style="height:40px;padding:0 18px;border:1px solid #CBD5E1;background:#fff;color:#334155;font:500 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Cancelar</button>
+                  <button onClick="{{ enviarForm }}" style="margin-left:auto;height:40px;padding:0 20px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Enviar requerimiento</button>
+                </div>
+              </div>
+              <aside style="width:280px;flex:none">
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+                  <div style="padding:10px 16px;background:#0B2545;color:#fff;font-size:13px;font-weight:600">Vista previa del caso</div>
+                  <div style="padding:16px">
+                    <div style="font-size:12px;color:#475569;margin-bottom:6px">Prioridad calculada</div>
+                    <span style="padding:5px 12px;border-radius:6px;font-size:16px;font-weight:700;color:{{ prFg }};background:{{ prBg }};border:1px solid {{ prBd }}">{{ prLabel }}</span>
+                    <div style="font-size:11.5px;color:#64748B;margin-top:8px">Calculado según impacto y urgencia.</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:520px;margin:60px auto 0;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:40px;text-align:center">
+              <div style="width:56px;height:56px;border-radius:50%;background:#D1FAE5;border:1px solid #10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 18px"><svg width="26" height="26" viewBox="0 0 16 16" fill="none" stroke="#047857" stroke-width="2"><path d="m3.5 8.4 3 3 6-6.8"></path></svg></div>
+              <h1 style="margin:0 0 8px;font-size:21px;font-weight:700;color:#0B2545">Requerimiento enviado</h1>
+              <p style="margin:0 0 4px;font-size:13.5px;color:#475569">Se creó el caso <strong style="color:#0F172A;font:700 13.5px ui-monospace,Menlo,monospace">TK-000512</strong>.</p>
+              <p style="margin:0 0 24px;font-size:13px;color:#64748B">Te vamos a responder antes de hoy a las 15:00 según el SLA.</p>
+              <div style="display:flex;gap:10px;justify-content:center">
+                <button onClick="{{ gotoForm }}" style="height:44px;padding:0 18px;border:1px solid #CBD5E1;background:#fff;color:#334155;font:500 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Crear otro requerimiento</button>
+                <button onClick="{{ gotoPortal }}" style="height:44px;padding:0 18px;border:1px solid #0B2545;background:#0B2545;color:#fff;font:600 13.5px Inter,sans-serif;border-radius:6px;cursor:pointer">Ver mis solicitudes</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isCola }}" hint-placeholder-val="{{ false }}">
+            <h1 style="margin:0 0 4px;font-size:22px;font-weight:700;color:#0B2545">Mis casos</h1>
+            <p style="margin:0 0 16px;font-size:13px;color:#475569">Hacé clic en un ticket para ver el detalle.</p>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:12px"><div style="font-size:22px;font-weight:700;color:#0B2545">18</div><div style="font-size:12px;color:#475569">Asignados a mí</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:12px"><div style="font-size:22px;font-weight:700;color:#0B2545">7</div><div style="font-size:12px;color:#475569">Sin asignar</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:12px;box-shadow:inset 3px 0 0 #F59E0B"><div style="font-size:22px;font-weight:700;color:#92400E">2</div><div style="font-size:12px;color:#475569">En riesgo</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:12px;box-shadow:inset 3px 0 0 #DC2626"><div style="font-size:22px;font-weight:700;color:#B91C1C">1</div><div style="font-size:12px;color:#475569">Vencidos</div></div>
+            </div>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+              <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <thead><tr style="background:#F1F5F9"><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">ID</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">TÍTULO</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">PRIOR.</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">SLA</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">ACTUALIZADO</th></tr></thead>
+                <tbody>
+                  <tr onClick="{{ gotoDetalle }}" style="border-bottom:1px solid #F1F5F9;cursor:pointer;background:#EEF3FA">
+                    <td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000128</td>
+                    <td style="padding:10px 12px;color:#0F172A">Correo no sincroniza en Outlook de escritorio</td>
+                    <td style="padding:10px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2</span></td>
+                    <td style="padding:10px 12px"><span style="font-size:11.5px;font-weight:700;color:#92400E">En riesgo · 1h 20m</span></td>
+                    <td style="padding:10px 12px;color:#475569">20/09/2026 09:14</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000486</td><td style="padding:10px 12px;color:#0F172A">Correo no sincroniza en teléfono</td><td style="padding:10px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:10px 12px;color:#047857;font-size:11.5px;font-weight:700">En plazo · 5h 10m</td><td style="padding:10px 12px;color:#475569">20/09/2026 08:58</td></tr>
+                  <tr style="border-bottom:1px solid #F1F5F9"><td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000485</td><td style="padding:10px 12px;color:#0F172A">Falla de cámara CCTV en portón norte</td><td style="padding:10px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#B91C1C;background:#FEE2E2;border:1px solid #DC2626">P1</span></td><td style="padding:10px 12px;color:#B91C1C;font-size:11.5px;font-weight:700">Vencido · -0h 45m</td><td style="padding:10px 12px;color:#475569">20/09/2026 09:32</td></tr>
+                  <tr><td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">TK-000483</td><td style="padding:10px 12px;color:#0F172A">No enciende la computadora de despacho</td><td style="padding:10px 12px"><span style="padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2</span></td><td style="padding:10px 12px;color:#047857;font-size:11.5px;font-weight:700">En plazo · 2h 05m</td><td style="padding:10px 12px;color:#475569">20/09/2026 08:41</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isDetalle }}" hint-placeholder-val="{{ false }}">
+            <a onClick="{{ gotoCola }}" href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#13315C;text-decoration:none;margin-bottom:12px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="2"><path d="M10.5 3.5 5 8l5.5 4.5"></path></svg>Volver a mis casos</a>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:20px;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+                <span style="font:700 13px ui-monospace,Menlo,monospace;color:#13315C">TK-000128</span>
+                <span style="padding:3px 9px;border-radius:4px;font-size:11.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2 · Alta</span>
+                <span style="padding:3px 9px;border-radius:4px;font-size:11.5px;font-weight:600;color:#13315C;background:#EEF3FA;border:1px solid #C5D6EC">En atención</span>
+              </div>
+              <h1 style="margin:0;font-size:21px;font-weight:700;color:#0B2545">Correo no sincroniza en Outlook de escritorio</h1>
+              <div style="font-size:12.5px;color:#475569;margin-top:8px">Asignado a Carlos Zeledón (N1) · Solicitante Néstor Palacios · Activo EMP-PC-0142</div>
+            </div>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;border-left:4px solid #F59E0B;padding:16px 20px;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:10px;height:10px;border-radius:50%;background:#F59E0B"></span><span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B;border-radius:4px;padding:2px 8px">SLA en riesgo</span></div>
+              <div style="font-size:26px;font-weight:700;color:#92400E">1h 20m <span style="font-size:13px;font-weight:500;color:#475569">restantes para la solución</span></div>
+              <div style="height:8px;border-radius:4px;background:#E2E8F0;overflow:hidden;margin-top:8px"><div style="height:8px;width:68%;background:#F59E0B"></div></div>
+            </div>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:20px">
+              <div style="font-size:15px;font-weight:700;color:#0B2545;margin-bottom:14px">Línea de tiempo</div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div><strong style="font-size:13.5px;color:#0F172A">Ticket creado</strong><span style="font-size:12.5px;color:#475569"> por Néstor Palacios</span><div style="font-size:12px;color:#64748B">19/09/2026 14:32</div></div>
+                <div style="border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px"><strong style="font-size:13px;color:#0F172A">Carlos Zeledón</strong><p style="margin:4px 0 0;font-size:13px;color:#0F172A">Ya tomé su caso. Le voy a escribir con preguntas puntuales.</p></div>
+                <div style="border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;background:#FFFBEB"><strong style="font-size:13px;color:#0F172A">Nota interna</strong> <span style="font-size:11px;font-weight:700;color:#92400E">🔒 privada</span><p style="margin:4px 0 0;font-size:13px;color:#0F172A">Cuenta bloqueada intermitentemente en Active Directory. Requiere revisión de N2.</p></div>
+                <div><span style="font-size:13px;color:#64748B"><strong style="color:#475569">Sistema</strong> · Escalado a Marlon Ruiz (N2 — Infraestructura)</span><div style="font-size:12px;color:#64748B">20/09/2026 07:52</div></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isAyuda }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:800px;margin:0 auto">
+              <div style="text-align:center;margin-bottom:22px">
+                <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#0B2545">¿En qué te podemos ayudar?</h1>
+                <div style="height:48px;max-width:560px;margin:0 auto;border:1px solid #CBD5E1;border-radius:8px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 14px">
+                  <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.7"><circle cx="7" cy="7" r="4.6"></circle><path d="m10.6 10.6 3 3"></path></svg>
+                  <span style="font-size:14px;color:#94A3B8">Escribí tu problema: "no imprime", "olvidé mi contraseña"…</span>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+                <div style="display:flex;align-items:center;gap:10px;border:1px solid #E2E8F0;border-radius:8px;padding:12px;background:#fff"><div style="width:32px;height:32px;flex:none;border-radius:6px;background:#EEF3FA;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.5"><rect x="2" y="3" width="12" height="9" rx="1.5"></rect><path d="m2.5 4 5.5 4.5L13.5 4"></path></svg></div><div><div style="font-size:13px;font-weight:600;color:#0F172A">Correo</div><div style="font-size:11.5px;color:#64748B">14 artículos</div></div></div>
+                <div style="display:flex;align-items:center;gap:10px;border:1px solid #E2E8F0;border-radius:8px;padding:12px;background:#fff"><div style="width:32px;height:32px;flex:none;border-radius:6px;background:#EEF3FA;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.5"><rect x="3" y="6" width="10" height="6" rx="1"></rect><path d="M4.5 6V3.5h7V6"></path></svg></div><div><div style="font-size:13px;font-weight:600;color:#0F172A">Impresoras</div><div style="font-size:11.5px;color:#64748B">9 artículos</div></div></div>
+                <div style="display:flex;align-items:center;gap:10px;border:1px solid #E2E8F0;border-radius:8px;padding:12px;background:#fff"><div style="width:32px;height:32px;flex:none;border-radius:6px;background:#EEF3FA;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.6"><rect x="4.5" y="7" width="7" height="5.2" rx="1"></rect><path d="M6.2 7V5.6a1.8 1.8 0 0 1 3.6 0V7"></path></svg></div><div><div style="font-size:13px;font-weight:600;color:#0F172A">Accesos</div><div style="font-size:11.5px;color:#64748B">11 artículos</div></div></div>
+              </div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:.6px;color:#64748B;margin-bottom:8px">MÁS CONSULTADOS</div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+                <a href="#" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F1F5F9;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.6" style="flex:none"><path d="M3.5 2.5h9v11l-4.5-2.4L3.5 13.5v-11Z"></path></svg><span style="font-size:13.5px;font-weight:600;color:#13315C;flex:1">Outlook pide la contraseña a cada rato</span><span style="font-size:11.5px;color:#64748B">312 vistas</span></a>
+                <a href="#" style="display:flex;align-items:center;gap:12px;padding:12px 16px;text-decoration:none"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.6" style="flex:none"><path d="M3.5 2.5h9v11l-4.5-2.4L3.5 13.5v-11Z"></path></svg><span style="font-size:13.5px;font-weight:600;color:#13315C;flex:1">La impresora no aparece o no imprime</span><span style="font-size:11.5px;color:#64748B">287 vistas</span></a>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isInventario }}" hint-placeholder-val="{{ false }}">
+            <h1 style="margin:0 0 4px;font-size:22px;font-weight:700;color:#0B2545">Inventario de activos</h1>
+            <p style="margin:0 0 14px;font-size:13px;color:#475569">312 equipos registrados.</p>
+            <div style="height:44px;border:2px solid #13315C;border-radius:6px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;max-width:420px;margin-bottom:16px">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#13315C" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"></circle><path d="m10.6 10.6 3 3"></path></svg>
+              <span style="font:600 13.5px ui-monospace,Menlo,monospace;color:#0F172A">EMP-PC-01</span>
+            </div>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+              <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <thead><tr style="background:#F1F5F9"><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">CÓDIGO</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">MARCA Y MODELO</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">SEDE</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">CUSTODIO</th><th style="text-align:left;padding:9px 12px;font-size:10.5px;font-weight:700;color:#475569;letter-spacing:.4px">ESTADO</th></tr></thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #F1F5F9;background:#EEF3FA"><td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">EMP-PC-0142</td><td style="padding:10px 12px;color:#0F172A">Dell OptiPlex 7090</td><td style="padding:10px 12px;color:#334155">Managua</td><td style="padding:10px 12px;color:#334155">Néstor Palacios</td><td style="padding:10px 12px"><span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;color:#047857;background:#D1FAE5;border:1px solid #10B981">Operativo</span></td></tr>
+                  <tr><td style="padding:10px 12px;font:700 12.5px ui-monospace,Menlo,monospace;color:#13315C">EMP-CAM-0208</td><td style="padding:10px 12px;color:#0F172A">Hikvision DS-2CE16</td><td style="padding:10px 12px;color:#334155">León</td><td style="padding:10px 12px;color:#334155">Jairo Talavera</td><td style="padding:10px 12px"><span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">En reparación</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isTablero }}" hint-placeholder-val="{{ false }}">
+            <h1 style="margin:0 0 16px;font-size:22px;font-weight:700;color:#0B2545">Tablero ejecutivo</h1>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px"><div style="font-size:12px;color:#475569">Cumplimiento de SLA</div><div style="font-size:24px;font-weight:700;color:#0B2545">87%</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px"><div style="font-size:12px;color:#475569">MTTA</div><div style="font-size:24px;font-weight:700;color:#0B2545">12 min</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px"><div style="font-size:12px;color:#475569">MTTR</div><div style="font-size:24px;font-weight:700;color:#0B2545">3h 40m</div></div>
+              <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:14px"><div style="font-size:12px;color:#475569">CSAT</div><div style="font-size:24px;font-weight:700;color:#0B2545">4,3</div></div>
+            </div>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:20px">
+              <div style="font-size:14px;font-weight:700;color:#0B2545;margin-bottom:12px">Tickets por categoría</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:grid;grid-template-columns:110px 1fr 30px;gap:8px;align-items:center"><span style="font-size:12.5px;color:#334155">Correo</span><div style="height:14px;background:#F1F5F9;border-radius:3px"><div style="height:14px;width:100%;background:#13315C;border-radius:3px"></div></div><span style="font-size:12px;color:#0F172A">62</span></div>
+                <div style="display:grid;grid-template-columns:110px 1fr 30px;gap:8px;align-items:center"><span style="font-size:12.5px;color:#334155">Impresoras</span><div style="height:14px;background:#F1F5F9;border-radius:3px"><div style="height:14px;width:87%;background:#13315C;border-radius:3px"></div></div><span style="font-size:12px;color:#0F172A">54</span></div>
+                <div style="display:grid;grid-template-columns:110px 1fr 30px;gap:8px;align-items:center"><span style="font-size:12.5px;color:#334155">CCTV</span><div style="height:14px;background:#F1F5F9;border-radius:3px"><div style="height:14px;width:76%;background:#13315C;border-radius:3px"></div></div><span style="font-size:12px;color:#0F172A">47</span></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+            <h1 style="margin:0 0 16px;font-size:22px;font-weight:700;color:#0B2545">Administración — Matriz de prioridad</h1>
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:20px">
+              <table style="border-collapse:collapse;font-size:13px">
+                <thead><tr><th style="padding:6px 14px;text-align:left;font-size:10.5px;font-weight:700;color:#64748B">IMPACTO \ URGENCIA</th><th style="padding:6px 14px;font-size:10.5px;font-weight:700;color:#64748B">ALTA</th><th style="padding:6px 14px;font-size:10.5px;font-weight:700;color:#64748B">MEDIA</th><th style="padding:6px 14px;font-size:10.5px;font-weight:700;color:#64748B">BAJA</th></tr></thead>
+                <tbody>
+                  <tr style="border-top:1px solid #F1F5F9"><td style="padding:8px 14px;font-weight:600;color:#0F172A">Alto</td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#B91C1C;background:#FEE2E2;border:1px solid #DC2626">P1</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td></tr>
+                  <tr style="border-top:1px solid #F1F5F9"><td style="padding:8px 14px;font-weight:600;color:#0F172A">Medio</td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B">P2</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td></tr>
+                  <tr style="border-top:1px solid #F1F5F9"><td style="padding:8px 14px;font-weight:600;color:#0F172A">Bajo</td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#13315C;background:#EEF3FA;border:1px solid #13315C">P3</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#475569;background:#F1F5F9;border:1px solid #94A3B8">P4</span></td><td style="padding:8px 14px;text-align:center"><span style="padding:3px 10px;border-radius:4px;font-size:12.5px;font-weight:700;color:#475569;background:#F1F5F9;border:1px solid #94A3B8">P4</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </sc-if>
+
+        </main>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1540,&quot;height&quot;:980}}">
+const IMPACTOS = [
+  { id: "alto", label: "Alto", desc: "Sede o servicio crítico detenido" },
+  { id: "medio", label: "Medio", desc: "Mi área está afectada" },
+  { id: "bajo", label: "Bajo", desc: "Solo yo, tengo cómo seguir trabajando" }
+];
+const URGENCIAS = [
+  { id: "alta", label: "Alta", desc: "" },
+  { id: "media", label: "Media", desc: "" },
+  { id: "baja", label: "Baja", desc: "" }
+];
+const PRIORIDAD = {
+  "alto|alta": { l: "P1", fg: "#B91C1C", bg: "#FEE2E2", bd: "#DC2626" },
+  "alto|media": { l: "P2", fg: "#92400E", bg: "#FEF3C7", bd: "#F59E0B" },
+  "alto|baja": { l: "P3", fg: "#13315C", bg: "#EEF3FA", bd: "#13315C" },
+  "medio|alta": { l: "P2", fg: "#92400E", bg: "#FEF3C7", bd: "#F59E0B" },
+  "medio|media": { l: "P3", fg: "#13315C", bg: "#EEF3FA", bd: "#13315C" },
+  "medio|baja": { l: "P3", fg: "#13315C", bg: "#EEF3FA", bd: "#13315C" },
+  "bajo|alta": { l: "P3", fg: "#13315C", bg: "#EEF3FA", bd: "#13315C" },
+  "bajo|media": { l: "P4", fg: "#475569", bg: "#F1F5F9", bd: "#94A3B8" },
+  "bajo|baja": { l: "P4", fg: "#475569", bg: "#F1F5F9", bd: "#94A3B8" }
+};
+
+class Component extends DCLogic {
+  state = { view: "login", role: null, tipo: "incidente", impacto: "medio", urgencia: "alta" };
+
+  opt(sel, id, pick) {
+    const on = sel === id;
+    return { border: on ? "#13315C" : "#CBD5E1", bg: on ? "#EEF3FA" : "#fff", dot: on ? "#13315C" : "#94A3B8", fill: on ? "#13315C" : "transparent", pick };
+  }
+
+  renderVals() {
+    const v = this.state.view;
+    const role = this.state.role;
+    const pr = PRIORIDAD[this.state.impacto + "|" + this.state.urgencia];
+    return {
+      isLogin: v === "login",
+      isApp: v !== "login",
+      isSolicitante: role === "solicitante",
+      isAnalista: role === "analista",
+      isPortal: v === "portal",
+      isForm: v === "form",
+      isConfirm: v === "confirm",
+      isCola: v === "cola",
+      isDetalle: v === "detalle",
+      isAyuda: v === "ayuda",
+      isInventario: v === "inventario",
+      isTablero: v === "tablero",
+      isAdmin: v === "admin",
+      isJefe: role === "jefe",
+      userName: role === "solicitante" ? "Néstor Palacios" : role === "analista" ? "Carlos Zeledón" : role === "jefe" ? "Yorlene Cardoza" : "",
+      userRole: role === "solicitante" ? "Solicitante · Managua" : role === "analista" ? "Analista N1 · Managua" : role === "jefe" ? "Jefe de TI" : "",
+      userInitials: role === "solicitante" ? "NP" : role === "jefe" ? "YC" : "CZ",
+      avatarBg: role === "solicitante" ? "#DCE5F0" : role === "jefe" ? "#0B2545" : "#3E6DB0",
+      navFormColor: v === "form" ? "#13315C" : "#334155",
+      navFormBg: v === "form" ? "#EEF3FA" : "transparent",
+      navFormBorder: v === "form" ? "#13315C" : "transparent",
+      navAyudaColor: v === "ayuda" ? "#13315C" : "#334155",
+      navAyudaBg: v === "ayuda" ? "#EEF3FA" : "transparent",
+      navAyudaBorder: v === "ayuda" ? "#13315C" : "transparent",
+      navColaColor: (v === "cola" || v === "detalle") ? "#13315C" : "#334155",
+      navColaBg: (v === "cola" || v === "detalle") ? "#EEF3FA" : "transparent",
+      navColaBorder: (v === "cola" || v === "detalle") ? "#13315C" : "transparent",
+      navInvColor: v === "inventario" ? "#13315C" : "#334155",
+      navInvBg: v === "inventario" ? "#EEF3FA" : "transparent",
+      navInvBorder: v === "inventario" ? "#13315C" : "transparent",
+      navTableroColor: v === "tablero" ? "#13315C" : "#334155",
+      navTableroBg: v === "tablero" ? "#EEF3FA" : "transparent",
+      navTableroBorder: v === "tablero" ? "#13315C" : "transparent",
+      navAdminColor: v === "admin" ? "#13315C" : "#334155",
+      navAdminBg: v === "admin" ? "#EEF3FA" : "transparent",
+      navAdminBorder: v === "admin" ? "#13315C" : "transparent",
+      loginSolicitante: () => this.setState({ role: "solicitante", view: "portal" }),
+      loginAnalista: () => this.setState({ role: "analista", view: "cola" }),
+      loginJefe: () => this.setState({ role: "jefe", view: "tablero" }),
+      logout: () => this.setState({ view: "login", role: null }),
+      gotoPortal: () => this.setState({ view: "portal" }),
+      gotoForm: () => this.setState({ view: "form" }),
+      enviarForm: () => this.setState({ view: "confirm" }),
+      gotoCola: () => this.setState({ view: "cola" }),
+      gotoDetalle: () => this.setState({ view: "detalle" }),
+      gotoAyuda: () => this.setState({ view: "ayuda" }),
+      gotoInventario: () => this.setState({ view: "inventario" }),
+      gotoTablero: () => this.setState({ view: "tablero" }),
+      gotoAdmin: () => this.setState({ view: "admin" }),
+      setIncidente: () => this.setState({ tipo: "incidente" }),
+      setSolicitud: () => this.setState({ tipo: "solicitud" }),
+      incBorder: this.state.tipo === "incidente" ? "#13315C" : "#CBD5E1",
+      incBg: this.state.tipo === "incidente" ? "#EEF3FA" : "#fff",
+      solBorder: this.state.tipo === "solicitud" ? "#13315C" : "#CBD5E1",
+      solBg: this.state.tipo === "solicitud" ? "#EEF3FA" : "#fff",
+      impactos: IMPACTOS.map(o => ({ ...o, ...this.opt(this.state.impacto, o.id, () => this.setState({ impacto: o.id })) })),
+      urgencias: URGENCIAS.map(o => ({ ...o, ...this.opt(this.state.urgencia, o.id, () => this.setState({ urgencia: o.id })) })),
+      prLabel: pr.l, prFg: pr.fg, prBg: pr.bg, prBd: pr.bd
+    };
+  }
+}
+
+</script>
+</body>
+</html>

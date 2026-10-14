@@ -1,0 +1,90 @@
+@startuml
+
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam dpi 120
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam linetype polyline
+skinparam nodesep 38
+skinparam ranksep 70
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #334155
+hide circle
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #13315C
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #0B2545
+  FontColor #0F172A
+  AttributeFontSize 10
+  FontSize 12
+  FontStyle bold
+}
+skinparam package {
+  BorderColor #94A3B8
+  FontColor #0B2545
+  FontSize 15
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFBEB
+  BorderColor #D97706
+  FontSize 9
+  FontColor #451A03
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontSize 10
+}
+
+title Base de conocimientos\nVista por dominio · SPEC-TI-2026-002 v2.0 (entidades en gris: referencia a otro dominio)
+entity "articulos_kb" as articulos_kb {
+  *id_articulo : serial <<PK>>
+  --
+  *titulo : varchar(150)
+  resumen : varchar(300)
+  *contenido : text
+  *id_categoria : int <<FK>>
+  *id_autor : int <<FK>>
+  id_revisor : int <<FK>>
+  *estado : varchar(12)
+  *visibilidad : varchar(12)
+  *version_actual : int
+  publicado_en : timestamptz
+  *total_vistas : int
+}
+entity "articulos_kb_versiones" as articulos_kb_versiones {
+  *id_version : serial <<PK>>
+  --
+  *id_articulo : int <<FK>>
+  *numero_version : int
+  *titulo : varchar(150)
+  *contenido : text
+  *editado_por : int <<FK>>
+  *fecha_edicion : timestamptz
+  motivo_cambio : varchar(200)
+}
+entity "kb_votos" as kb_votos {
+  *id_articulo : int <<PK,FK>>
+  *id_usuario : int <<PK,FK>>
+  --
+  *util : boolean
+  comentario : varchar(300)
+  *fecha : timestamptz
+}
+entity "categorias" as categorias #E2E8F0 {
+  *id_categoria : serial <<PK>>
+}
+entity "usuarios" as usuarios #E2E8F0 {
+  *id_usuario : serial <<PK>>
+}
+categorias ||--o{ articulos_kb : "organiza"
+usuarios ||--o{ articulos_kb : "redacta"
+articulos_kb ||--o{ articulos_kb_versiones : "versiona"
+articulos_kb ||--o{ kb_votos : "recibe"
+usuarios ||--o{ kb_votos : "vota"
+@enduml
