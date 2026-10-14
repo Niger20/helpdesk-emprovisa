@@ -30,9 +30,11 @@ import { registerSurveysRoutes } from './modules/surveys/index.js';
 import type { SurveysService } from './modules/surveys/index.js';
 import { registerMailIngestRoutes } from './modules/mail-ingest/index.js';
 import type { MailIngestService } from './modules/mail-ingest/index.js';
+import { registerReportsRoutes } from './modules/reports/index.js';
+import type { ReportsService } from './modules/reports/index.js';
 
 interface AutomationServices { jobs?: JobsService; notifications?: NotificationsService; surveys?: SurveysService; mail?: MailIngestService;
-  invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[] }
+  invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[]; reports?: ReportsService }
 
 export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, auth?: AuthService, tickets?: TicketsService, assets?: AssetsService, knowledge?: KnowledgeService, attachments?: AttachmentsService, automations: AutomationServices = {}) {
   const app = Fastify({
@@ -69,5 +71,6 @@ export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, au
   if (automations.notifications) registerNotificationsRoutes(app, automations.notifications, automations.invitations);
   if (automations.surveys) registerSurveysRoutes(app, automations.surveys);
   if (automations.mail) registerMailIngestRoutes(app, automations.mail);
+  if (automations.reports) registerReportsRoutes(app, automations.reports);
   return app;
 }

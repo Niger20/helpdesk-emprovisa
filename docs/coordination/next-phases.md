@@ -16,3 +16,11 @@ cierre y archivos compartidos. Chat nuevo de CSAT:
 01a138a5-70c1-7430-b86a-f7c4879243a0, entregó contratos, módulo surveys, pantalla y
 helper de integración (commit d347bd6). Entrega integrada; pnpm check pasó con
 219 pruebas y 171,07 KB gzip. Pendientes y límites en PROGRESS; decisiones D-014–D-016.
+
+## Asignación inicial y reportes — nueva entrega
+
+Esta sesión: RF-06 en portal/correo, selector transaccional, séptima tarea de reintento,
+migración/seed y ficha con responsable. Chat adicional de reportes:
+01a138be-dee2-7d83-a5dc-96bf9f98053c, con propiedad de contracts/reports.ts,
+API/web reports y reports-checks.ts. Integrados por coordinador; validación global
+con 241 pruebas y build en verde. Decisiones D-017/D-018 y pendientes en PROGRESS.

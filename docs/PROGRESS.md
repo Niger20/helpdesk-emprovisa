@@ -257,3 +257,40 @@ Pendiente: asignación inicial por categoría/especialidad/carga (RF-06), report
 exportaciones, administración, votos/vínculos KB, pantalla/endpoint de auditoría,
 revisión visual/accesibilidad y k6. Correo simulado actual se inyecta por API y no
 incluye adjuntos ni clasificación automática; CSAT no recupera enlaces tras reinicio.
+
+## 13/10/2026 — Asignación automática y reportes, dos sesiones
+
+Hecho RF-06: asignación inicial en portal/correo por categoría, especialidad exacta,
+grupo/sede/permisos vigentes y carga activa; desempate por dominio/identificador.
+No se asigna al propio solicitante. Falta de especialista conserva cola; tarea nueva
+ticket-auto-assignment reintenta cada minuto sin duplicar ni reemplazar responsable.
+SLA y primera respuesta conservados; evidencia/version/asignación en transacción de
+alta. Migración 020 instalada sobre helpdesk y seed de transición/tarea actualizada.
+Ahora siete tareas de dominio. Ficha muestra responsable o pendiente en cola. D-017.
+
+Chat de reportes 01a138be-dee2-7d83-a5dc-96bf9f98053c entregó tablero, contratos,
+API y exportaciones PDF/XLSX; integrada navegación/ruta lazy /reportes. Consulta
+readonly con snapshot, permisos y alcance por sede en tablero/catálogos/exportaciones.
+Filtros de fechas Managua, sede/categoría; métricas MTTA/MTTR/SLA/CSAT, desgloses,
+volumen diario y carga actual. Cuatro estados de datos y errores/reintento al exportar.
+Denominadores y límites explícitos; no se afirma evaluación histórica por técnico.
+XLSX protege fórmulas; PDF con fuentes locales; fechas y nombres legibles en filtros.
+Homónimos no mezclan carga. Decisión D-018. Dependencias previstas fijadas con lockfile.
+
+Validación final: cuatro controles de pnpm check en verde, 241 pruebas en 19 archivos;
+build de 280,47 KB gzip, bajo presupuesto de 499 KB. Cubre concurrencia real de altas en pool de
+tres conexiones, idempotencia, permisos/sedes/membresías vencidas, remitente técnico,
+alta por correo, desactivación y rollback. Reportes cubren vacío/fechas/alcances,
+anónimo/solicitante denegados, exports binarios, fórmulas, números y homónimos.
+Demostración HTTP local: TK-000015 asignado automáticamente a Miguel Pérez (demo);
+tablero y dos descargas disponibles con la cuenta de jefatura. PDF exportado real
+de dos páginas renderizado e inspeccionado: legible, sin recortes ni superposiciones.
+
+Revisión visual de pantallas sigue pendiente: cua falla al iniciar por archivos
+de su entorno, también en esta entrega. La inspección del PDF no sustituye revisión
+de navegador, accesibilidad móvil ni rendimiento. Datos y secretos locales fuera de Git.
+
+Pendiente: administración de usuarios/roles/grupos/catálogos/calendarios/parámetros;
+votos y vínculos KB; pantalla/endpoint de auditoría; revisión visual/accesibilidad/k6.
+Correo simulado se inyecta por API; recuperación de invitaciones CSAT tras reinicio
+no forma parte del alcance actual. No se despliega ni se usa infraestructura externa.

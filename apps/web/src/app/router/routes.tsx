@@ -8,6 +8,7 @@ import { loadAssetListPage, loadAssetDetailPage } from '../../features/assets';
 import { loadKnowledgeListPage, loadKnowledgeDetailPage } from '../../features/knowledge-base';
 import { RequirePermission } from './guards/RequirePermission';
 import { loadNotificationsPage } from '../../features/notifications';
+import { loadReportsPage } from '../../features/reports';
 
 const AvailabilityPage = lazy(() => import('../../features/admin').then((feature) => ({ default: feature.AvailabilityPage })));
 const LoginPage = lazy(() => loadLoginPage().then((feature) => ({ default: feature.LoginPage })));
@@ -19,6 +20,7 @@ const AssetDetailPage = lazy(() => loadAssetDetailPage().then((feature) => ({ de
 const KnowledgeListPage = lazy(loadKnowledgeListPage);
 const KnowledgeDetailPage = lazy(loadKnowledgeDetailPage);
 const NotificationsPage = lazy(loadNotificationsPage);
+const ReportsPage = lazy(() => loadReportsPage().then((page) => ({ default: page.ReportsPage })));
 const SurveyPage = lazy(() => import('../../features/surveys').then((feature) => ({ default: feature.SurveyPage })));
 
 export function AppRoutes() {
@@ -38,6 +40,7 @@ export function AppRoutes() {
           <Route path="/conocimientos/:idArticulo" element={<RequirePermission permiso="kb.ver"><KnowledgeDetailPage /></RequirePermission>} />
           <Route path="/disponibilidad" element={<AvailabilityPage />} />
           <Route path="/avisos" element={<NotificationsPage />} />
+          <Route path="/reportes" element={<RequirePermission permiso="reporte.ver"><ReportsPage /></RequirePermission>} />
         </Route>
         <Route path="*" element={<p className="p-8">La página solicitada no existe.</p>} />
       </Routes>

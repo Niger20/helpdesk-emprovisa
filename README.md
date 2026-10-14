@@ -195,3 +195,20 @@ de ticket, excepto solicitante/canal/origen). En respuesta usar `inReplyTo` del
 mensaje procesado y `solicitud: null`. El job crea el caso o agrega comentario
 público al hilo del propio solicitante; duplicados no crean nuevos registros.
 La inyección se ofrece por API; no se afirma un cliente de correo completo.
+
+### Asignación y reportes
+
+Un ticket nuevo se asigna al integrante elegible del grupo con especialidad exacta
+en la categoría y menor carga activa. Requiere cuenta/membresía/permisos vigentes,
+alcance para la sede y responsable distinto del solicitante. Sin especialista,
+conserva su cola; el sistema reintenta cada minuto y jefatura puede reasignar.
+La demo configura impresoras de Managua para Miguel y CCTV para Sofía; otras
+categorías conservan toma manual mientras no tengan especialidades registradas.
+Plazos de SLA no se reinician y asignar no equivale a primera atención.
+
+En `/reportes`, jefatura y auditoría filtran la cohorte por fechas de creación,
+sede y categoría. Tablero con MTTA, MTTR, SLA, CSAT, desgloses, carga actual y
+volumen diario; exportaciones PDF/Excel con los mismos filtros y permisos. Fórmulas
+y denominadores visibles: MTTA usa todos los tickets, SLA todos los resueltos y
+CSAT las encuestas respondidas de la cohorte. Las descargas no incluyen notas ni
+comentarios internos, y el pool de reportes solo puede consultar la base.

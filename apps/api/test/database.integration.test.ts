@@ -20,6 +20,7 @@ import { surveysChecks } from './surveys-checks.js';
 import { jobsChecks } from './jobs-checks.js';
 import { notificationsMailChecks } from './notifications-mail-checks.js';
 import { automaticAssignmentChecks } from './automatic-assignment-checks.js';
+import { reportsChecks } from './reports-checks.js';
 import { ticketsChecks } from './tickets-checks.js';
 import { assetsChecks } from './assets-checks.js';
 
@@ -97,4 +98,5 @@ describe('PostgreSQL real: bases y roles', () => {
   jobsChecks(appDatabase, env);
   notificationsMailChecks(appDatabase, env);
   automaticAssignmentChecks(appDatabase, env);
+  reportsChecks(appDatabase, env);
 });

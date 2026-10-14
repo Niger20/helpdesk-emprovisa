@@ -20,3 +20,4 @@ export * from './attachments.js';
 export * from './jobs.js';
 export * from './surveys.js';
 export * from './mail-simulation.js';
+export * from './reports.js';

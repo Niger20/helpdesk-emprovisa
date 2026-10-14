@@ -14,19 +14,22 @@ import { buildMailIngestService } from './modules/mail-ingest/index.js';
 import { createSurveysService } from './modules/surveys/index.js';
 import { createDemoSurveyDelivery } from './infra/mail/survey-delivery.js';
 import { startQueue } from './infra/queue/boss.js';
+import { createReportsService } from './modules/reports/index.js';
 
 loadLocalEnv();
 const env = parseEnv(process.env);
 const databases = [createDatabase(env.DATABASE_URL, 10), createDatabase(env.DATABASE_READONLY_URL, 3)];
 const checkHealth = createHealthRepository(databases);
 const database = databases[0];
-if (!database) throw new Error('No se configuró la base de aplicación.');
+const readonlyDatabase = databases[1];
+if (!database || !readonlyDatabase) throw new Error('No se configuraron las bases de aplicación y lectura.');
 const auth = await createAuthService(database, env.CSRF_SECRET);
 const delivery = createDemoSurveyDelivery();
 const notifications = buildNotificationsService(database);
 const jobs = buildJobsService(database, (trx, now) => buildNotificationsService(trx).dispatch(now), (trx, now) => buildMailIngestService(trx).ingest(now), delivery);
 const app = await buildApp(env, checkHealth, auth, buildTicketsService(database, delivery), createAssetsService(database), createKnowledgeService(database), createAttachmentsService(database, env.STORAGE_DIR),
-  { jobs, notifications, surveys: createSurveysService(database, env.CSRF_SECRET), mail: buildMailIngestService(database), invitations: delivery.list });
+  { jobs, notifications, surveys: createSurveysService(database, env.CSRF_SECRET), mail: buildMailIngestService(database), invitations: delivery.list,
+    reports: createReportsService(readonlyDatabase) });
 let queue: Awaited<ReturnType<typeof startQueue>> | undefined;
 app.addHook('onClose', async () => {
   try { await queue?.stop({ graceful: true, timeout: 5000 }); }

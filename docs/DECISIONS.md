@@ -300,3 +300,52 @@ Ingesta crea ticket/alerta/evidencia y vincula mensaje en una transacción. Resp
 usan in_reply_to de un mensaje procesado y solo el solicitante del ticket puede
 agregar comentario público; hilos ajenos/desconocidos/finales y datos inválidos
 se rechazan. No se implementan IMAP, SMTP, parsing institucional ni adjuntos de correo.
+
+## D-017 — Asignación inicial automática (RF-06)
+
+La spec define categoría/especialidad/sede/carga sin fijar desempate ni fallback.
+Se exige especialidad exacta registrada con nivel_dominio positivo, usuario y grupo
+activos, membresía/permiso ticket.atender vigentes y alcance de BD para la sede.
+No se asigna automáticamente al solicitante. El grupo ya se resuelve conforme D-010.
+Menor cantidad de casos activos (incluye EN_ESPERA) primero; ante empate, mayor
+dominio y menor id_usuario. Se omiten RESUELTO/CERRADO/CANCELADO de carga. Una
+delegación explícita válida habilita otra sede; no se infiere autorización por rol.
+
+Sin candidato o grupo, conserva NUEVO en su cola; no inventa especialidades ni
+asigna otro grupo. Seed conserva las especialidades declaradas: impresoras para
+Managua y CCTV para Infraestructura. Categorías sin especialistas configurados
+siguen disponibles para toma/reasignación manual. Reintento cada minuto con nueva
+tarea ticket-auto-assignment; lotes de hasta 100 tickets con candidato elegible,
+para que casos imposibles no bloqueen otros. Se respetan desactivación y responsable
+ya elegido; no se reasigna al repetir ni se reinicia SLA/primera respuesta.
+
+Migración 020 agrega NUEVO -> ASIGNADO automática y cola pg-boss instalada por
+migrator. Portal/correo usan la misma operación dentro de la transacción de alta;
+asignación/version/bitácora con id_tarea forman parte de ella. Selector serializado
+con advisory lock antes de escribir bitácora, relectura bloqueada del ticket y carga
+actualizada tras cada asignación; se comprobó reparto concurrente en pool de tres
+conexiones. Manual de jefatura conserva sus reglas de asignación vigentes.
+
+## D-018 — Métricas y exportaciones del prototipo
+
+Filtros desde/hasta inclusivos como fechas civiles de Managua; cohorte por creación
+del ticket, con sede/categoría opcionales. Pool readonly y snapshot repeatable read;
+permisos reporte.ver/reporte.exportar verificados por service/ruta, intersectando
+alcances de sede para exportar. No se agregan tablas/vistas. Solo agregados necesarios;
+notas, descripción, comentarios CSAT, correos, adjuntos y tokens no salen en reportes.
+
+MTTA mantiene la fórmula literal de la spec: suma hasta primera respuesta / todos
+los tickets de la cohorte; sin respuesta aportan cero. Se muestran total y respondidos
+para interpretar el denominador. MTTR: resolución vigente menos creación y minutos
+de pausa acumulados, entre resueltos; mide el caso, no minutos laborales del motor SLA.
+Reabiertos sin resolución vigente no entran en cumplimiento. SLA: marcas cumplidas
+al resolver / todos los resueltos; sin marca no se considera cumplido, con contador
+de evaluados. CSAT: respuestas de encuestas vinculadas a la cohorte, promedio 1–5 y
+porcentaje sobre cinco. No se reconstruyen resoluciones históricas por ciclo.
+
+Carga del período usa asignación actual; no se presenta como evaluación histórica
+del resolutor. Se agrupa por identidad de usuario; homónimos se distinguen con
+username. Volumen diario es de la misma cohorte, no de todos los cierres del día.
+Estas fórmulas y límites aparecen en pantalla y exportaciones. Nombres de filtros
+y fechas dd/mm/aaaa de Managua; XLSX neutraliza fórmulas en textos de BD y mantiene
+números como valores numéricos. PDF usa fuentes locales y tablas con cabecera.
