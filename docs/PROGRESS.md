@@ -439,3 +439,46 @@ Avance funcional estimado: aproximadamente 96 %, sin aceptación formal de todos
 los RF/RNF. Pendientes: administración de matriz/plazos bajo reglas vigentes,
 revisión visual/accesibilidad, manuales y evidencia de aceptación completa.
 Se conservan los límites de correo simulado y recuperación de enlaces CSAT en memoria.
+
+## 14/10/2026 — Cierre técnico coordinado y aceptación con reservas
+
+Las cuatro sesiones de SLA, visual, accesibilidad y manuales terminaron con
+marcador COMPLETO CON LIMITACIÓN antes de QA final. SLA: `/administracion/sla`
+consulta cuatro prioridades y nueve combinaciones reales, compara norma y permite
+editar nombres con permiso GLOBAL, CSRF, revisión optimista, bloqueos y auditoría
+transaccional. No cambia plazos, matriz, calendarios ni tickets; sin migración.
+RF-19 queda parcialmente cubierto por sus valores no negociables. D-027.
+
+Accesibilidad: foco, botones 40 × 40, errores asociados, tablas enfocables y
+alternativas textuales de gráficos; contraste calculado mínimo 5,91:1. D-028.
+Revisión visual real en navegador integrado, escritorio 1280 × 800 y móvil
+360 × 800, jefe y solicitante. Login, datos, estados KB, recuperación con Reintentar,
+foco/scroll de cola y alternativa de gráficos observados; no es UAT completo.
+VISUAL.md registra seis hallazgos. Aceptación reparó custodia/paginación móvil
+V-03/V-04 después de los marcadores; falta repetir su observación. V-01/V-02
+fechas/selector nativos y V-05/V-06 vacíos/acceso al contenido siguen abiertos.
+
+Manuales: uso por perfiles, operación local, demo y seguridad, README/deploy
+actualizados; 37 enlaces locales y seis rutas administrativas cotejados por su
+sesión. ACCEPTANCE.md mapea 20 RF, 12 RNF y 12 RN a código/pruebas/límites.
+D-029 distingue evidencia técnica, diferencias CU-01 y aceptación humana.
+
+Validación final: `pnpm check` pasó lint, typecheck, test y build; 316 pruebas en
+22 archivos (51,33 s), incluidos ocho casos SLA registrados en el driver.
+Build 308,39 KB gzip de todos los JS compilados bajo 499 KB. PostgreSQL 18.1
+existente, recreación solo de public/helpdesk_queue en helpdesk_test. Sin carga k6
+simultánea ni nueva medición de rendimiento; informe anterior conserva su alcance.
+
+HTTP local helpdesk: lectura, edición/restauración de P1, norma/matriz y ambos
+plazos de TK-000015 conservados; dos cadenas íntegras. El primer script omitió
+cuerpo JSON en logout y recibió 400; petición corregida terminó bien y se revocó
+la sesión propia restante por su evidencia. Ambas sesiones de prueba cerradas,
+sin alterar historia ni exponer cookies. Sin despliegue ni servicios externos.
+
+Avance funcional orientativo: 97 %, no aceptación formal completa. Pendientes:
+corregir/revalidar hallazgos visuales y repetir V-03/V-04; CSAT con token válido;
+crear/atender por teclado; zoom/lector/contraste dinámico; perfiles N1/N2/AUDITOR,
+subpaneles/SLA/Servicio y estados por pantalla. RF-19 parcial; borrador persistente
+y activo texto libre de CU-01 no acreditados; prueba positiva RN-08 pendiente.
+RNF con límites incluyen archivo/retención observada, escaneo OWASP, 256 Kbps y
+CPU/memoria. Correo simulado e invitaciones CSAT en memoria se mantienen.

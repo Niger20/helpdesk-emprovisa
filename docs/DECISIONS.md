@@ -521,3 +521,59 @@ propio incluso con vínculo futuro, revisa coherencia de sedes y revoca sesiones
 usuarios afectados con vínculos no vencidos. Continuidad del último administrador,
 permisos, revocaciones y auditoría van en una transacción. El catálogo enumera solo
 permisos conocidos en contracts y BD. La retirada de acceso usa vínculos existentes.
+
+## D-027 — Consulta de matriz y plazos con nombres administrables
+
+RF-19 y P-09 proponen editar matriz/plazos, pero AGENTS sección 9 fija como no
+negociables las nueve combinaciones, cuatro plazos, modos de calendario y alerta
+50 %. Se aplica la opción conservadora: `/administracion/sla` consulta valores
+reales, los compara con la norma y permite editar únicamente nombres de prioridad.
+RF-19 queda parcialmente cubierto; editar nombres no equivale a administrar plazos.
+No hay activación, color editable, valores libres ni restauración automática.
+
+GET/PUT requieren parametro.administrar GLOBAL, permiso de ruta y CSRF en PUT.
+Request estricto, revisión SHA-256 de la configuración completa, bloqueos ordenados
+y auditoría transaccional evitan cambios parciales y formularios obsoletos. No-op
+no emite evidencia. Se muestran desvíos estructuralmente válidos sin ocultarlos.
+El nombre no interviene en cálculos: sin migración ni cambios de tickets, ciclos,
+fotografías, matriz o plazos. Se conservan 45 tablas. P-09 permite sábado mientras
+AGENTS exige saltar fines de semana; se conserva lunes a viernes sin ampliar horarios.
+
+## D-028 — Accesibilidad estática con límites de comprobación dinámica
+
+Se añaden foco común, mínimos de botón 40 × 40 px, errores asociados al nuevo
+ticket y regiones de tablas nombradas/enfocables. Las tablas conservan columnas
+y desplazamiento horizontal local a 360 px. Los gráficos ocultos no presentan
+su capa interactiva; siguen las alternativas textuales y el desplegable diario.
+Las diez combinaciones opacas calculadas superan 4,5:1 (mínimo 5,91:1), por lo
+que no se cambian tokens. Este cálculo no mide píxeles renderizados ni deshabilitados.
+
+ESLint focal, typecheck web y Vite de su sesión pasaron. Eso no demuestra teclado,
+zoom, lector de pantalla o todos los flujos móviles. ACCESSIBILITY.md conserva
+la lista de recorridos pendientes y VISUAL.md su evidencia independiente. La
+propuesta de salto al contenido/foco al navegar no se implementa en este lote;
+no se afirma conformidad WCAG completa ni se cambia el shell sin revisar ese flujo.
+
+Tras los cuatro marcadores, aceptación final reparó V-03/V-04: ancho mínimo
+640 px y fechas sin fragmentar en custodia, paginación de auditoría en dos filas
+de grilla. Pasaron los cuatro controles con esas reparaciones; las capturas previas
+no certifican su resultado y deben repetirse. V-01/V-02 (controles nativos),
+V-05/V-06 (vacíos/acceso al contenido) y recorridos dinámicos quedan abiertos.
+
+## D-029 — Aceptación trazable y diferencias de CU-01
+
+ACCEPTANCE.md mapea los 20 RF, 12 RNF y 12 RN a código, pruebas y límites.
+Conteo de tests y porcentaje funcional no constituyen aceptación formal. La
+medición k6 acredita únicamente su escenario local de lecturas; no toda carga.
+Respaldo/RTO/RPO de producción queda fuera de D-008. Archivo histórico, retención
+observada de 24 meses, escaneo OWASP, enlace limitado y protocolo de cinco
+participantes no se presentan como ejecutados. Hallazgos visuales se conservan
+abiertos hasta disponer de corrección y nueva evidencia.
+
+CU-01 permite introducir activo en texto libre y conservar un borrador local tras
+falla. La implementación exige activo existente conforme RN-04/ER: no regulariza
+inventario por texto libre. El formulario retiene datos mientras sigue montado,
+sin persistencia después de recargar/cerrar. Se registran estos límites; no se
+añaden campos al ER ni persistencia local de datos sin una tarea específica.
+RN-08 tiene código de canal/alcance y caso denegado; no se identificó una prueba
+positiva específica de registro por tercero en el lote previo a aceptación.
