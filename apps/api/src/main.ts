@@ -15,6 +15,7 @@ import { createSurveysService } from './modules/surveys/index.js';
 import { createDemoSurveyDelivery } from './infra/mail/survey-delivery.js';
 import { startQueue } from './infra/queue/boss.js';
 import { createReportsService } from './modules/reports/index.js';
+import { createAuditService, createReportAuditRecorder } from './modules/audit/index.js';
 import { createUsersService } from './modules/users/index.js';
 import { createRbacService } from './modules/rbac/index.js';
 import { createGroupsService } from './modules/groups/index.js';
@@ -32,7 +33,7 @@ const notifications = buildNotificationsService(database);
 const jobs = buildJobsService(database, (trx, now) => buildNotificationsService(trx).dispatch(now), (trx, now) => buildMailIngestService(trx).ingest(now), delivery);
 const app = await buildApp(env, checkHealth, auth, buildTicketsService(database, delivery), createAssetsService(database), createKnowledgeService(database), createAttachmentsService(database, env.STORAGE_DIR),
   { jobs, notifications, surveys: createSurveysService(database, env.CSRF_SECRET), mail: buildMailIngestService(database), invitations: delivery.list,
-    reports: createReportsService(readonlyDatabase),
+    reports: createReportsService(readonlyDatabase, createReportAuditRecorder(database)), audit: createAuditService(readonlyDatabase),
     users: createUsersService(database), rbac: createRbacService(database), groups: createGroupsService(database) });
 let queue: Awaited<ReturnType<typeof startQueue>> | undefined;
 app.addHook('onClose', async () => {

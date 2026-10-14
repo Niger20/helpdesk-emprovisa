@@ -294,3 +294,35 @@ Pendiente: administración de usuarios/roles/grupos/catálogos/calendarios/pará
 votos y vínculos KB; pantalla/endpoint de auditoría; revisión visual/accesibilidad/k6.
 Correo simulado se inyecta por API; recuperación de invitaciones CSAT tras reinicio
 no forma parte del alcance actual. No se despliega ni se usa infraestructura externa.
+
+## 14/10/2026 — Administración local y auditoría, dos sesiones
+
+Administración entregada por chat 01a138d3-5516-7800-8996-efe2eb673d1e e integrada:
+usuarios LOCAL, alta/edición/activación/desbloqueo/restablecimiento, vínculos de roles
+por sede y vigencia, grupos, miembros y especialidades. Pantalla lazy y formularios
+con contratos compartidos, cuatro estados de datos y permisos derivados de BD.
+Argon2id, CSRF, revocación de sesiones, límites de delegación, autoexclusión y
+continuidad del último administrador. Cambios auditados en transacción. D-020.
+
+Esta sesión: /auditoria y endpoints de consulta/verificación readonly. Metadatos
+filtrados por fechas Managua, clase, acción, entidad o ticket; privacidad y alcance
+por sede antes de paginar. Verificación global de ambas cadenas con conteos en
+snapshot. Reportes registran consulta/exportación con filtros y alcance; nuevas
+operaciones humanas guardan IP real sin reescribir historia. D-019.
+
+Migración 021 aplicada a helpdesk: reconcilia dos permisos de jefatura de la base
+anterior con la seed, con evidencia. Prueba HTTP local: cuenta ficticia
+soporte.demo.extra creada, rol N1 asignado, ingreso correcto y ambas cadenas íntegras.
+No se modifican otras bases ni se crean recursos externos.
+
+Validación final: cuatro controles de pnpm check, 262 pruebas en 20 archivos;
+build de 290,2 KB gzip. Pruebas cubren permisos/sedes, privacidad, hashes, reportes
+auditados, IP sin suplantación, cuentas/roles/grupos, revocación y rollback del
+último administrador. La prueba visual de pantallas sigue pendiente: cua falla
+al inicializar por una ruta inexistente de su entorno; no se afirma revisión visual.
+
+Estimación funcional orientativa: aproximadamente 85 %, sin equivaler a aceptación
+formal de todos los RF/RNF. Pendientes: edición del catálogo de roles/permisos;
+catálogos, calendarios, feriados y parámetros; votos/vínculos KB; revisión visual,
+accesibilidad y k6; manuales y evidencia de aceptación completa. Continúan los límites
+documentados de correo simulado e invitaciones CSAT tras reinicio.

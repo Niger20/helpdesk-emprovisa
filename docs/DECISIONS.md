@@ -349,3 +349,43 @@ username. Volumen diario es de la misma cohorte, no de todos los cierres del dí
 Estas fórmulas y límites aparecen en pantalla y exportaciones. Nombres de filtros
 y fechas dd/mm/aaaa de Managua; XLSX neutraliza fórmulas en textos de BD y mantiene
 números como valores numéricos. PDF usa fuentes locales y tablas con cabecera.
+
+## D-019 — Consulta de evidencia y verificación de integridad
+
+La pantalla de auditoría muestra metadatos, actor, fecha, IP, tarea y hashes, con
+filtros y paginación. No entrega contenido bruto, valores anteriores/nuevos,
+identificadores de sesión ni secretos. Las notas internas del propio solicitante
+se excluyen antes de contar y paginar. La bitácora respeta alcance por sede;
+auditoría del sistema y verificación requieren permisos globales. Los nombres
+del actor son los actuales; no se afirma reconstrucción histórica completa.
+
+La consulta usa el pool readonly. La verificación GET evalúa ambas cadenas y sus
+conteos en un snapshot, sin escribir evidencia ni modificar registros; su resultado
+describe ese instante. Consultas y exportaciones de reportes sí registran evidencia
+con filtros y alcance autorizado mediante el pool app, sin incluir datos del reporte.
+Si falla ese registro, no se entrega el resultado. La IP procede del request real,
+sin confiar en cabeceras de proxy; se incorpora a nuevas operaciones humanas.
+No se reescribe evidencia histórica para completar direcciones antiguas.
+
+## D-020 — Administración local de identidad y continuidad
+
+Esta fase de RF-18 administra usuarios LOCAL, vínculos de roles con sede/vigencia,
+grupos, membresías y especialidades. El catálogo de roles y permisos sigue
+inmutable; su edición y la administración de calendarios/parámetros quedan pendientes.
+No se implementan directorios ni servicios externos. Contraseñas con Argon2id,
+revocación de sesiones al cambiar acceso y evidencia sanitizada en la misma transacción.
+
+El administrador debe poseer los permisos y alcances que intenta conceder o controlar,
+incluso al activar o restablecer cuentas con asignaciones futuras. No puede modificar
+su propio acceso: requiere otro administrador. Las operaciones conservan al menos
+un administrador LOCAL activo, desbloqueado, en sede activa, con ambos permisos
+administrativos globales de vigencia indefinida. Se serializan cambios para evitar
+perder esa continuidad ante operaciones concurrentes. Trasladar una cuenta requiere
+retirar primero membresías vigentes en grupos limitados a otra sede.
+
+La especialidad conserva nivel_dominio como entero positivo de smallint: el ER no
+define una escala 1–5. Grupos usan nivel 1/2 para N1/N2. Migración 021 reconcilia
+JEFE_TI en la base local anterior con la seed vigente: agrega ticket.ver_propios y
+ticket.ver_sede cuando faltan, dejando evidencia encadenada. Esto permite delegar
+N1 sin debilitar la comprobación de permisos. El rollback conserva permisos válidos
+y evidencia inmutable; no introduce autorización por nombre de rol en los services.

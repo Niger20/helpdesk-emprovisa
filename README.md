@@ -212,3 +212,22 @@ volumen diario; exportaciones PDF/Excel con los mismos filtros y permisos. Fórm
 y denominadores visibles: MTTA usa todos los tickets, SLA todos los resueltos y
 CSAT las encuestas respondidas de la cohorte. Las descargas no incluyen notas ni
 comentarios internos, y el pool de reportes solo puede consultar la base.
+
+### Administración y auditoría
+
+Jefatura abre `/administracion/identidad` para gestionar cuentas locales, roles
+con sede/vigencia, grupos, integrantes y especialidades. Crear la cuenta y asignar
+un rol vigente permite iniciar sesión. Cambiar acceso revoca sesiones; modificar
+el acceso propio requiere otro administrador y se protege al último administrador.
+Roles/permisos del catálogo todavía no se editan desde esta pantalla.
+
+Cuenta adicional ficticia usada en la prueba local: `soporte.demo.extra`, analista
+N1 de Managua. Las cuentas demo son exclusivamente locales; esta cuenta se creó
+en la base de demostración, no mediante la seed.
+
+En `/auditoria`, jefatura y auditoría consultan evidencia por fechas y filtros.
+Se muestran metadatos y hashes; las notas internas y secretos no se exponen.
+La bitácora respeta sede, mientras eventos del sistema y verificación de ambas
+cadenas requieren alcance global. Verificar no modifica registros y describe
+la integridad en ese instante. Consultar/exportar reportes deja evidencia con
+filtros y alcance autorizado; nuevas operaciones humanas registran su IP real.

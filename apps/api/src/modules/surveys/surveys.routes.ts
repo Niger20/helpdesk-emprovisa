@@ -13,6 +13,6 @@ export function registerSurveysRoutes(app: FastifyInstance, service: SurveysServ
   routes.post('/api/v1/encuestas/actual', { bodyLimit: 4096, config: { publica: true, rateLimit: { max: 10, timeWindow: '1 minute' } },
     schema: { headers: surveyHeadersSchema, body: surveyResponseSchema, response: { 200: surveyReceiptSchema } } }, async (request, reply) => {
     reply.header('Cache-Control', 'no-store');
-    return service.respond(request.headers['x-survey-token'], request.body, request.headers['x-csrf-token']);
+    return service.respond(request.headers['x-survey-token'], request.body, request.headers['x-csrf-token'], new Date(), request.ip);
   });
 }

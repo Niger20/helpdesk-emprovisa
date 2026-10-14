@@ -16,6 +16,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink to="/disponibilidad" className="min-h-10 rounded px-3 py-2 text-sm">Servicio</NavLink>
           <NavLink to="/avisos" className="min-h-10 rounded px-3 py-2 text-sm">Avisos</NavLink>
           {session?.usuario.permisos.includes('reporte.ver') && <NavLink to="/reportes" className="min-h-10 rounded px-3 py-2 text-sm">Reportes</NavLink>}
+          {session?.usuario.permisos.includes('auditoria.ver') && <NavLink to="/auditoria" className="min-h-10 rounded px-3 py-2 text-sm">Auditoría</NavLink>}
           {(session?.usuario.permisos.includes('usuario.administrar') || session?.usuario.permisos.includes('rol.administrar')) && <NavLink to="/administracion/identidad" className="min-h-10 rounded px-3 py-2 text-sm">Administración</NavLink>}
         </nav><SessionPanel /></aside>
         <div className="min-w-0">{children}</div>

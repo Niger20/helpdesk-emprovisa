@@ -55,7 +55,7 @@ describe('CSAT: validación y seguridad del servicio', () => {
     await expect(service.respond(token, { calificacion: 4 }, undefined, now)).rejects.toMatchObject({ code: 'CSRF_INVALIDO' });
     expect(repo.answer).not.toHaveBeenCalled();
     expect(await service.respond(token, { calificacion: 4 }, csrfToken(secret, `survey:${token}`), now)).toEqual({ numero: row.numero, calificacion: 4 });
-    expect(repo.auditResponse).toHaveBeenCalledWith(1, 7, 4, now);
+    expect(repo.auditResponse).toHaveBeenCalledWith(1, 7, 4, now, undefined);
     vi.mocked(repo.answer).mockResolvedValueOnce(undefined);
     await expect(service.respond(token, { calificacion: 5 }, csrfToken(secret, `survey:${token}`), now)).rejects.toMatchObject({ code: 'RECURSO_NO_ENCONTRADO' });
     expect(repo.auditResponse).toHaveBeenCalledTimes(1);

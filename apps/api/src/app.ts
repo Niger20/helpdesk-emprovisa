@@ -32,6 +32,8 @@ import { registerMailIngestRoutes } from './modules/mail-ingest/index.js';
 import type { MailIngestService } from './modules/mail-ingest/index.js';
 import { registerReportsRoutes } from './modules/reports/index.js';
 import type { ReportsService } from './modules/reports/index.js';
+import { registerAuditRoutes } from './modules/audit/index.js';
+import type { AuditService } from './modules/audit/index.js';
 import { registerUsersRoutes } from './modules/users/index.js';
 import type { UsersService } from './modules/users/index.js';
 import { registerRbacRoutes } from './modules/rbac/index.js';
@@ -40,7 +42,7 @@ import { registerGroupsRoutes } from './modules/groups/index.js';
 import type { GroupsService } from './modules/groups/index.js';
 
 interface AutomationServices { jobs?: JobsService; notifications?: NotificationsService; surveys?: SurveysService; mail?: MailIngestService;
-  invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[]; reports?: ReportsService;
+  invitations?: (idUsuario: number) => { numero: string; enlace: string; expiraEn: string }[]; reports?: ReportsService; audit?: AuditService;
   users?: UsersService; rbac?: RbacService; groups?: GroupsService }
 
 export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, auth?: AuthService, tickets?: TicketsService, assets?: AssetsService, knowledge?: KnowledgeService, attachments?: AttachmentsService, automations: AutomationServices = {}) {
@@ -79,6 +81,7 @@ export async function buildApp(env: Env, checkHealth: () => Promise<boolean>, au
   if (automations.surveys) registerSurveysRoutes(app, automations.surveys);
   if (automations.mail) registerMailIngestRoutes(app, automations.mail);
   if (automations.reports) registerReportsRoutes(app, automations.reports);
+  if (automations.audit) registerAuditRoutes(app, automations.audit);
   if (automations.users) registerUsersRoutes(app, automations.users);
   if (automations.rbac) registerRbacRoutes(app, automations.rbac);
   if (automations.groups) registerGroupsRoutes(app, automations.groups);

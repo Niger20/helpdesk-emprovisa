@@ -35,7 +35,7 @@ export function createAttachmentsRepository(database: Database, executor: Databa
         subidoPor: context.usuario.idUsuario, fechaSubida: now, estadoValidacion: 'VALIDO' }).returningAll().executeTakeFirstOrThrow();
       await executor.updateTable('tickets').set({ version: sql<number>`version + 1` }).where('idTicket', '=', idTicket).execute();
       await executor.insertInto('bitacora').values({ idTicket, idUsuario: context.usuario.idUsuario, idSesion: context.idSesion,
-        accion: 'ADJUNTO', fechaHora: now, automatica: false, hashPrevio: '', hashRegistro: '',
+        accion: 'ADJUNTO', fechaHora: now, automatica: false, direccionIp: context.direccionIp ?? null, hashPrevio: '', hashRegistro: '',
         valorNuevo: { idAdjunto: row.idAdjunto, hashSha256: file.hashSha256, tamanoBytes: file.tamanoBytes } }).execute();
       return row;
     },

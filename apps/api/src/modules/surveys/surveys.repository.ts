@@ -25,10 +25,10 @@ export function createSurveyQueries(executor: SurveyExecutor) {
       .where('idTicket', 'in', executor.selectFrom('tickets as t').innerJoin('estadosTicket as e', 'e.idEstado', 't.idEstado')
         .select('t.idTicket').where('e.codigo', '=', 'CERRADO'))
       .returning(['idEncuesta', 'idTicket']).executeTakeFirst(),
-    auditResponse: async (idEncuesta: number, idTicket: number, calificacion: number, now: Date) => {
+    auditResponse: async (idEncuesta: number, idTicket: number, calificacion: number, now: Date, ip?: string) => {
       await executor.insertInto('auditoriaSistema').values({ entidad: 'encuestas_csat', idEntidad: String(idEncuesta),
         accion: 'CSAT_RESPONDIDA', fechaHora: now, resultado: 'EXITO', idUsuario: null, idSesion: null,
-        detalle: { idTicket, calificacion }, hashPrevio: '', hashRegistro: '' }).execute();
+        direccionIp: ip ?? null, detalle: { idTicket, calificacion }, hashPrevio: '', hashRegistro: '' }).execute();
     },
   };
 }

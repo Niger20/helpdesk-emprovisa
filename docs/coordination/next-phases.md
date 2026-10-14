@@ -24,3 +24,12 @@ migración/seed y ficha con responsable. Chat adicional de reportes:
 01a138be-dee2-7d83-a5dc-96bf9f98053c, con propiedad de contracts/reports.ts,
 API/web reports y reports-checks.ts. Integrados por coordinador; validación global
 con 241 pruebas y build en verde. Decisiones D-017/D-018 y pendientes en PROGRESS.
+
+## Administración local y auditoría — entrega integrada
+
+Esta sesión: auditoría API/web, verificación readonly, instrumentación de reportes
+y propagación de IP. Chat adicional 01a138d3-5516-7800-8996-efe2eb673d1e:
+usuarios LOCAL, roles vinculados, grupos, membresías y especialidades.
+Coordinador integró contratos, rutas lazy, navegación, runtime y pruebas; migración
+021 reconcilia permisos de jefatura de la base anterior con evidencia.
+Cuatro controles en verde: 262 pruebas, build 290,2 KB gzip. Decisiones D-019/D-020.

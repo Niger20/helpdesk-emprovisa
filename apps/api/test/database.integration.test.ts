@@ -21,6 +21,7 @@ import { jobsChecks } from './jobs-checks.js';
 import { notificationsMailChecks } from './notifications-mail-checks.js';
 import { automaticAssignmentChecks } from './automatic-assignment-checks.js';
 import { reportsChecks } from './reports-checks.js';
+import { auditApiChecks } from './audit-api-checks.js';
 import { adminIdentityChecks } from './admin-identity-checks.js';
 import { ticketsChecks } from './tickets-checks.js';
 import { assetsChecks } from './assets-checks.js';
@@ -100,5 +101,6 @@ describe('PostgreSQL real: bases y roles', () => {
   notificationsMailChecks(appDatabase, env);
   automaticAssignmentChecks(appDatabase, env);
   reportsChecks(appDatabase, env);
+  auditApiChecks(appDatabase, env);
   adminIdentityChecks(appDatabase, env);
 });

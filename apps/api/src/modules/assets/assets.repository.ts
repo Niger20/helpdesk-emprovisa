@@ -61,7 +61,7 @@ function createAssetQueries(executor: Executor) {
     },
     audit: async (idActivo: number, input: AssetCreate, context: SessionContext, now: Date) => {
       await executor.insertInto('auditoriaSistema').values({ accion: 'ACTIVO_CREADO', entidad: 'activos_ti', idEntidad: String(idActivo),
-        idUsuario: context.usuario.idUsuario, idSesion: context.idSesion, fechaHora: now, resultado: 'EXITO',
+        idUsuario: context.usuario.idUsuario, idSesion: context.idSesion, fechaHora: now, resultado: 'EXITO', direccionIp: context.direccionIp ?? null,
         detalle: { codigoPatrimonial: input.codigoPatrimonial, actaNumero: input.actaNumero, idCustodio: input.idCustodio },
         hashPrevio: '', hashRegistro: '' }).execute();
     },

@@ -32,7 +32,7 @@ export function createTicketWriteRepository(executor: Database | Transaction<DB>
     insert: (ticket: Insertable<DB['tickets']>) => executor.insertInto('tickets').values(ticket).execute(),
     logCreation: (idTicket: number, context: SessionContext, now: Date) => executor.insertInto('bitacora').values({
       idTicket, idUsuario: context.usuario.idUsuario, idSesion: context.idSesion, accion: 'CREACION',
-      campoAfectado: 'id_estado', valorNuevo: { estado: 'NUEVO' }, fechaHora: now, automatica: false,
+      campoAfectado: 'id_estado', valorNuevo: { estado: 'NUEVO' }, fechaHora: now, automatica: false, direccionIp: context.direccionIp ?? null,
       hashPrevio: '', hashRegistro: '',
     }).execute(),
     alert: (idTicket: number, tipo: string, when: Date) => executor.insertInto('slaAlertas').values({

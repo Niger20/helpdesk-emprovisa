@@ -35,7 +35,7 @@ export function createAssignmentsRepository(executor: Executor) {
       await executor.updateTable('ticketEscalamientos').set({ aceptadoPor: userId, aceptadoEn: now }).where('idTicket', '=', idTicket).where('aceptadoEn', 'is', null).execute();
     },
     log: (idTicket: number, context: SessionContext, accion: string, anterior: Record<string, string | number | null>, nuevo: Record<string, string | number | null>, now: Date) => executor.insertInto('bitacora').values({
-      idTicket, idUsuario: context.usuario.idUsuario, idSesion: context.idSesion, accion, fechaHora: now, automatica: false,
+      idTicket, idUsuario: context.usuario.idUsuario, idSesion: context.idSesion, accion, fechaHora: now, automatica: false, direccionIp: context.direccionIp ?? null,
       valorAnterior: anterior, valorNuevo: nuevo, hashPrevio: '', hashRegistro: '',
     }).execute(),
   };

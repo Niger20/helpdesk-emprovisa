@@ -59,7 +59,7 @@ function createQueries(executor: Database | Transaction<DB>) {
     audit: async (id: number, context: SessionContext, version: number, now: Date) => {
       await executor.insertInto('auditoriaSistema').values({ entidad: 'articulos_kb', idEntidad: String(id),
         accion: version === 1 ? 'KB_CREADO' : 'KB_EDITADO', idUsuario: context.usuario.idUsuario, idSesion: context.idSesion,
-        fechaHora: now, resultado: 'EXITO', detalle: { versionActual: version }, hashPrevio: '', hashRegistro: '' }).execute();
+        fechaHora: now, resultado: 'EXITO', direccionIp: context.direccionIp ?? null, detalle: { versionActual: version }, hashPrevio: '', hashRegistro: '' }).execute();
     },
   };
 }

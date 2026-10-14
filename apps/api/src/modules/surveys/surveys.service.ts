@@ -19,7 +19,7 @@ export function buildSurveysService(repository: SurveysRepository, secret: strin
       requireAvailable(row, now);
       return mapSurvey(row, csrfToken(secret, `survey:${validToken}`));
     },
-    respond: async (token: string, input: SurveyResponse, csrf: unknown, now = new Date()) => {
+    respond: async (token: string, input: SurveyResponse, csrf: unknown, now = new Date(), ip?: string) => {
       const validToken = surveyTokenSchema.parse(token);
       const data = surveyResponseSchema.parse(input);
       if (!tokensEqual(csrfToken(secret, `survey:${validToken}`), csrf)) {
@@ -33,7 +33,7 @@ export function buildSurveysService(repository: SurveysRepository, secret: strin
         if (!answered) {
           throw new AppError('RECURSO_NO_ENCONTRADO', 404, 'La encuesta ya fue respondida o venció.');
         }
-        await trx.auditResponse(answered.idEncuesta, answered.idTicket, data.calificacion, now);
+        await trx.auditResponse(answered.idEncuesta, answered.idTicket, data.calificacion, now, ip);
         return surveyReceiptSchema.parse({ numero: row.numero, calificacion: data.calificacion });
       });
     },
