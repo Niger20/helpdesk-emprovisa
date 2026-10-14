@@ -486,6 +486,24 @@ el bloqueo al alcanzar cinco fallos y adjuntos al cargar. No se modifica el venc
 ya fijado de un bloqueo. La repetición de valores compara campos, sin prometer
 detectar una secuencia que vuelva exactamente al valor anterior.
 
+## D-025 — Rendimiento local reproducible y aislado
+
+RNF-01 se mide con k6 2.3.0 y 63 cuentas/sesiones distintas en helpdesk_test,
+API host puerto 3001, pools 10/3 y datos ficticios. El runner no recrea esquemas:
+requiere los controles previos y no debe coincidir con otra integración. Se mantienen
+sesiones, permisos, rate limits y auditoría; cada VU usa una IP de loopback distinta,
+como clientes independientes, sin confiar en cabeceras de proxy. No se inicia pg-boss
+en la API aislada. NODE_ENV=test preserva la restricción de base y evita logs de carga.
+
+Preparación por services locales con Argon2 y registro de intentos, fuera de la
+medición HTTP; se añade un ticket por cuenta para evitar medir solamente colas vacías.
+El escenario mide seis familias de lectura, 15 s de subida, 90 s a 63 VUs y 10 s
+de bajada, con pausa de 2 s entre lecturas. Umbrales p95 < 2 s global y por familia,
+errores HTTP < 1 % y checks > 99 %. No equivale a aceptación de login, exports,
+adjuntos, escrituras, jobs concurrentes ni navegación visual. Cookies y binario quedan
+ignorados; el cierre normal revoca sesiones y elimina el archivo de cookies. Solo
+agregados sanitizados se guardan en el informe versionado.
+
 ## D-026 — Roles personalizados con catálogo de permisos existente
 
 RF-18 incorpora creación/edición de roles personalizados; los cinco roles del sistema

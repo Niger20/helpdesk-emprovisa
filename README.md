@@ -262,4 +262,18 @@ bloqueo tras cinco fallos 15–1440 minutos y adjuntos hasta 10 MB. El cierre de
 resueltos conserva 48 horas y solo se consulta. Origen y fecha de modificación
 visibles; ante un conflicto, recargá antes de guardar. No se muestran secretos
 ni parámetros arbitrarios. Calendarios/feriados y parámetros ya están disponibles;
-la matriz/plazos y el catálogo de roles/permisos siguen pendientes.
+la configuración de matriz y plazos sigue pendiente.
+
+### Roles personalizados y rendimiento
+
+Jefatura abre `/administracion/roles` para consultar permisos y crear/editar roles
+personalizados. Los cinco roles del sistema son de consulta. Solo se conceden permisos
+que el administrador posee con alcance global; cambios de rol revocan las sesiones
+afectadas y protegen el último administrador. Un rol propio, incluso futuro, requiere
+otro administrador. Los roles se asignan desde Administración de identidad.
+
+La prueba local de 63 usuarios usa una API aislada y helpdesk_test. Seguí
+[el procedimiento de carga](ops/perf/README.md); no ejecutar integración al mismo
+tiempo. El informe indica rutas medidas, umbrales y límites; no certifica producción
+ni sustituye revisión visual, accesibilidad o pruebas de escrituras bajo carga.
+Resultado documentado: [informe de rendimiento local](docs/quality/PERFORMANCE.md).

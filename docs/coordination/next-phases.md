@@ -47,3 +47,11 @@ Esta sesión: calendarios/feriados, asignación a sedes y protección del calend
 cada ciclo en bitácora; migración 022 y seed. Chat adicional de parámetros:
 01a1390f-79b8-7d22-99c7-3a696fb4afab. Integrados runtime, rutas, navegación y pruebas.
 301 pruebas en 22 archivos, cuatro controles en verde y 302,51 KB gzip. D-023/D-024.
+
+## Rendimiento y catálogo de roles — entrega integrada
+
+Esta sesión: carga k6 aislada de 63 cuentas/sesiones, runner, umbrales e informe.
+Chat adicional 01a13920-f8cd-7632-9a8b-fd9da6400016: catálogo de permisos y roles
+personalizados, integrado en /administracion/roles. Cuatro controles en verde,
+308 pruebas y 305,93 KB gzip. Carga final: 3.225 solicitudes, 0 errores y p95
+47,69 ms. D-025/D-026; límites y reproducción en docs/quality/PERFORMANCE.md.

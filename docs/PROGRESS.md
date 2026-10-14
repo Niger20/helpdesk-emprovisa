@@ -416,3 +416,26 @@ ya no depende del orden de filas ni intenta subir archivos a un caso cerrado.
 
 Pendientes: medición final de rendimiento local, configuración de matriz/plazos,
 revisión visual/accesibilidad y documentación/evidencia de aceptación completa.
+
+## 14/10/2026 — Carga local de 63 usuarios
+
+Hecho aquí: runner y escenario k6 bajo ops/perf, API aislada 3001/helpdesk_test,
+63 cuentas/sesiones y un caso ficticio por cuenta. Pools 10/3, rate limits y permisos
+sin cambios. Prueba de lecturas con 90 s de mantenimiento a 63 VUs, seis familias
+de ruta, checks de estado/contenido y umbrales globales y por ruta. D-025.
+
+Carga final: 3.225 solicitudes, 100 % de checks, 0 % de errores HTTP, p95 global
+47,69 ms y cola p95 56,79 ms; todas las familias bajo 2 s. Duración 116,14 s con
+rampas; promedio de 27,77 solicitudes/s. Informe sanitizado en
+docs/quality/PERFORMANCE.md. No se afirma rendimiento de login/exports/adjuntos/
+escrituras, jobs concurrentes ni navegación. Sesiones revocadas y cookies eliminadas.
+No se tocó helpdesk ni se recrearon esquemas durante la carga.
+
+Los controles previos de ambas fases pasaron: 308 pruebas, lint/typecheck/build,
+305,93 KB gzip. La revisión visual sigue pendiente por el fallo de cua documentado;
+ninguna medición HTTP sustituye esa verificación ni accesibilidad.
+
+Avance funcional estimado: aproximadamente 96 %, sin aceptación formal de todos
+los RF/RNF. Pendientes: administración de matriz/plazos bajo reglas vigentes,
+revisión visual/accesibilidad, manuales y evidencia de aceptación completa.
+Se conservan los límites de correo simulado y recuperación de enlaces CSAT en memoria.
