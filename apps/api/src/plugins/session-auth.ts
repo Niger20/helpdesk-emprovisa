@@ -13,6 +13,7 @@ export const sessionAuthPlugin = fp<{ auth?: AuthService }>(async (app, options)
     const token = request.cookies[sessionCookie];
     if (!token || !options.auth || request.routeOptions.config.publica || request.is404) return;
     request.sesion = await options.auth.load(token, new Date());
+    if (request.sesion) request.sesion = { ...request.sesion, direccionIp: request.ip };
     if (request.sesion) setSessionCookie(reply, token, request.sesion);
     else reply.clearCookie(sessionCookie, cookieOptions);
   });

@@ -21,3 +21,4 @@ export * from './jobs.js';
 export * from './surveys.js';
 export * from './mail-simulation.js';
 export * from './reports.js';
+export * from './admin-identity.js';

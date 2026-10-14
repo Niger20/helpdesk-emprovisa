@@ -7,5 +7,6 @@ export interface SessionContext {
   csrfToken: string;
   expiraEn: Date;
   idleMinutes: number;
+  direccionIp?: string;
 }
 export interface LoginMetadata { direccionIp: string; userAgent: string | undefined }
